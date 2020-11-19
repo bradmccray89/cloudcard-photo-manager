@@ -1,34 +1,47 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app>
+    <v-app-bar
+      app
+      dark
+    >
+      <div class="d-flex align-center">
+        <v-img
+          alt="Vuetify Logo"
+          class="shrink mr-2"
+          contain
+          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
+          transition="scale-transition"
+          width="40"
+        />
+      </div>
+
+      <v-btn
+        href="https://github.com/vuetifyjs/vuetify/releases/latest"
+        target="_blank"
+        text
+      >
+        <router-link to="/">Home</router-link>
+      </v-btn>
+    </v-app-bar>
+
+    <v-main>
+      <HelloWorld/>
+    </v-main>
+  </v-app>
 </template>
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+<script>
+import HelloWorld from './components/HelloWorld';
 
-#app {
-  font-family: 'Montserrat', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+export default {
+  name: 'App',
 
-#nav {
-  padding: 30px;
-}
+  components: {
+    HelloWorld,
+  },
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+  data: () => ({
+    //
+  }),
+};
+</script>

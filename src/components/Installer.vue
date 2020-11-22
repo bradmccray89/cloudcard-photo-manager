@@ -1,228 +1,233 @@
 <template>
-  <v-stepper v-model="e6" alt-labels>
+  <v-stepper v-model="step" alt-labels>
     <v-stepper-header>
         <v-stepper-step
-            :complete="e6 > 1"
-            step="1"
-        >
-            {{questions.accesstoken.title}}
-        </v-stepper-step>
-        <v-divider></v-divider>
-        <v-stepper-step
-            :complete="e6 > 2"
-            step="2"
-        >
+            :complete="step > 1"
+            step="1">
             {{questions.api.title}}
         </v-stepper-step>
         <v-divider></v-divider>
         <v-stepper-step
-            :complete="e6 > 3"
+            :complete="step > 2"
+            step="2">
+            {{questions.accesstoken.title}}
+        </v-stepper-step>
+        <v-divider></v-divider>
+        <v-stepper-step
+            :complete="step > 3"
             step="3">
             {{questions.storageService.title}}
         </v-stepper-step>
         <v-divider></v-divider>
         <v-stepper-step
-            :complete="e6 > 4"
+            :complete="step > 4"
             step="4">
             {{questions.repeat.title}}
         </v-stepper-step>
         <v-divider></v-divider>
         <v-stepper-step
-            :complete="e6 > 5"
+            :complete="step > 5"
             step="5">
             {{questions.delay.title}}
         </v-stepper-step>
         <v-divider></v-divider>
         <v-stepper-step
-            :complete="e6 > 6"
+            :complete="step > 6"
             step="6">
             {{questions.fetchStatus.title}}
         </v-stepper-step>
         <v-divider></v-divider>
         <v-stepper-step
-            :complete="e6 > 7"
+            :complete="step > 7"
             step="7">
             {{questions.putStatus.title}}
         </v-stepper-step>
         <v-divider></v-divider>
         <v-stepper-step
-            :complete="e6 > 8"
+            :complete="step > 8"
             step="8">
             {{questions.minPhotoIdLength.title}}
         </v-stepper-step>
     </v-stepper-header>
 
     <v-stepper-items>
-      <v-stepper-content step="1">
-        <v-card
-          class="mb-12"
-          color="grey lighten-1"
-          height="200px"
-        ></v-card>
+        <v-stepper-content step="1">
+            <v-card
+            class="mb-12"
+            color="grey lighten-1"
+            height="200px">
+                <Api />
+            </v-card>
 
-        <v-btn
-            class="float-right mb-1"
-            color="primary"
-            @click="e6 = 2">
-                Next
-        </v-btn>
-      </v-stepper-content>
+            <v-btn
+                class="float-right mb-1"
+                color="primary"
+                @click="step = 2">
+                    Next
+            </v-btn>
+        </v-stepper-content>
 
-      <v-stepper-content step="2">
-        <v-card
-          class="mb-12"
-          color="grey lighten-1"
-          height="200px"
-        ></v-card>
+        <v-stepper-content step="2">
+            <v-card
+            class="mb-12"
+            color="grey lighten-1"
+            height="200px">
+                <Login />
+            </v-card>
 
-        <v-btn
-            class="float-left mb-1"
-            @click="e6 = 1">
-                Previous
-        </v-btn>
-        <v-btn
-            class="float-right mb-1"
-            color="primary"
-            @click="e6 = 3">
-                Next
-        </v-btn>
-      </v-stepper-content>
+            <v-btn
+                class="float-left mb-1"
+                @click="step = 1">
+                    Previous
+            </v-btn>
+            <v-btn
+                class="float-right mb-1"
+                color="primary"
+                @click="step = 3">
+                    Next
+            </v-btn>
+        </v-stepper-content>
 
-      <v-stepper-content step="3">
-        <v-card
-          class="mb-12"
-          color="grey lighten-1"
-          height="200px"
-        ></v-card>
+        <v-stepper-content step="3">
+            <v-card
+            class="mb-12"
+            color="grey lighten-1"
+            height="200px"
+            ></v-card>
 
-        <v-btn
-            class="float-left mb-1"
-            @click="e6 = 2">
-                Previous
-        </v-btn>
-        <v-btn
-            class="float-right mb-1"
-            color="primary"
-            @click="e6 = 4">
-                Next
-        </v-btn>
+            <v-btn
+                class="float-left mb-1"
+                @click="step = 2">
+                    Previous
+            </v-btn>
+            <v-btn
+                class="float-right mb-1"
+                color="primary"
+                @click="step = 4">
+                    Next
+            </v-btn>
 
-      </v-stepper-content>
-            <v-stepper-content step="4">
-        <v-card
-          class="mb-12"
-          color="grey lighten-1"
-          height="200px"
-        ></v-card>
+        </v-stepper-content>
+                <v-stepper-content step="4">
+            <v-card
+            class="mb-12"
+            color="grey lighten-1"
+            height="200px"
+            ></v-card>
 
-        <v-btn
-            class="float-left mb-1"
-            @click="e6 = 3">
-                Previous
-        </v-btn>
-        <v-btn
-            class="float-right mb-1"
-            color="primary"
-            @click="e6 = 5">
-                Next
-        </v-btn>
+            <v-btn
+                class="float-left mb-1"
+                @click="step = 3">
+                    Previous
+            </v-btn>
+            <v-btn
+                class="float-right mb-1"
+                color="primary"
+                @click="step = 5">
+                    Next
+            </v-btn>
 
-      </v-stepper-content>
-      <v-stepper-content step="5">
-        <v-card
-          class="mb-12"
-          color="grey lighten-1"
-          height="200px"
-        ></v-card>
+        </v-stepper-content>
+        <v-stepper-content step="5">
+            <v-card
+            class="mb-12"
+            color="grey lighten-1"
+            height="200px"
+            ></v-card>
 
-        <v-btn
-            class="float-left mb-1"
-            @click="e6 = 4">
-                Previous
-        </v-btn>
-        <v-btn
-            class="float-right mb-1"
-            color="primary"
-            @click="e6 = 6">
-                Next
-        </v-btn>
+            <v-btn
+                class="float-left mb-1"
+                @click="step = 4">
+                    Previous
+            </v-btn>
+            <v-btn
+                class="float-right mb-1"
+                color="primary"
+                @click="step = 6">
+                    Next
+            </v-btn>
 
-      </v-stepper-content>
-      <v-stepper-content step="6">
-        <v-card
-          class="mb-12"
-          color="grey lighten-1"
-          height="200px"
-        ></v-card>
+        </v-stepper-content>
+        <v-stepper-content step="6">
+            <v-card
+            class="mb-12"
+            color="grey lighten-1"
+            height="200px"
+            ></v-card>
 
-        <v-btn
-            class="float-left mb-1"
-            @click="e6 = 5">
-                Previous
-        </v-btn>
-        <v-btn
-            class="float-right mb-1"
-            color="primary"
-            @click="e6 = 7">
-                Next
-        </v-btn>
+            <v-btn
+                class="float-left mb-1"
+                @click="step = 5">
+                    Previous
+            </v-btn>
+            <v-btn
+                class="float-right mb-1"
+                color="primary"
+                @click="step = 7">
+                    Next
+            </v-btn>
 
-      </v-stepper-content>
-      <v-stepper-content step="7">
-        <v-card
-          class="mb-12"
-          color="grey lighten-1"
-          height="200px"
-        ></v-card>
+        </v-stepper-content>
+        <v-stepper-content step="7">
+            <v-card
+            class="mb-12"
+            color="grey lighten-1"
+            height="200px"
+            ></v-card>
 
-        <v-btn
-            class="float-left mb-1"
-            @click="e6 = 6">
-                Previous
-        </v-btn>
-        <v-btn
-            class="float-right mb-1"
-            color="primary"
-            @click="e6 = 8">
-                Next
-        </v-btn>
+            <v-btn
+                class="float-left mb-1"
+                @click="step = 6">
+                    Previous
+            </v-btn>
+            <v-btn
+                class="float-right mb-1"
+                color="primary"
+                @click="step = 8">
+                    Next
+            </v-btn>
 
-      </v-stepper-content>
-      <v-stepper-content step="8">
-        <v-card
-          class="mb-12"
-          color="grey lighten-1"
-          height="200px"
-        ></v-card>
+        </v-stepper-content>
+        <v-stepper-content step="8">
+            <v-card
+            class="mb-12"
+            color="grey lighten-1"
+            height="200px"
+            ></v-card>
 
-        <v-btn
-            class="float-left mb-1"
-            @click="e6 = 7">
-                Previous
-        </v-btn>
-        <v-btn
-            class="float-right mb-1"
-            color="primary"
-            @click="e6 = 9">
-                Finish
-        </v-btn>
+            <v-btn
+                class="float-left mb-1"
+                @click="step = 7">
+                    Previous
+            </v-btn>
+            <v-btn
+                class="float-right mb-1"
+                color="primary"
+                @click="step = 9 & writeToConsole(step)">
+                    Finish
+            </v-btn>
 
-      </v-stepper-content>
+        </v-stepper-content>
 
     </v-stepper-items>
   </v-stepper>
 </template>
 
 <script>
+import Login from './Login'
+import Api from './Api'
+
 export default {
     name: 'Installer',
 
     components: {
+        Login,
+        Api
     },
 
     data () {
         return {
-            e6: 1,
+            step: 1,
             questions: {
                 accesstoken:  {
                     title: 'Login',
@@ -269,5 +274,10 @@ export default {
             },
         }
     },
+    methods: {
+        writeToConsole(event) {
+            console.log('event', event);
+        }
+    }
 };
 </script>

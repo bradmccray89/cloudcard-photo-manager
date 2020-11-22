@@ -32,6 +32,10 @@
     export default {
         name: 'Login',
 
+        props: {
+            endpoint: String
+        },
+
         data() {
             return {
                 rules: [
@@ -41,7 +45,7 @@
                     username: '',
                     password: ''
                 },
-                accessToken: '',
+                access_token: '',
                 roles: '',
                 office: '',
                 service: ''
@@ -50,8 +54,6 @@
 
         methods: {
             login() {
-                console.log('username', this.input.username);
-                console.log('password', this.input.password);
                 this.$http.post('https://test-api.onlinephotosubmission.com/api/login', {
                     username: this.input.username,
                     password: this.input.password
@@ -61,10 +63,18 @@
                     this.roles = result.data.roles
                     this.office = this.roles.includes('ROLE_OFFICE')
                     this.service = this.roles.includes('ROLE_SERVICE')
-                    console.log('token', this.accessToken)
-                    console.log('roles', this.roles)
-                    console.log('office', this.office)
-                    console.log('service', this.service)
+                    if (!this.office || !this.service) {
+                        if (!this.office) {
+                            throw Error('Please sign into an account with the OFFICE role!')
+                        } else if (!this.service) {
+                            throw Error('Please sign into an account with the SERVICE role!')
+                        } else if (!this.office && !this.service) {
+                            throw Error('Please sign into an account with both the OFFICE and SERVICE roles!')
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error(error.message)
                 })
             }
         }

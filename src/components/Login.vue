@@ -19,7 +19,7 @@
             </v-text-field>
         </div>
         <v-btn
-            class="float-right mb-3"
+            class="float-left mb-3"
             color="primary"
             :disabled="!input.username || !input.password"
             @click="login()">
@@ -40,7 +40,11 @@
                 input: {
                     username: '',
                     password: ''
-                }
+                },
+                accessToken: '',
+                roles: '',
+                office: '',
+                service: ''
             }
         },
 
@@ -48,6 +52,20 @@
             login() {
                 console.log('username', this.input.username);
                 console.log('password', this.input.password);
+                this.$http.post('https://test-api.onlinephotosubmission.com/api/login', {
+                    username: this.input.username,
+                    password: this.input.password
+                })
+                .then(result => {
+                    this.accessToken = result.data.access_token
+                    this.roles = result.data.roles
+                    this.office = this.roles.includes('ROLE_OFFICE')
+                    this.service = this.roles.includes('ROLE_SERVICE')
+                    console.log('token', this.accessToken)
+                    console.log('roles', this.roles)
+                    console.log('office', this.office)
+                    console.log('service', this.service)
+                })
             }
         }
     }

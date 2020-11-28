@@ -71,6 +71,12 @@
                         } else if (!this.office && !this.service) {
                             throw Error('Please sign into an account with both the OFFICE and SERVICE roles!')
                         }
+                    } else {
+                        var result = {
+                            type: 'access_token',
+                            value: this.accessToken
+                        }
+                        this.$emit('access_token', result)
                     }
                 })
                 .catch(error => {

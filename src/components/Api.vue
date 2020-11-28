@@ -7,7 +7,7 @@
             item-value="url"
             label="API Endpoint"
             solo
-            @change="log()">
+            @change="emitChange()">
         </v-select>
     </v-container>
 </template>
@@ -36,8 +36,12 @@
         },
 
         methods: {
-            log() {
-                console.log('endpoint', this.endpoint);
+            emitChange() {
+                var result = {
+                    type: 'endpoint',
+                    value: this.endpoint
+                }
+                this.$emit('endpoint', result)
             }
         }
     }

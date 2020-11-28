@@ -53,26 +53,33 @@
     <v-stepper-items>
         <v-stepper-content step="1">
             <v-card
-            class="mb-12"
-            color="grey lighten-1"
-            height="200px">
-                <Api />
+                class="mb-12"
+                color="grey lighten-1"
+                height="200px">
+                    <Api v-on:endpoint="setValue($event)"></Api>
             </v-card>
+            <v-btn
+                class="float-left mb-1"
+                color="primary"
+                @click="saveToFile('application.properties')">
+                    Test Write
+            </v-btn>
 
             <v-btn
                 class="float-right mb-1"
                 color="primary"
-                @click="step = 2">
+                :disabled="this.value.type != 'endpoint'"
+                @click="step = 2 ; saveValueToResults()">
                     Next
             </v-btn>
         </v-stepper-content>
 
         <v-stepper-content step="2">
             <v-card
-            class="mb-12"
-            color="grey lighten-1"
-            height="200px">
-                <Login />
+                class="mb-12"
+                color="grey lighten-1"
+                height="200px">
+                    <Login v-on:access_token="setValue($event)"></Login>
             </v-card>
 
             <v-btn
@@ -83,17 +90,19 @@
             <v-btn
                 class="float-right mb-1"
                 color="primary"
-                @click="step = 3">
+                :disabled="this.value.type != 'access_token'"
+                @click="step = 3 ; saveValueToResults()">
                     Next
             </v-btn>
         </v-stepper-content>
 
         <v-stepper-content step="3">
             <v-card
-            class="mb-12"
-            color="grey lighten-1"
-            height="200px"
-            ></v-card>
+                class="mb-12"
+                color="grey lighten-1"
+                height="200px">
+                    <Storage v-on:storage_service="setValue($event)"></Storage>
+            </v-card>
 
             <v-btn
                 class="float-left mb-1"
@@ -103,7 +112,8 @@
             <v-btn
                 class="float-right mb-1"
                 color="primary"
-                @click="step = 4">
+                :disabled="this.value.type != 'storage_service'"
+                @click="step = 4 ; saveValueToResults()">
                     Next
             </v-btn>
 
@@ -203,7 +213,7 @@
             <v-btn
                 class="float-right mb-1"
                 color="primary"
-                @click="step = 9 & writeToConsole(step)">
+                @click="step = 9 & saveFile()">
                     Finish
             </v-btn>
 
@@ -216,13 +226,15 @@
 <script>
 import Login from './Login'
 import Api from './Api'
+import Storage from './Storage'
 
 export default {
     name: 'Installer',
 
     components: {
         Login,
-        Api
+        Api,
+        Storage
     },
 
     data () {
@@ -262,21 +274,46 @@ export default {
                     description: 'Choose a minimum photo Id length if needed.'
                 }
             },
-            amswers: {
-                accesstoken: '',
-                api: '',
-                storageService: '',
-                repeat: '',
-                delay: '',
-                fetchtatus: '',
-                putStatus: '',
-                minPhotoIdLength: ''
+            answers: {
+                accessToken: 'token',
+                api: 'api',
+                storageService: 'storage',
+                repeat: 'repeat',
+                delay: 'delay',
+                fetchtatus: 'fetch',
+                putStatus: 'put',
+                minPhotoIdLength: 'minLength'
             },
+            results: [],
+            value: ''
         }
     },
     methods: {
-        writeToConsole(event) {
-            console.log('event', event);
+        setValue(event) {
+            console.log('event', event)
+            this.value = event;
+        },
+        saveValueToResults() {
+            this.results.push(this.value);
+            console.log('results', this.results)
+        },
+        saveToFile(filename) {
+            let blob = new Blob([this.answers], { type: 'text/plain;charset=utf-8;' })
+            if (navigator.msSaveBlob) { // IE 10+
+                navigator.msSaveBlob(blob, filename)
+            } else {
+                let link = document.createElement('a')
+                if (link.download !== undefined) { // feature detection
+                    // Browsers that support HTML5 download attribute
+                    let url = URL.createObjectURL(blob)
+                    link.setAttribute('href', url)
+                    link.setAttribute('download', filename)
+                    link.style.visibility = 'hidden'
+                    document.body.appendChild(link)
+                    link.click()
+                    document.body.removeChild(link)
+                }
+            }
         }
     }
 };

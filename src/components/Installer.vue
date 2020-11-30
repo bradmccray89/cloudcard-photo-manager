@@ -1,6 +1,44 @@
 <template>
-  <v-stepper v-model="step" alt-labels>
-    <v-stepper-header>
+    <v-stepper v-model="stepNumber" alt-labels>
+        <v-stepper-header>
+            <template v-for="tab in tabs">
+                <v-stepper-step
+                    :key="`${tab.id}-step`"
+                    :step="tab.id"
+                    :complete="stepNumber > tab.id">
+                    Step - {{ tab.name }}
+                </v-stepper-step>
+            </template>
+        </v-stepper-header>
+        <v-stepper-items>
+            <v-stepper-content v-for="tab in tabs"
+                :key="`${tab.id}-content`"
+                :step="tab.id">
+                <v-card
+                    class="mb-12"
+                    color="grey lighten-1"
+                    height="200px">
+                        <component v-bind:is="tab.component" v-on:setValue="setValue($event)"></component>
+                </v-card>
+
+                <v-btn
+                    class="float-left mb-1"
+                    v-if="stepNumber !== 1"
+                    @click="previousStep(tab.id)">
+                        Previous
+                </v-btn>
+
+                <v-btn
+                    class="float-right mb-1"
+                    color="primary"
+                    @click="nextStep(tab.id); saveValueToResults()">
+                        Next
+                </v-btn>
+            </v-stepper-content>
+        </v-stepper-items>
+    </v-stepper>
+</template>
+    <!-- <v-stepper-header>
         <v-stepper-step
             :complete="step > 1"
             step="1">
@@ -123,7 +161,9 @@
             class="mb-12"
             color="grey lighten-1"
             height="200px"
-            ></v-card>
+            >
+                <Repeat></Repeat>
+            </v-card>
 
             <v-btn
                 class="float-left mb-1"
@@ -221,12 +261,13 @@
 
     </v-stepper-items>
   </v-stepper>
-</template>
+</template> -->
 
 <script>
 import Login from './Login'
 import Api from './Api'
 import Storage from './Storage'
+import Repeat from './Repeat'
 
 export default {
     name: 'Installer',
@@ -234,12 +275,35 @@ export default {
     components: {
         Login,
         Api,
-        Storage
+        Storage,
+        Repeat
     },
 
     data () {
         return {
-            step: 1,
+            stepNumber: 1,
+            tabs: [
+                {
+                    id: 1,
+                    name: "API",
+                    component: Api
+                },
+                {
+                    id: 2,
+                    name: "Login",
+                    component: Login
+                },
+                {
+                    id: 3,
+                    name: "Storage",
+                    component: Storage
+                },
+                {
+                    id: 4,
+                    name: "Repeat",
+                    component: Repeat
+                },
+            ],
             questions: {
                 accesstoken:  {
                     title: 'Login',
@@ -289,6 +353,12 @@ export default {
         }
     },
     methods: {
+        previousStep(n) {
+            this.stepNumber = n - 1
+        },
+        nextStep(n) {
+            this.stepNumber = n + 1
+        },
         setValue(event) {
             console.log('event', event)
             this.value = event;

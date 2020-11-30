@@ -41,7 +41,7 @@
                     type: 'endpoint',
                     value: this.endpoint
                 }
-                this.$emit('endpoint', result)
+                this.$emit('setValue', result)
             }
         }
     }

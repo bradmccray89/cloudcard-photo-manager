@@ -38,7 +38,7 @@
                     type: 'storage_service',
                     value: this.storageChoice
                 }
-                this.$emit('storage_service', result)
+                this.$emit('set_value', result)
             }
         }
     }

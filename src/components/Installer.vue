@@ -6,7 +6,7 @@
                     :key="`${tab.id}-step`"
                     :step="tab.id"
                     :complete="stepNumber > tab.id">
-                    Step - {{ tab.name }}
+                    {{ tab.name }}
                 </v-stepper-step>
             </template>
         </v-stepper-header>
@@ -14,12 +14,7 @@
             <v-stepper-content v-for="tab in tabs"
                 :key="`${tab.id}-content`"
                 :step="tab.id">
-                <v-card
-                    class="mb-12"
-                    color="grey lighten-1"
-                    height="200px">
-                        <component v-bind:is="tab.component" v-on:setValue="setValue($event)"></component>
-                </v-card>
+                <component v-bind:is="tab.component" v-on:set_value="setValue($event)"></component>
 
                 <v-btn
                     class="float-left mb-1"
@@ -31,6 +26,7 @@
                 <v-btn
                     class="float-right mb-1"
                     color="primary"
+                    :disabled="!value"
                     @click="nextStep(tab.id); saveValueToResults()">
                         Next
                 </v-btn>
@@ -141,6 +137,7 @@ export default {
         },
         saveValueToResults() {
             this.results.push(this.value);
+            this.value = '';
             console.log('results', this.results)
         },
         saveToFile(filename) {

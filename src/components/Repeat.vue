@@ -1,10 +1,19 @@
 <template>
     <v-container>
-        <v-checkbox
-            v-model="repeat"
-            label="Repeat download"
-            solo>
-        </v-checkbox>
+        <v-form
+            lazy-validation>
+            <v-checkbox
+                v-model="repeat"
+                label="Repeat download"
+                solo>
+            </v-checkbox>
+            <v-text-field
+                v-model="delay"
+                label="Interval"
+                :rules="intRules"
+                solo>
+            </v-text-field>
+        </v-form>
     </v-container>
 </template>
 
@@ -12,16 +21,17 @@
     export default {
         name: 'Storage',
 
-        data() {
-            return {
-                repeat: false,
-                delay: 600000,
-            }
-        },
+        data: () => ({
+            repeat: false,
+            delay: 600000,
+            intRules: [
+                value => /[0-9]*/.test(value) || 'Must be a number'
+            ],
+        }),
 
         methods: {
             setRepeat() {
-                console.log('repeat', this.repeat)
+                console.log('set_value', this.repeat)
             }
         }
     }

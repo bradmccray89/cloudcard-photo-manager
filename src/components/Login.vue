@@ -1,12 +1,14 @@
 <template>
     <v-container>
-        <div id="login-info">
+        <v-form id="login-info"
+            v-model="valid"
+            lazy-validation>
             <v-text-field
                 v-model="input.username"
                 background-color="white"
                 outlined
                 label="Email"
-                :rules="rules"
+                :rules="usernameRules"
                 hide-details="auto">
             </v-text-field>
             <v-text-field
@@ -17,7 +19,7 @@
                 outlined
                 label="Password">
             </v-text-field>
-        </div>
+        </v-form>
         <v-btn
             class="float-left mb-3"
             color="primary"
@@ -36,21 +38,21 @@
             endpoint: String
         },
 
-        data() {
-            return {
-                rules: [
-                    value => !!value || 'Required.',
-                ],
-                input: {
-                    username: '',
-                    password: ''
-                },
-                access_token: '',
-                roles: '',
-                office: '',
-                service: ''
-            }
-        },
+        data: () => ({
+            valid: true,
+            usernameRules: [
+                value => !!value || 'Username is Required.',
+                value => /^[\w-\+\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value) || 'Must be a valid E-mail'
+            ],
+            input: {
+                username: 'bradmccray89+servicetest@gmail.com',
+                password: 'Password1!'
+            },
+            access_token: '',
+            roles: '',
+            office: '',
+            service: ''
+        }),
 
         methods: {
             login() {
@@ -76,7 +78,7 @@
                             type: 'access_token',
                             value: this.accessToken
                         }
-                        this.$emit('access_token', result)
+                        this.$emit('set_value', result)
                     }
                 })
                 .catch(error => {

@@ -40,6 +40,7 @@ import Login from './Login'
 import Api from './Api'
 import Storage from './Storage'
 import Repeat from './Repeat'
+import Status from './Status'
 
 export default {
     name: 'Installer',
@@ -48,7 +49,8 @@ export default {
         Login,
         Api,
         Storage,
-        Repeat
+        Repeat,
+        Status
     },
 
     data () {
@@ -75,51 +77,12 @@ export default {
                     name: "Repeat",
                     component: Repeat
                 },
+                {
+                    id: 5,
+                    name: "Status",
+                    component: Status
+                },
             ],
-            questions: {
-                accesstoken:  {
-                    title: 'Login',
-                    description: 'Please login to your service account'
-                },
-                api: {
-                    title: 'API',
-                    description: 'What is the url of the api?'
-                },
-                storageService: {
-                    title: 'Storage',
-                    description: 'How do you want your photos stored?'
-                },
-                repeat: {
-                    title: 'Repeat',
-                    description: 'Do you want the downloader to run more that once?'
-                },
-                delay: {
-                    title: 'Delay',
-                    description: 'How often do you want the downloader to run? (ms for testing)'
-                },
-                fetchStatus: {
-                    title: 'Fetch Status',
-                    description: 'Choose photo status that you would like to download.'
-                },
-                putStatus: {
-                    title: 'Put Status',
-                    description: 'Choose status to change photos to once downloaded.'
-                },
-                minPhotoIdLength: {
-                    title: 'Photo Id Length',
-                    description: 'Choose a minimum photo Id length if needed.'
-                }
-            },
-            answers: {
-                accessToken: 'token',
-                api: 'api',
-                storageService: 'storage',
-                repeat: 'repeat',
-                delay: 'delay',
-                fetchtatus: 'fetch',
-                putStatus: 'put',
-                minPhotoIdLength: 'minLength'
-            },
             results: [],
             value: ''
         }

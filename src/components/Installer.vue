@@ -1,38 +1,29 @@
 <template>
-    <v-stepper v-model="stepNumber" alt-labels>
-        <v-stepper-header>
-            <template v-for="tab in tabs">
-                <v-stepper-step
-                    :key="`${tab.id}-step`"
-                    :step="tab.id"
-                    :complete="stepNumber > tab.id">
-                    {{ tab.name }}
-                </v-stepper-step>
-            </template>
-        </v-stepper-header>
-        <v-stepper-items>
-            <v-stepper-content v-for="tab in tabs"
-                :key="`${tab.id}-content`"
-                :step="tab.id">
-                <component v-bind:is="tab.component" v-on:set_value="setValue($event)"></component>
-
-                <v-btn
-                    class="float-left mb-1"
-                    v-if="stepNumber !== 1"
-                    @click="previousStep(tab.id)">
-                        Previous
-                </v-btn>
-
-                <v-btn
-                    class="float-right mb-1"
-                    color="primary"
-                    :disabled="!value"
-                    @click="nextStep(tab.id); saveValueToResults()">
-                        Next
-                </v-btn>
-            </v-stepper-content>
-        </v-stepper-items>
-    </v-stepper>
+    <div id="nav-menu">
+        <v-app>
+            <v-navigation-drawer permanent app>
+                <v-list dense rounded nav>
+                    <v-list-item-group
+                        v-model="stepNumber"
+                        color="primary">
+                        <v-list-item
+                            v-for="tab in tabs"
+                            v-bind:key="tab.id"
+                            :to="tab.name">
+                            <v-list-item-content>
+                                <v-list-item-title v-text="tab.name"></v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list-item-group>
+                </v-list>
+            </v-navigation-drawer>
+            <v-main>
+                <v-container fluid>
+                    <router-view v-on:set_value="setValue($event); nextStep($event)"></router-view>
+                </v-container>
+            </v-main>
+        </v-app>
+    </div>
 </template>
 
 <script>
@@ -53,33 +44,48 @@ export default {
         Status
     },
 
+    watch: {
+        $route (to, from) {
+            this.saveValueToResults();
+            this.currentTab = this.tabs.filter(tab => tab.url === to.path)
+            console.log('currentTab', this.currentTab)
+        },
+    },
+
     data () {
         return {
             stepNumber: 1,
+            currentTab: null,
+            nextTab: null,
             tabs: [
                 {
                     id: 1,
                     name: "API",
+                    url: "/API",
                     component: Api
                 },
                 {
                     id: 2,
                     name: "Login",
+                    url: "/Login",
                     component: Login
                 },
                 {
                     id: 3,
                     name: "Storage",
+                    url: "/Storage",
                     component: Storage
                 },
                 {
                     id: 4,
                     name: "Repeat",
+                    url: "/Repeat",
                     component: Repeat
                 },
                 {
                     id: 5,
                     name: "Status",
+                    url: "/Status",
                     component: Status
                 },
             ],
@@ -91,16 +97,26 @@ export default {
         previousStep(n) {
             this.stepNumber = n - 1
         },
-        nextStep(n) {
-            this.stepNumber = n + 1
+        nextStep(event) {
+            console.log('event', event)
+            this.stepNumber = event.id + 1
         },
         setValue(event) {
             console.log('event', event)
             this.value = event;
         },
         saveValueToResults() {
-            this.results.push(this.value);
+            var foundIndex = this.results.findIndex(result => this.value.type === result.type)
+            if (foundIndex >= 0) {
+                this.results[foundIndex] = this.value
+            } else {
+                if (this.value) {
+                    this.results.push(this.value);
+                }
+            }
             this.value = '';
+            this.nextTabs = this.tabs
+            // this.$router.push({ name:  })
             console.log('results', this.results)
         },
         saveToFile(filename) {
@@ -124,3 +140,9 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+    .v-main {
+        padding: 0 !important;
+    }
+</style>

@@ -21,7 +21,7 @@
             </v-text-field>
         </v-form>
         <v-btn
-            class="float-left mb-3"
+            class="float-right mb-3"
             color="primary"
             :disabled="!input.username || !input.password"
             @click="login()">
@@ -91,6 +91,6 @@
 
 <style scoped>
     #login-info {
-        width: 50%;
+        width: 80%;
     }
 </style>

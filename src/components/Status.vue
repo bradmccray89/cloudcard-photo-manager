@@ -36,14 +36,14 @@
         }),
 
         methods: {
-            emitFetchStatus() {
+            setFetchStatus() {
                 var result = {
                     type: 'fetch_status',
                     value: this.fetchStatus
                 }
                 this.$emit('set_value', result)
             },
-            emitPutStatus() {
+            setPutStatus() {
                 var result = {
                     type: 'put_status',
                     value: this.putStatus

@@ -23,6 +23,7 @@
                     hide-details="auto"
                     :disabled="!repeat"
                     outlined>
+                    <p slot="append">hours</p>
                 </v-text-field>
                 <v-text-field class="delay-input"
                     v-model="minutes"
@@ -30,6 +31,7 @@
                     hide-details="auto"
                     :disabled="!repeat"
                     outlined>
+                    <p slot="append">minutes</p>
                 </v-text-field>
             </div>
         </v-form>

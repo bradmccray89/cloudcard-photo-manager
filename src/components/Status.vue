@@ -4,16 +4,19 @@
             v-model="fetchStatus"
             :items="photoStatus"
             label="Input Photo Status"
-            solo
-            @change="setFetchStatus()">
+            solo>
         </v-select>
         <v-select
             v-model="putStatus"
             :items="photoStatus"
             label="Output Photo Status"
-            solo
-            @change="setPutStatus()">
+            solo>
         </v-select>
+        <v-btn
+            class="float-right mb-3"
+            @click="setPhotoStatuses()">
+                Next
+        </v-btn>
     </v-container>
 </template>
 
@@ -36,20 +39,17 @@
         }),
 
         methods: {
-            setFetchStatus() {
+            setPhotoStatuses() {
+                var status = [
+                    this.fetchStatus,
+                    this.putStatus
+                ]
                 var result = {
-                    type: 'fetch_status',
-                    value: this.fetchStatus
+                    type: 'status',
+                    value: status
                 }
                 this.$emit('set_value', result)
             },
-            setPutStatus() {
-                var result = {
-                    type: 'put_status',
-                    value: this.putStatus
-                }
-                this.$emit('set_value', result)
-            }
         }
     }
 </script>

@@ -4,7 +4,6 @@
             <v-navigation-drawer permanent app>
                 <v-list dense rounded nav>
                     <v-list-item-group
-                        v-model="stepNumber"
                         color="primary">
                         <v-list-item
                             v-for="tab in tabs"
@@ -19,7 +18,7 @@
             </v-navigation-drawer>
             <v-main>
                 <v-container fluid>
-                    <router-view v-on:set_value="setValue($event); nextStep($event)"></router-view>
+                    <router-view v-on:set_value="setValue($event)"></router-view>
                 </v-container>
             </v-main>
         </v-app>
@@ -46,16 +45,14 @@ export default {
 
     watch: {
         $route (to, from) {
-            this.saveValueToResults();
-            this.currentTab = this.tabs.filter(tab => tab.url === to.path)
-            console.log('currentTab', this.currentTab)
+            this.setCurrentTab(to)
         },
     },
 
     data () {
         return {
-            stepNumber: 1,
             currentTab: null,
+            currentTabIndex: 0,
             nextTab: null,
             tabs: [
                 {
@@ -94,30 +91,52 @@ export default {
         }
     },
     methods: {
-        previousStep(n) {
-            this.stepNumber = n - 1
-        },
-        nextStep(event) {
-            console.log('event', event)
-            this.stepNumber = event.id + 1
+        setCurrentTab(to = null) {
+            if (to) {
+                this.currentTab = this.tabs.find((tab, index) => {
+                    if (tab.url === to.path) {
+                        this.currentTabIndex = index
+                        return true
+                    } else {
+                        return false
+                    }
+                })
+            } else {
+                this.currentTabIndex = this.currentTabIndex + 1
+                this.currentTab = this.tabs[this.currentTabIndex]
+            }
         },
         setValue(event) {
-            console.log('event', event)
-            this.value = event;
+            if (event.type === 'status') {
+                event.value.forEach((value, index) => {
+                    this.value = {
+                        type: (index === 0) ? 'fetch_status' : 'put_status',
+                        value: value
+                    }
+                    this.saveValueToResults()
+                })
+            } else {
+                this.value = event;
+                this.saveValueToResults()
+            }
+            if (this.tabs.length !== this.currentTabIndex + 1) {
+                this.goToNextStep()
+            } else {
+                console.log('this.results', this.results)
+            }
         },
         saveValueToResults() {
             var foundIndex = this.results.findIndex(result => this.value.type === result.type)
             if (foundIndex >= 0) {
                 this.results[foundIndex] = this.value
-            } else {
-                if (this.value) {
-                    this.results.push(this.value);
-                }
+            } else if (this.value) {
+                this.results.push(this.value);
             }
             this.value = '';
-            this.nextTabs = this.tabs
-            // this.$router.push({ name:  })
-            console.log('results', this.results)
+        },
+        goToNextStep() {
+            this.$router.push({ name: this.tabs[this.currentTabIndex + 1].name })
+            this.setCurrentTab()
         },
         saveToFile(filename) {
             let blob = new Blob([this.answers], { type: 'text/plain;charset=utf-8;' })

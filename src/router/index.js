@@ -6,27 +6,27 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/api',
+    path: '/API',
     name: 'Api',
     component: Api
   },
   {
-    path: '/login',
+    path: '/Login',
     name: 'Login',
     component: () => import('../components/Login')
   },
   {
-    path: '/repeat',
+    path: '/Repeat',
     name: 'Repeat',
     component: () => import('../components/Repeat')
   },
   {
-    path: '/status',
+    path: '/Status',
     name: 'Status',
     component: () => import('../components/Status')
   },
   {
-    path: '/storage',
+    path: '/Storage',
     name: 'Storage',
     component: () => import('../components/Storage')
   }
@@ -35,7 +35,8 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
+  linkActiveClass: 'active'
 })
 
 export default router

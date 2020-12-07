@@ -5,7 +5,6 @@
             <v-checkbox
                 v-model="repeat"
                 label="Repeat download"
-                @click="setRepeat()"
                 solo>
             </v-checkbox>
             <div class="delay-input">
@@ -35,6 +34,11 @@
                 </v-text-field>
             </div>
         </v-form>
+        <v-btn
+            class="float-right mb-3 mt-3"
+            @click="setRepeat()">
+                Next
+        </v-btn>
     </v-container>
 </template>
 

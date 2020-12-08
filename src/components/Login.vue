@@ -34,8 +34,13 @@
     export default {
         name: 'Login',
 
-        props: {
-            endpoint: String
+        props: [
+            'data',
+            'endpoint'
+        ],
+
+        created: function () {
+            this.loggedIn = this.data?.value ? true : false
         },
 
         data: () => ({
@@ -45,18 +50,22 @@
                 value => /^[\w-\+\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value) || 'Must be a valid E-mail'
             ],
             input: {
-                username: 'bradmccray89+servicetest@gmail.com',
-                password: 'Password1!'
+                username: '',
+                password: ''
             },
             access_token: '',
             roles: '',
             office: '',
-            service: ''
+            service: '',
+            loggedIn: false,
         }),
 
         methods: {
             login() {
-                this.$http.post('https://test-api.onlinephotosubmission.com/api/login', {
+                console.log('endpoint', this.endpoint)
+                console.log('username', this.input.username)
+                console.log('password', this.input.password)
+                this.$http.post(this.endpoint, {
                     username: this.input.username,
                     password: this.input.password
                 })
@@ -82,7 +91,7 @@
                     }
                 })
                 .catch(error => {
-                    console.error(error.message)
+                    console.error('ERROR:', error.message)
                 })
             }
         }

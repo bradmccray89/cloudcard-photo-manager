@@ -16,6 +16,14 @@
     export default {
         name: 'Storage',
 
+        props: [
+            'data'
+        ],
+
+        created: function () {
+            this.storageChoice = this.data?.value
+        },
+
         data() {
             return {
                 storageType: [

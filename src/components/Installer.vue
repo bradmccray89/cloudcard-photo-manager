@@ -21,7 +21,11 @@
             </v-navigation-drawer>
             <v-main>
                 <v-container fluid>
-                    <router-view v-on:set_value="setValue($event)" v-bind:data="results[currentTabIndex]"></router-view>
+                    <router-view 
+                        v-on:set_value="setValue($event)"
+                        v-bind:data="results[currentTabIndex]"
+                        v-bind:endpoint="endpoint">
+                    </router-view>
                 </v-container>
             </v-main>
         </v-app>
@@ -48,7 +52,7 @@ export default {
 
     watch: {
         $route (to, from) {
-            this.setCurrentTab(to)
+            this.setCurrentTab(to.path)
         },
     },
 
@@ -93,11 +97,22 @@ export default {
             value: ''
         }
     },
+
+    computed: {
+        endpoint: function () {
+            if (this.currentTab?.name === 'Login') {
+                return this.results.find(result => result.type === 'endpoint')?.value
+            } else {
+                return undefined
+            }
+        }
+    },
+
     methods: {
-        setCurrentTab(to = null) {
-            if (to) {
+        setCurrentTab(currentPath = null) {
+            if (currentPath) {
                 this.currentTab = this.tabs.find((tab, index) => {
-                    if (tab.url === to.path) {
+                    if (tab.url === currentPath) {
                         this.currentTabIndex = index
                         return true
                     } else {

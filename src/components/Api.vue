@@ -23,8 +23,7 @@
         ],
 
         created: function () {
-            this.endpoint = this.data.value
-            console.log('endpoint', this.endpoint)
+            this.endpoint = this.data?.value
         },
 
         data() {

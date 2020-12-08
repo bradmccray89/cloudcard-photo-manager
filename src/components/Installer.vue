@@ -1,7 +1,10 @@
 <template>
     <div id="nav-menu">
         <v-app>
-            <v-navigation-drawer permanent app>
+            <v-app-bar app dense dark clipped-left>
+                <v-toolbar-title>Cloudcard</v-toolbar-title>
+            </v-app-bar>
+            <v-navigation-drawer permanent app clipped>
                 <v-list dense rounded nav>
                     <v-list-item-group
                         color="primary">

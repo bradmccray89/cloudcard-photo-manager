@@ -21,7 +21,7 @@
             </v-navigation-drawer>
             <v-main>
                 <v-container fluid>
-                    <router-view v-on:set_value="setValue($event)"></router-view>
+                    <router-view v-on:set_value="setValue($event)" v-bind:data="results[currentTabIndex]"></router-view>
                 </v-container>
             </v-main>
         </v-app>

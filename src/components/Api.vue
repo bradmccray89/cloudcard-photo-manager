@@ -6,6 +6,8 @@
             item-text="name"
             item-value="url"
             label="API Endpoint"
+            hint="Choose an API to use"
+            persistent-hint
             solo
             @change="emitChange()">
         </v-select>
@@ -15,6 +17,15 @@
 <script>
     export default {
         name: 'Api',
+
+        props: [
+            'data'
+        ],
+
+        created: function () {
+            this.endpoint = this.data.value
+            console.log('endpoint', this.endpoint)
+        },
 
         data() {
             return {
@@ -31,7 +42,7 @@
                         url: 'https://test-api.onlinephotosubmission.com/api'
                     }
                 ],
-                endpoint: '',
+                endpoint: ''
             }
         },
 

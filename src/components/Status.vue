@@ -29,6 +29,7 @@
         ],
 
         created: function () {
+            console.log('data', this.data)
             this.status = this.data?.value
         },
 

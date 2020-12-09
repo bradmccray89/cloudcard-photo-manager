@@ -105,7 +105,7 @@ export default {
             } else {
                 return undefined
             }
-        }
+        },
     },
 
     methods: {

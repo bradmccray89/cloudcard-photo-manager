@@ -2,7 +2,7 @@
     <div id="nav-menu">
         <v-app-bar app dense dark clipped-left>
             <v-toolbar-title>
-                <v-btn class="home-button" text to="/">Cloudcard</v-btn>
+                <v-btn class="home-button" text to="/" exact>Cloudcard</v-btn>
             </v-toolbar-title>
         </v-app-bar>
         <v-navigation-drawer permanent app clipped>
@@ -12,7 +12,7 @@
                     <v-list-item
                         v-for="tab in tabs"
                         v-bind:key="tab.id"
-                        :to="'/Downloader/' + tab.name">
+                        :to="tab.name" exact>
                         <v-list-item-content>
                             <v-list-item-title v-text="tab.name"></v-list-item-title>
                         </v-list-item-content>
@@ -53,7 +53,6 @@ export default {
     watch: {
         $route (to, from) {
             this.setCurrentTab(to.path)
-            console.log('to.path', to.path)
         },
     },
 
@@ -66,31 +65,31 @@ export default {
                 {
                     id: 1,
                     name: "API",
-                    url: "/API",
+                    url: "/Downloader/API",
                     component: Api
                 },
                 {
                     id: 2,
                     name: "Login",
-                    url: "/Login",
+                    url: "/Downloader/Login",
                     component: Login
                 },
                 {
                     id: 3,
                     name: "Storage",
-                    url: "/Storage",
+                    url: "/Downloader/Storage",
                     component: Storage
                 },
                 {
                     id: 4,
                     name: "Repeat",
-                    url: "/Repeat",
+                    url: "/Downloader/Repeat",
                     component: Repeat
                 },
                 {
                     id: 5,
                     name: "Status",
-                    url: "/Status",
+                    url: "/Downloader/Status",
                     component: Status
                 },
             ],

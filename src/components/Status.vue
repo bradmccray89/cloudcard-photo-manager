@@ -24,6 +24,14 @@
     export default {
         name: 'Status',
 
+        props: [
+            'data'
+        ],
+
+        created: function () {
+            this.status = this.data?.value
+        },
+
         data: () => ({
             fetchStatus: "READY_FOR_DOWNLOAD",
             putStatus: "DOWNLOADED",

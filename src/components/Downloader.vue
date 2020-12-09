@@ -2,7 +2,9 @@
     <div id="nav-menu">
         <v-app>
             <v-app-bar app dense dark clipped-left>
-                <v-toolbar-title>Cloudcard</v-toolbar-title>
+                <v-toolbar-title>
+                    <v-btn class="home-button" text to="/">Cloudcard</v-btn>
+                </v-toolbar-title>
             </v-app-bar>
             <v-navigation-drawer permanent app clipped>
                 <v-list dense rounded nav>
@@ -11,7 +13,7 @@
                         <v-list-item
                             v-for="tab in tabs"
                             v-bind:key="tab.id"
-                            :to="tab.name">
+                            :to="'/Downloader/' + tab.name">
                             <v-list-item-content>
                                 <v-list-item-title v-text="tab.name"></v-list-item-title>
                             </v-list-item-content>
@@ -40,7 +42,7 @@ import Repeat from './Repeat'
 import Status from './Status'
 
 export default {
-    name: 'Installer',
+    name: 'Downloader',
 
     components: {
         Login,
@@ -53,6 +55,7 @@ export default {
     watch: {
         $route (to, from) {
             this.setCurrentTab(to.path)
+            console.log('to.path', to.path)
         },
     },
 
@@ -181,5 +184,8 @@ export default {
 <style scoped>
     .v-main {
         padding: 0 !important;
+    }
+    .home-button {
+        font-size: 1.2em
     }
 </style>

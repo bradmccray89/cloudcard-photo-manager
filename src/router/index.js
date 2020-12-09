@@ -1,34 +1,44 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Api from '../components/Api.vue'
+import Home from '../views/Home'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/API',
-    name: 'Api',
-    component: Api
+    path: '/',
+    component: Home
   },
   {
-    path: '/Login',
-    name: 'Login',
-    component: () => import('../components/Login')
-  },
-  {
-    path: '/Repeat',
-    name: 'Repeat',
-    component: () => import('../components/Repeat')
-  },
-  {
-    path: '/Status',
-    name: 'Status',
-    component: () => import('../components/Status')
-  },
-  {
-    path: '/Storage',
-    name: 'Storage',
-    component: () => import('../components/Storage')
+    path: '/Downloader',
+    component: () => import('../components/Downloader'),
+    children: [
+      {
+        path: 'API',
+        name: 'Api',
+        component: () => import('../components/Api')
+      },
+      {
+        path: 'Login',
+        name: 'Login',
+        component: () => import('../components/Login')
+      },
+      {
+        path: 'Repeat',
+        name: 'Repeat',
+        component: () => import('../components/Repeat')
+      },
+      {
+        path: 'Status',
+        name: 'Status',
+        component: () => import('../components/Status')
+      },
+      {
+        path: 'Storage',
+        name: 'Storage',
+        component: () => import('../components/Storage')
+      }
+    ]
   }
 ]
 

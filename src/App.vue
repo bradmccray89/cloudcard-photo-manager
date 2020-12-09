@@ -1,23 +1,34 @@
 <template>
-  <v-app>
-    <v-main>
-        <Installer />
-    </v-main>
-  </v-app>
+    <div app>
+        <Home v-if="homepage" />
+        <Downloader v-if="!homepage" />
+    </div>
 </template>
 
 <script>
-import Installer from './components/Installer';
+import Downloader from './components/Downloader';
+import Home from './views/Home'
 
 export default {
-  name: 'App',
+    name: 'App',
 
-  components: {
-    Installer,
-  },
+    components: {
+        Home,
+        Downloader,
+    },
 
-  data: () => ({
-    //
-  }),
+    watch: {
+        $route (to, from) {
+            if (to.path === '/') {
+                this.homepage = true;
+            } else {
+              this.homepage = false;
+            }
+        },
+    },
+
+    data: () => ({
+        homepage: true
+    }),
 };
 </script>

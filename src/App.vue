@@ -1,8 +1,10 @@
 <template>
-    <div app>
-        <Home v-if="homepage" />
-        <Downloader v-if="!homepage" />
-    </div>
+    <v-app>
+        <v-main>
+            <Home v-if="homepage" />
+            <Downloader v-if="!homepage" />
+        </v-main>
+    </v-app>
 </template>
 
 <script>

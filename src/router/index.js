@@ -14,6 +14,10 @@ const routes = [
     component: () => import('../components/Downloader'),
     children: [
       {
+        path: '',
+        redirect: 'API'
+      },
+      {
         path: 'API',
         name: 'Api',
         component: () => import('../components/Api')

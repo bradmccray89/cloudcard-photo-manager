@@ -1,36 +1,34 @@
 <template>
     <div id="nav-menu">
-        <v-app>
-            <v-app-bar app dense dark clipped-left>
-                <v-toolbar-title>
-                    <v-btn class="home-button" text to="/">Cloudcard</v-btn>
-                </v-toolbar-title>
-            </v-app-bar>
-            <v-navigation-drawer permanent app clipped>
-                <v-list dense rounded nav>
-                    <v-list-item-group
-                        color="primary">
-                        <v-list-item
-                            v-for="tab in tabs"
-                            v-bind:key="tab.id"
-                            :to="'/Downloader/' + tab.name">
-                            <v-list-item-content>
-                                <v-list-item-title v-text="tab.name"></v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-list-item-group>
-                </v-list>
-            </v-navigation-drawer>
-            <v-main>
-                <v-container fluid>
-                    <router-view 
-                        v-on:set_value="setValue($event)"
-                        v-bind:data="results[currentTabIndex]"
-                        v-bind:endpoint="endpoint">
-                    </router-view>
-                </v-container>
-            </v-main>
-        </v-app>
+        <v-app-bar app dense dark clipped-left>
+            <v-toolbar-title>
+                <v-btn class="home-button" text to="/">Cloudcard</v-btn>
+            </v-toolbar-title>
+        </v-app-bar>
+        <v-navigation-drawer permanent app clipped>
+            <v-list dense rounded nav>
+                <v-list-item-group
+                    color="primary">
+                    <v-list-item
+                        v-for="tab in tabs"
+                        v-bind:key="tab.id"
+                        :to="'/Downloader/' + tab.name">
+                        <v-list-item-content>
+                            <v-list-item-title v-text="tab.name"></v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list-item-group>
+            </v-list>
+        </v-navigation-drawer>
+        <v-main>
+            <v-container fluid>
+                <router-view 
+                    v-on:set_value="setValue($event)"
+                    v-bind:data="results[currentTabIndex]"
+                    v-bind:endpoint="endpoint">
+                </router-view>
+            </v-container>
+        </v-main>
     </div>
 </template>
 

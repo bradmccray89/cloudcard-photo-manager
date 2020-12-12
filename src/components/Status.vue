@@ -25,12 +25,14 @@
         name: 'Status',
 
         props: [
-            'data'
+            'data',
+            'fetchData'
         ],
 
         created: function () {
             console.log('data', this.data)
-            this.status = this.data?.value
+            this.putStatus = this.data?.value
+            this.fetchStatus = this.fetchdata?.value
         },
 
         data: () => ({

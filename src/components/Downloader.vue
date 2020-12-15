@@ -39,6 +39,8 @@ import Storage from './Storage'
 import Repeat from './Repeat'
 import Status from './Status'
 
+const fs = require('fs')
+
 export default {
     name: 'Downloader',
 
@@ -141,6 +143,7 @@ export default {
                 this.goToNextStep()
             } else {
                 console.log('this.results', this.results)
+                this.saveToFile()
             }
         },
         saveValueToResults() {
@@ -157,22 +160,43 @@ export default {
             this.setCurrentTab()
         },
         saveToFile(filename) {
-            let blob = new Blob([this.answers], { type: 'text/plain;charset=utf-8;' })
-            if (navigator.msSaveBlob) { // IE 10+
-                navigator.msSaveBlob(blob, filename)
-            } else {
-                let link = document.createElement('a')
-                if (link.download !== undefined) { // feature detection
-                    // Browsers that support HTML5 download attribute
-                    let url = URL.createObjectURL(blob)
-                    link.setAttribute('href', url)
-                    link.setAttribute('download', filename)
-                    link.style.visibility = 'hidden'
-                    document.body.appendChild(link)
-                    link.click()
-                    document.body.removeChild(link)
+            var dataToSave = this.createJsonFromArray(this.results)
+            fs.writeFileSync('application.properties', JSON.stringify(dataToSave))
+        },
+        createJsonFromArray(dataArray) {
+            var jsonData = {}
+            dataArray.forEach(item => {
+                switch (item.type) {
+                    case 'endpoint':
+                        console.log('endpoint')
+                        jsonData['cloudcard.api.url'] = item.value
+                        break;
+                    case 'access_token':
+                        console.log('access_token')
+                        jsonData['cloudcard.api.accessToken'] = item.value
+                        break;
+                    case 'fetch_status':
+                        console.log('fetch_status')
+                        jsonData['downloader.fetchStatuses'] = item.value
+                        break;
+                    case 'put_status':
+                        console.log('put_status')
+                        jsonData['downloader.putStatus'] = item.value
+                        break;
+                    case 'storage_service':
+                        console.log('storage_service')
+                        jsonData['downloader.storageService'] = item.value
+                        break;
+                    case 'repeat':
+                        console.log('repeat')
+                        jsonData['downloader.repeat'] = item.value
+                        break;
+                    default:
+                        console.log('default')
+                        break;
                 }
-            }
+            })
+            return jsonData
         }
     }
 };

@@ -10,6 +10,10 @@ protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
 ])
 
+async function getInfo() {
+  return "this is from electron background.js"
+}
+
 async function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({

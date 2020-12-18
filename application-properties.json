@@ -1,0 +1,4 @@
+{
+    "downloader.fetchStatuses": "READY_FOR_DOWNLOAD",
+    "downloader.putStatus": "DOWNLOADED"
+}

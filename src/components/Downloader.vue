@@ -38,8 +38,10 @@ import Api from './Api'
 import Storage from './Storage'
 import Repeat from './Repeat'
 import Status from './Status'
+import { exec } from 'child_process'
 
 const fs = require('fs')
+const execSync = require('child_process').execSync
 
 export default {
     name: 'Downloader',
@@ -60,6 +62,7 @@ export default {
 
     data () {
         return {
+            cmd: 'java',
             currentTab: null,
             currentTabIndex: 0,
             nextTab: null,
@@ -110,6 +113,10 @@ export default {
         },
     },
 
+    created: function () {
+        this.load
+    },
+
     methods: {
         setCurrentTab(currentPath = null) {
             if (currentPath) {
@@ -142,7 +149,6 @@ export default {
             if (this.tabs.length !== this.currentTabIndex + 1) {
                 this.goToNextStep()
             } else {
-                console.log('this.results', this.results)
                 this.saveToFile()
             }
         },
@@ -161,42 +167,109 @@ export default {
         },
         saveToFile(filename) {
             var dataToSave = this.createJsonFromArray(this.results)
-            fs.writeFileSync('application.properties', JSON.stringify(dataToSave))
+            fs.writeFileSync('application-properties.json', JSON.stringify(dataToSave, null, 4))
+            this.runDownloadScript(dataToSave)
+        },
+        async runDownloadScript(jsonScriptData) {
+            for (var key in jsonScriptData) {
+                if (jsonScriptData.hasOwnProperty(key)) {
+                    var val = jsonScriptData[key]
+                    var param = ' -D' + key + '=' + val
+                    this.cmd = this.cmd.concat(param)
+                }
+            }
+            this.cmd = this.cmd.concat(' -jar cloudcard-photo-downloader.jar')
+            console.log('cmd: ', this.cmd)
+            let output = await this.execute('cd')
+            let result = output.stdout ? output.stdout : output.stderr
+            let stringOutput = ''
+            for (let line of result.split('\n')) {
+                stringOutput = stringOutput.concat(`${line}\n`)
+            }
+            console.log(stringOutput)
+        },
+        async execute(cmd) {
+            return new Promise(function (resolve, reject) {
+                exec(cmd, (err, stdout, stderr) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve({ stdout, stderr });
+                    }
+                });
+            })
         },
         createJsonFromArray(dataArray) {
             var jsonData = {}
             dataArray.forEach(item => {
                 switch (item.type) {
                     case 'endpoint':
-                        console.log('endpoint')
                         jsonData['cloudcard.api.url'] = item.value
                         break;
                     case 'access_token':
-                        console.log('access_token')
                         jsonData['cloudcard.api.accessToken'] = item.value
                         break;
                     case 'fetch_status':
-                        console.log('fetch_status')
                         jsonData['downloader.fetchStatuses'] = item.value
                         break;
                     case 'put_status':
-                        console.log('put_status')
                         jsonData['downloader.putStatus'] = item.value
                         break;
                     case 'storage_service':
-                        console.log('storage_service')
                         jsonData['downloader.storageService'] = item.value
                         break;
                     case 'repeat':
-                        console.log('repeat')
                         jsonData['downloader.repeat'] = item.value
                         break;
                     default:
-                        console.log('default')
                         break;
                 }
             })
+            this.createArrayFromJson(jsonData)
             return jsonData
+        },
+        createArrayFromJson(jsonData) {
+            var dataArray = []
+            for (var key in jsonData) {
+                if (jsonData.hasOwnProperty(key)) {
+                    var value = jsonData[key]
+                    var item = {
+                        type: '',
+                        value: ''
+                    }
+                    switch (key) {
+                        case 'cloudcard.api.url':
+                            item.type = 'endpoint'
+                            item.value = value
+                            break;
+                        case 'cloudcard.api.accessToken':
+                            item.type = 'access_token'
+                            item.value = value
+                            break;
+                        case 'downloader.fetchStatuses':
+                            item.type = 'fetch_status'
+                            item.value = value
+                            break;
+                        case 'downloader.putStatus':
+                            item.type = 'put_status'
+                            item.value = value
+                            break;
+                        case 'downloader.storageService':
+                            item.type = 'storage_service'
+                            item.value = value
+                            break;
+                        case 'downloader.repeat':
+                            jsonData['downloader.repeat'] = item.value
+                            item.type = 'repeat'
+                            item.value = value
+                            break;
+                        default:
+                            break;
+                    }
+                    console.log('item', item)
+                    this.results.push(item)
+                }
+            }
         }
     }
 };

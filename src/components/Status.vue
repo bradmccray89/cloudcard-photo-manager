@@ -30,7 +30,6 @@
         ],
 
         created: function () {
-            console.log('data', this.data)
             this.putStatus = this.data?.value
             this.fetchStatus = this.fetchdata?.value
         },

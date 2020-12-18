@@ -259,7 +259,6 @@ export default {
                             item.value = value
                             break;
                         case 'downloader.repeat':
-                            jsonData['downloader.repeat'] = item.value
                             item.type = 'repeat'
                             item.value = value
                             break;

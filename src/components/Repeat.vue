@@ -13,24 +13,24 @@
                     :rules="dayRules"
                     hide-details="auto"
                     :disabled="!repeat"
-                    outlined>
-                    <p slot="append">days</p>
+                    solo>
+                    <span slot="append">days</span>
                 </v-text-field>
                 <v-text-field class="delay-input"
                     v-model="hours"
                     :rules="hourRules"
                     hide-details="auto"
                     :disabled="!repeat"
-                    outlined>
-                    <p slot="append">hours</p>
+                    solo>
+                    <span slot="append">hours</span>
                 </v-text-field>
                 <v-text-field class="delay-input"
                     v-model="minutes"
                     :rules="minuteRules"
                     hide-details="auto"
                     :disabled="!repeat"
-                    outlined>
-                    <p slot="append">minutes</p>
+                    solo>
+                    <span slot="append">minutes</span>
                 </v-text-field>
             </div>
         </v-form>

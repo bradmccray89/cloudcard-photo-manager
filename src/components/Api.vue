@@ -1,5 +1,19 @@
 <template>
     <v-container>
+        <div class="d-flex flex-row mb-1">
+            <span>API Url</span>
+            <v-tooltip bottom max-width="350px">
+                <template v-slot:activator="{ on, attrs }">
+                    <v-icon class="ml-1"
+                    v-bind="attrs"
+                    v-on="on"
+                    >
+                        info_outline
+                    </v-icon>
+                </template>
+                <span>Specifies the URL of your Cloudcard Online Photo Submission API.</span>
+            </v-tooltip>
+        </div>
         <v-select
             v-model="endpoint"
             :items="api"
@@ -7,7 +21,7 @@
             item-value="url"
             label="API Endpoint"
             hint="Choose an API to use"
-            persistent-hint
+            dense
             solo
             @change="emitChange()">
         </v-select>
@@ -18,12 +32,20 @@
     export default {
         name: 'Api',
 
-        props: [
-            'data'
-        ],
+        props: {
+            data: {
+                type: Object,
+                default: function() {
+                    return {
+                        type: 'endpoint',
+                        value: 'https://api.onlinephotosubmission.com/api'
+                    }
+                }
+            }
+        },
 
         created: function () {
-            this.endpoint = this.data?.value
+            this.endpoint = this.api.find(f => f.url === this.data?.value).url
         },
 
         data() {

@@ -2,9 +2,9 @@
     <v-container>
         <div class="d-flex flex-row mb-1">
             <span>Input Photo Status</span>
-            <v-tooltip bottom>
+            <v-tooltip bottom max-width="350px">
                 <template v-slot:activator="{ on, attrs }">
-                    <v-icon class="ml-1"
+                    <v-icon class="ml-2"
                         v-bind="attrs"
                         v-on="on"
                     >
@@ -25,9 +25,9 @@
         </v-select>
         <div class="d-flex flex-row mb-1">
             <span>Output Photo Status</span>
-            <v-tooltip bottom>
+            <v-tooltip bottom max-width="350px">
                 <template v-slot:activator="{ on, attrs }">
-                    <v-icon class="ml-1"
+                    <v-icon class="ml-2"
                         v-bind="attrs"
                         v-on="on"
                     >
@@ -46,16 +46,16 @@
         </v-select>
         <div class="d-flex flex-row mb-1">
             <span>Minimum Photo ID Length</span>
-            <v-tooltip bottom>
+            <v-tooltip bottom max-width="350px">
                 <template v-slot:activator="{ on, attrs }">
-                    <v-icon class="ml-1"
+                    <v-icon class="ml-2"
                         v-bind="attrs"
                         v-on="on"
                     >
                         info_outline
                     </v-icon>
                 </template>
-                <span>This setting causes photo IDs to be left padded with zeros (0) until they have at least this many digits.</span>
+                <span>Causes photo IDs to be left padded with zeros (0) until they have at least this many digits.</span>
             </v-tooltip>
         </div>
         <v-text-field class="minimum-id-length"
@@ -83,25 +83,25 @@
         ],
 
         created: function () {
-            this.putStatus = this.data?.value
-            this.fetchStatus = this.fetchdata?.value
+            this.putStatus = (this.data) ? this.data.value : 'DOWNLOADED'
+            this.fetchStatus = (this.fetchData) ? this.fetchData.value : 'READY_FOR_DOWNLOAD'
         },
 
         data: () => ({
-            fetchStatus: "READY_FOR_DOWNLOAD",
-            putStatus: "DOWNLOADED",
+            fetchStatus: '',
+            putStatus: '',
             minimumIdLength: 0,
             idRules: [
                 value => /[0-9]+/.test(value) || 'Must be a number (no decimals)',
             ],
             photoStatus: [
-                "PENDING",
-                "APPROVED",
-                "DENIED",
-                "READY_FOR_DOWNLOAD",
-                "DOWNLOADED",
-                "DISCARDED",
-                "DONE"
+                'PENDING',
+                'APPROVED',
+                'DENIED',
+                'READY_FOR_DOWNLOAD',
+                'DOWNLOADED',
+                'DISCARDED',
+                'DONE'
             ]
         }),
 

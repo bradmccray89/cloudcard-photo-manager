@@ -1,12 +1,26 @@
 <template>
     <v-container>
+        <div class="d-flex flex-row mb-1">
+            <span>Login</span>
+            <v-tooltip bottom max-width="350px">
+                <template v-slot:activator="{ on, attrs }">
+                    <v-icon class="ml-2"
+                    v-bind="attrs"
+                    v-on="on"
+                    >
+                        info_outline
+                    </v-icon>
+                </template>
+                <span>Login to get your access token in order to download your organizations photos. Make sure to login with an account with the "SERVICE" and "OFFICE" roles</span>
+            </v-tooltip>
+        </div>
         <v-form id="login-info"
             v-model="valid"
             lazy-validation>
             <v-text-field
                 v-model="input.username"
-                background-color="white"
-                outlined
+                solo
+                dense
                 label="Email"
                 :rules="usernameRules"
                 hide-details="auto">
@@ -15,8 +29,8 @@
                 v-model="input.password"
                 class="mt-2"
                 type="password"
-                background-color="white"
-                outlined
+                solo
+                dense
                 label="Password">
             </v-text-field>
         </v-form>

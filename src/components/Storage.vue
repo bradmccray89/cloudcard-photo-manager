@@ -24,6 +24,9 @@
             solo
             @change="emitChange()">
         </v-select>
+        <div id="folder-input">
+            <input id="folder-input-button" type="file" webkitdirectory />
+        </div>
     </v-container>
 </template>
 
@@ -76,4 +79,10 @@
 </script>
 
 <style scoped>
+    #folder-input {
+        border: 1px dashed rgba(0, 0, 0, 0.3);
+    }
+    #folder-input-button {
+        margin: 8px;
+    }
 </style>

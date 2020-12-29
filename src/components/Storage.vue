@@ -25,14 +25,21 @@
             @change="emitChange()">
         </v-select>
         <div id="folder-input">
-            <input id="folder-input-button" type="file" webkitdirectory />
+            <input id="folder-input-button" type="file" webkitdirectory directory />
         </div>
+        <SimpleDatabaseStorage></SimpleDatabaseStorage>
     </v-container>
 </template>
 
 <script>
+    import SimpleDatabaseStorage from './SimpleDatabaseStorage'
+
     export default {
         name: 'Storage',
+
+        components: {
+            SimpleDatabaseStorage
+        },
 
         props: {
             data: {
@@ -72,6 +79,7 @@
                     type: 'storage_service',
                     value: this.storageChoice
                 }
+                console.log('storageChoice', this.storageChoice)
                 this.$emit('set_value', result)
             }
         }

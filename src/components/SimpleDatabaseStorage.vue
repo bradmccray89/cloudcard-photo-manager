@@ -21,7 +21,7 @@
             spellcheck="false"
             solo>
         </v-text-field>
-        <div class="d-flex flex-row mb-1 mt-3">
+        <div class="d-flex flex-row mb-1 mt-5">
             <span>Student ID Column Name</span>
             <v-tooltip bottom max-width="350px">
                 <template v-slot:activator="{ on, attrs }">
@@ -42,7 +42,7 @@
             spellcheck="false"
             solo>
         </v-text-field>
-        <div class="d-flex flex-row mb-1 mt-3">
+        <div class="d-flex flex-row mb-1 mt-5">
             <span>Photo ID Column Name</span>
             <v-tooltip bottom max-width="350px">
                 <template v-slot:activator="{ on, attrs }">
@@ -95,9 +95,6 @@
         },
 
         data: {
-            tableName: 'CLOUDCARD_PHOTOS',
-            studentIdColumnName: 'STUDENT_ID',
-            photoIdColumnName: 'PHOTO'
         },
 
         methods: {

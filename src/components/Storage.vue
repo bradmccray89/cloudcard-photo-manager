@@ -21,24 +21,23 @@
             item-value="entry"
             label="Storage Service"
             dense
-            solo
-            @change="emitChange()">
+            solo>
         </v-select>
-        <div id="folder-input">
-            <input id="folder-input-button" type="file" webkitdirectory directory />
-        </div>
-        <SimpleDatabaseStorage></SimpleDatabaseStorage>
+        <SimpleDatabaseStorage v-if="storageChoice === 'SimpleDatabaseStorageService'"></SimpleDatabaseStorage>
+        <FileStorage v-if="storageChoice === 'FileStorageService'"></FileStorage>
     </v-container>
 </template>
 
 <script>
     import SimpleDatabaseStorage from './SimpleDatabaseStorage'
+    import FileStorage from './FileStorage'
 
     export default {
         name: 'Storage',
 
         components: {
-            SimpleDatabaseStorage
+            SimpleDatabaseStorage,
+            FileStorage
         },
 
         props: {
@@ -79,7 +78,6 @@
                     type: 'storage_service',
                     value: this.storageChoice
                 }
-                console.log('storageChoice', this.storageChoice)
                 this.$emit('set_value', result)
             }
         }
@@ -87,10 +85,4 @@
 </script>
 
 <style scoped>
-    #folder-input {
-        border: 1px dashed rgba(0, 0, 0, 0.3);
-    }
-    #folder-input-button {
-        margin: 8px;
-    }
 </style>

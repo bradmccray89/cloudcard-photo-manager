@@ -23,6 +23,7 @@
             dense
             solo>
         </v-select>
+        <v-divider></v-divider>
         <SimpleDatabaseStorage v-if="storageChoice === 'SimpleDatabaseStorageService'"></SimpleDatabaseStorage>
         <FileStorage v-if="storageChoice === 'FileStorageService'"></FileStorage>
     </v-container>

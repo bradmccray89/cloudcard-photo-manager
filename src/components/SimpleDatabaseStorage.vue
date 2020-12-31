@@ -94,7 +94,10 @@
         created: function () {
         },
 
-        data: {
+        data() {
+            return {
+                
+            }
         },
 
         methods: {

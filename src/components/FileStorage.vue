@@ -1,5 +1,19 @@
 <template>
     <v-container>
+        <div class="d-flex flex-row mb-1 mt-1">
+            <span>Photo Download Directory</span>
+            <v-tooltip bottom max-width="350px">
+                <template v-slot:activator="{ on, attrs }">
+                    <v-icon class="ml-2"
+                        v-bind="attrs"
+                        v-on="on"
+                    >
+                        info_outline
+                    </v-icon>
+                </template>
+                <span>The absolute path to the directory(ies) into which the photos will be saved. If multiple directories are specified, a copy of each downloaded photo wil be saved to each directory.</span>
+            </v-tooltip>
+        </div>
         <div id="folder-input">
             <v-btn class="ma-2" @click="activateFolderInput()">Select Folder</v-btn>
             <input id="folder-input-button" @change="saveFolderSelection" type="file" webkitdirectory directory />
@@ -17,9 +31,11 @@
         props: {
         },
 
-        data: {
-            folderInput: '',
-            selectedPath: ''
+        data() {
+            return {
+                folderInput: '',
+                selectedPath: ''
+            }
         },
 
         methods: {

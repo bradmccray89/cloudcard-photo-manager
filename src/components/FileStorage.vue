@@ -16,14 +16,12 @@
         </div>
         <div id="folder-input">
             <v-btn class="ma-2" @click="activateFolderInput()">Select Folder</v-btn>
-            <input id="folder-input-button" @change="saveFolderSelection" type="file" webkitdirectory directory />
         </div>
     </v-container>
 </template>
 
 <script>
-    const path = require('path')
-    const removeFileName = dirname => path.parse(dirname).dir
+    const { dialog } = require('electron').remote
 
     export default {
         name: 'FileStorage',
@@ -33,22 +31,25 @@
 
         data() {
             return {
-                folderInput: '',
                 selectedPath: ''
             }
         },
 
         methods: {
             activateFolderInput() {
-                this.folderInput = document.getElementById('folder-input-button')
-                this.folderInput.click()
+                dialog.showOpenDialog({
+                    properties:['openDirectory', 'createDirectory', 'multiSelections']
+                }).then(result => {
+                    result.filePaths.forEach((path, index) => {
+                        if (index === 0) {
+                            this.selectedPath = path
+                        } else {
+                            this.selectedPath = this.selectedPath + ',' + path
+                        }
+                    })
+                    console.log('selectedPath', this.selectedPath)
+                })
             },
-            saveFolderSelection(event) {
-                this.selectedPath = event.path[0].files[0].path
-                if (this.selectedPath) {
-                    this.selectedPath = removeFileName(this.selectedPath)
-                }
-            }
         }
     }
 </script>

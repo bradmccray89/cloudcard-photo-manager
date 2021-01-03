@@ -17,11 +17,31 @@
         <div id="folder-input">
             <v-btn class="ma-2" @click="saveFolder()">Select Folder</v-btn>
         </div>
+        <div class="d-flex flex-row mb-1 mt-1">
+            <span>Jar File Location</span>
+            <v-tooltip bottom max-width="350px">
+                <template v-slot:activator="{ on, attrs }">
+                    <v-icon class="ml-2"
+                        v-bind="attrs"
+                        v-on="on"
+                    >
+                        info_outline
+                    </v-icon>
+                </template>
+                <span>The absolute path to the spring <code>.jar</code> file.</span>
+            </v-tooltip>
+        </div>
+        <div id="folder-input">
+            <v-btn class="ma-2" @click="uploadJar()">Select Jar File</v-btn>
+            <span :v-if="jarFileName !== ''">{{ jarFileName }}</span>
+        </div>
     </v-container>
 </template>
 
 <script>
     const { dialog } = require('electron').remote
+    const path = require('path')
+    const removeFileName = dirname => path.parse(dirname).dir
 
     export default {
         name: 'FileStorage',
@@ -31,7 +51,9 @@
 
         data() {
             return {
-                selectedPath: ''
+                selectedPath: '',
+                jarFilePath: '',
+                jarFileName: ''
             }
         },
 
@@ -56,6 +78,17 @@
                     this.$emit('set_folder', folderChoice)
                 })
             },
+            uploadJar() {
+                dialog.showOpenDialog({
+                    properties:['openFile'],
+                    filters:[{ name: 'JAR', extensions: ['jar'] }]
+                }).then(result => {
+                    if (!result.canceled) {
+                        this.jarFilePath = removeFileName(result.filePaths[0])
+                        this.jarFileName = path.basename(result.filePaths[0])
+                    }
+                })
+            }
         }
     }
 </script>

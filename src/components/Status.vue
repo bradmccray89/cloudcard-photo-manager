@@ -18,7 +18,6 @@
             v-model="fetchStatus"
             :items="photoStatus"
             dense
-            multiple
             chips
             label="Input Photo Status"
             solo>
@@ -87,23 +86,25 @@
             this.fetchStatus = (this.fetchData) ? this.fetchData.value : 'READY_FOR_DOWNLOAD'
         },
 
-        data: () => ({
-            fetchStatus: '',
-            putStatus: '',
-            minimumIdLength: 0,
-            idRules: [
-                value => /[0-9]+/.test(value) || 'Must be a number (no decimals)',
-            ],
-            photoStatus: [
-                'PENDING',
-                'APPROVED',
-                'DENIED',
-                'READY_FOR_DOWNLOAD',
-                'DOWNLOADED',
-                'DISCARDED',
-                'DONE'
-            ]
-        }),
+        data () {
+            return {
+                fetchStatus: [],
+                putStatus: '',
+                minimumIdLength: 0,
+                idRules: [
+                    value => /[0-9]+/.test(value) || 'Must be a number (no decimals)',
+                ],
+                photoStatus: [
+                    'PENDING',
+                    'APPROVED',
+                    'DENIED',
+                    'READY_FOR_DOWNLOAD',
+                    'DOWNLOADED',
+                    'DISCARDED',
+                    'DONE'
+                ]
+            }
+        },
 
         methods: {
             setPhotoStatuses() {

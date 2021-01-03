@@ -31,7 +31,8 @@
                 <router-view 
                     v-on:set_value="setValue($event)"
                     v-bind:data="results[currentTabIndex]"
-                    v-bind:endpoint="endpoint">
+                    v-bind:endpoint="endpoint"
+                    v-bind:fetchData="results[currentTabIndex + 1]">
                 </router-view>
             </v-container>
         </v-main>
@@ -191,7 +192,7 @@ export default {
             }
             this.cmd = this.cmd.concat(' -jar cloudcard-photo-downloader.jar')
             console.log('cmd: ', this.cmd)
-            let output = await this.execute('cd')
+            let output = await this.execute(this.cmd)
             let result = output.stdout ? output.stdout : output.stderr
             let stringOutput = ''
             for (let line of result.split('\n')) {

@@ -24,9 +24,6 @@
             solo>
         </v-select>
         <v-divider></v-divider>
-        <DatabaseConnection></DatabaseConnection>
-        <v-divider></v-divider>
-        <SimpleDatabaseStorage v-if="storageChoice === 'SimpleDatabaseStorageService'"></SimpleDatabaseStorage>
         <FileStorage v-if="storageChoice === 'FileStorageService'"
             v-on:set_folder="setFolderForStorage">
         </FileStorage>
@@ -34,17 +31,13 @@
 </template>
 
 <script>
-    import SimpleDatabaseStorage from './SimpleDatabaseStorage'
     import FileStorage from './FileStorage'
-    import DatabaseConnection from './DatabaseConnection'
 
     export default {
         name: 'Storage',
 
         components: {
-            SimpleDatabaseStorage,
             FileStorage,
-            DatabaseConnection
         },
 
         props: {

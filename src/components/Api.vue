@@ -25,20 +25,12 @@
             solo
             @change="emitChange()">
         </v-select>
-        <v-divider></v-divider>
-        <Scripts></Scripts>
     </v-container>
 </template>
 
 <script>
-    import Scripts from './Scripts'
-
     export default {
         name: 'Api',
-
-        components: {
-            Scripts
-        },
 
         props: {
             data: {

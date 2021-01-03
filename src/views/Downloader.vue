@@ -4,12 +4,6 @@
             <v-toolbar-title>
                 <v-btn class="home-button" text to="/" exact>Cloudcard</v-btn>
             </v-toolbar-title>
-            <v-spacer></v-spacer>
-<!-- Eventually do dark and light themes
-            <v-btn icon @click="toggleDarkMode()">
-                <v-icon small v-if="darkMode">fas fa-moon</v-icon>
-                <v-icon small dark v-if="!darkMode">fas fa-sun</v-icon>
-            </v-btn> -->
         </v-app-bar>
         <v-navigation-drawer permanent app clipped>
             <v-list dense rounded nav>
@@ -46,7 +40,6 @@ import Storage from '../components/Storage'
 import Repeat from '../components/Repeat'
 import Status from '../components/Status'
 import { exec } from 'child_process'
-import themeChanger from '../theme.js'
 
 const fs = require('fs')
 const execSync = require('child_process').execSync
@@ -108,8 +101,6 @@ export default {
             ],
             results: [],
             value: '',
-            themeChanger: null,
-            darkMode: false
         }
     },
 
@@ -125,7 +116,6 @@ export default {
 
     created: function () {
         this.load
-        this.themeChanger = new themeChanger()
     },
 
     methods: {
@@ -281,10 +271,6 @@ export default {
                     this.results.push(item)
                 }
             }
-        },
-        toggleDarkMode() {
-            this.darkMode = !this.darkMode
-            this.themeChanger._darkThemeSwitch()
         }
     }
 };

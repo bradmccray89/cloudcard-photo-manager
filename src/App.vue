@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import Downloader from './components/Downloader';
+import Downloader from './views/Downloader';
 import Home from './views/Home'
 
 export default {

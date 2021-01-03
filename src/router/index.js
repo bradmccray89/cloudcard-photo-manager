@@ -11,7 +11,7 @@ const routes = [
   },
   {
     path: '/Downloader',
-    component: () => import('../components/Downloader'),
+    component: () => import('../views/Downloader'),
     children: [
       {
         path: '',

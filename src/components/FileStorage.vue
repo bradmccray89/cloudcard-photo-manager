@@ -15,7 +15,7 @@
             </v-tooltip>
         </div>
         <div id="folder-input">
-            <v-btn class="ma-2" @click="activateFolderInput()">Select Folder</v-btn>
+            <v-btn class="ma-2" @click="saveFolder()">Select Folder</v-btn>
         </div>
     </v-container>
 </template>
@@ -36,18 +36,24 @@
         },
 
         methods: {
-            activateFolderInput() {
+            saveFolder() {
                 dialog.showOpenDialog({
                     properties:['openDirectory', 'createDirectory', 'multiSelections']
                 }).then(result => {
+                    var total = 0
                     result.filePaths.forEach((path, index) => {
                         if (index === 0) {
                             this.selectedPath = path
                         } else {
                             this.selectedPath = this.selectedPath + ',' + path
                         }
+                        total = index + 1
                     })
-                    console.log('selectedPath', this.selectedPath)
+                    var folderChoice = {
+                        type: 'file_storage',
+                        value: this.selectedPath
+                    }
+                    this.$emit('set_folder', folderChoice)
                 })
             },
         }

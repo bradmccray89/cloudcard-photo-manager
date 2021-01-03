@@ -25,12 +25,20 @@
             solo
             @change="emitChange()">
         </v-select>
+        <v-divider></v-divider>
+        <Scripts></Scripts>
     </v-container>
 </template>
 
 <script>
+    import Scripts from './Scripts'
+
     export default {
         name: 'Api',
+
+        components: {
+            Scripts
+        },
 
         props: {
             data: {
@@ -45,7 +53,7 @@
         },
 
         created: function () {
-            this.endpoint = this.api.find(f => f.url === this.data?.value).url
+            this.endpoint = this.api.find(f => f.url === this.data.value).url
         },
 
         data() {

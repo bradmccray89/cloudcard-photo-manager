@@ -21,11 +21,12 @@
             item-value="entry"
             label="Storage Service"
             dense
-            solo>
+            solo
+            @change="emitChange()">
         </v-select>
         <v-divider></v-divider>
         <FileStorage v-if="storageChoice === 'FileStorageService'"
-            v-on:set_folder="setFolderForStorage">
+            v-on:set_folders="setFolderForStorage">
         </FileStorage>
     </v-container>
 </template>
@@ -53,7 +54,7 @@
         },
 
         created: function () {
-            this.storageChoice = this.storageType.find(f => f.entry === this.data?.value).entry
+            this.storageChoice = this.storageType.find(f => f.entry === this.data?.value)?.entry
         },
 
         data() {
@@ -69,21 +70,43 @@
                     }
                 ],
                 storageChoice: '',
-                folderLocation: ''
+                folderLocation: '',
+                folderLocationObject: {},
+                jarFileLocation: '',
+                jarFileLocationObject: {}
             }
         },
 
         methods: {
             emitChange() {
-                var result = {
-                    type: 'storage_service',
-                    value: this.storageChoice
+                if (this.storageType !== '' && this.folderLocation !== '') {
+                    var result = [
+                        {
+                            type: 'downloader.storageService',
+                            value: this.storageChoice
+                        },
+                        {
+                            type: 'downloader.photoDirectories',
+                            value: this.folderLocation
+                        },
+                        {
+                            type: 'jarFileLocation',
+                            value: this.jarFileLocation
+                        }
+                    ]
+                    this.$emit('set_value', result)
                 }
-                this.$emit('set_value', result)
             },
             setFolderForStorage(event) {
-                this.folderLocation = event.value
-                console.log('folderLocation', this.folderLocation)
+                event.forEach(item => {
+                    if (item.type === 'jarFileLocation') {
+                        this.jarFileLocation = item.value
+                    } else {
+                        this.folderLocation = item.value
+                    }
+                })
+                console.log('event', event)
+                this.emitChange()
             }
         }
     }

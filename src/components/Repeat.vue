@@ -104,16 +104,24 @@
         methods: {
             setRepeat() {
                 if (this.repeat) {
-                    var result = {
-                        type: 'repeat',
-                        value: this.calculateDelay()
-                    }
+                    var result = [
+                        {
+                            type: 'downloader.repeat',
+                            value: this.repeat
+                        },
+                        {
+                            type: 'downloader.delay.milliseconds',
+                            value: this.calculateDelay()
+                        }
+                    ]
                     this.$emit('set_value', result)
                 } else {
-                    var result = {
-                        type: 'repeat',
-                        value: 0
-                    }
+                    var result = [
+                        {
+                            type: 'downloader.repeat',
+                            value: false
+                        }
+                    ]
                     this.$emit('set_value', result)
                 }
             },

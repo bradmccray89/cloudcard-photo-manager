@@ -88,7 +88,7 @@
 
         data () {
             return {
-                fetchStatus: [],
+                fetchStatus: '',
                 putStatus: '',
                 minimumIdLength: 0,
                 idRules: [
@@ -108,14 +108,20 @@
 
         methods: {
             setPhotoStatuses() {
-                var status = [
-                    this.fetchStatus,
-                    this.putStatus
+                var result = [
+                    {
+                        type: 'downloader.fetchStatuses',
+                        value: this.fetchStatus
+                    },
+                    {
+                        type: 'downloader.putStatus',
+                        value: this.putStatus
+                    },
+                    {
+                        type: 'downloader.minPhotoIdLength',
+                        value: this.minimumIdLength
+                    }
                 ]
-                var result = {
-                    type: 'status',
-                    value: status
-                }
                 this.$emit('set_value', result)
             },
         }

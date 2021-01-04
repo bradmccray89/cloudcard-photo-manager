@@ -101,6 +101,7 @@ export default {
             ],
             results: [],
             value: '',
+            jarFileLocation: ''
         }
     },
 
@@ -115,7 +116,6 @@ export default {
     },
 
     created: function () {
-        this.load
     },
 
     methods: {
@@ -135,22 +135,21 @@ export default {
             }
         },
         setValue(event) {
-            if (event.type === 'status') {
-                event.value.forEach((value, index) => {
+            event.forEach(item => {
+                if (item.type !== 'jarFileLocation') {
                     this.value = {
-                        type: (index === 0) ? 'fetch_status' : 'put_status',
-                        value: value
+                        type: item.type,
+                        value: item.value
                     }
                     this.saveValueToResults()
-                })
-            } else {
-                this.value = event;
-                this.saveValueToResults()
-            }
-            if (this.tabs.length !== this.currentTabIndex + 1) {
-                this.goToNextStep()
-            } else {
+                } else {
+                    this.jarFileLocation = item.value
+                }
+            })
+            if (!this.tabs[this.currentTabIndex + 1]) {
                 this.saveToFile()
+            } else {
+                this.goToNextStep()
             }
         },
         saveValueToResults() {
@@ -176,19 +175,23 @@ export default {
             for (var key in jsonScriptData) {
                 if (jsonScriptData.hasOwnProperty(key)) {
                     var val = jsonScriptData[key]
-                    var param = ' -D' + key + '=' + val
+                    if (key === 'downloader.photoDirectories') {
+                        var param = ' -D' + key + '="' + val + '"'
+                    } else {
+                        var param = ' -D' + key + '=' + val
+                    }
                     this.cmd = this.cmd.concat(param)
                 }
             }
             this.cmd = this.cmd.concat(' -jar cloudcard-photo-downloader.jar')
             console.log('cmd: ', this.cmd)
-            // let output = await this.execute(this.cmd)
-            // let result = output.stdout ? output.stdout : output.stderr
-            // let stringOutput = ''
-            // for (let line of result.split('\n')) {
-            //     stringOutput = stringOutput.concat(`${line}\n`)
-            // }
-            // console.log(stringOutput)
+            let output = await this.execute('cd ' + '"' + this.jarFileLocation + '"' + ' && ' + this.cmd)
+            let result = output.stdout ? output.stdout : output.stderr
+            let stringOutput = ''
+            for (let line of result.split('\n')) {
+                stringOutput = stringOutput.concat(`${line}\n`)
+            }
+            console.log(stringOutput)
         },
         async execute(cmd) {
             return new Promise(function (resolve, reject) {

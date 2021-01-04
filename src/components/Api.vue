@@ -37,7 +37,7 @@
                 type: Object,
                 default: function() {
                     return {
-                        type: 'endpoint',
+                        type: 'cloudcard.api.url',
                         value: 'https://api.onlinephotosubmission.com/api'
                     }
                 }
@@ -69,10 +69,12 @@
 
         methods: {
             emitChange() {
-                var result = {
-                    type: 'cloudcard.api.url',
-                    value: this.endpoint
-                }
+                var result = [
+                    {
+                        type: 'cloudcard.api.url',
+                        value: this.endpoint
+                    }
+                ]
                 this.$emit('set_value', result)
             }
         }

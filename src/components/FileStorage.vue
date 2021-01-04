@@ -16,6 +16,7 @@
         </div>
         <div id="folder-input">
             <v-btn class="ma-2" @click="saveFolder()">Select Folder</v-btn>
+            <span :v-if="selectedPath !== ''">{{ selectedPath }}</span>
         </div>
         <div class="d-flex flex-row mb-1 mt-1">
             <span>Jar File Location</span>
@@ -60,9 +61,10 @@
         methods: {
             saveFolder() {
                 dialog.showOpenDialog({
-                    properties:['openDirectory', 'createDirectory', 'multiSelections']
+                    properties:['openDirectory', 'createDirectory']
                 }).then(result => {
                     var total = 0
+                    console.log('result')
                     result.filePaths.forEach((path, index) => {
                         if (index === 0) {
                             this.selectedPath = path
@@ -71,11 +73,10 @@
                         }
                         total = index + 1
                     })
-                    var folderChoice = {
-                        type: 'file_storage',
-                        value: this.selectedPath
+                    console.log('saveFolder')
+                    if (this.selectedPath !== '' && this.jarFilePath !== '') {
+                        this.emitChanges()
                     }
-                    this.$emit('set_folder', folderChoice)
                 })
             },
             uploadJar() {
@@ -87,7 +88,25 @@
                         this.jarFilePath = removeFileName(result.filePaths[0])
                         this.jarFileName = path.basename(result.filePaths[0])
                     }
+                    console.log('uploadJar')
+                    if (this.selectedPath !== '' && this.jarFilePath !== '') {
+                        this.emitChanges()
+                    }
                 })
+            },
+            emitChanges() {
+                console.log('in emitter')
+                var result = [
+                    {
+                        type: 'downloader.PhotoDirectories',
+                        value: this.selectedPath
+                    },
+                    {
+                        type: 'jarFileLocation',
+                        value: this.jarFilePath
+                    }
+                ]
+                this.$emit('set_folders', result)
             }
         }
     }

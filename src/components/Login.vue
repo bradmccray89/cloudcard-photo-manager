@@ -76,7 +76,6 @@
 
         methods: {
             login() {
-                console.log('endpoint', this.endpoint)
                 this.$http.post(this.endpoint + '/login', {
                     username: this.input.username,
                     password: this.input.password
@@ -95,10 +94,12 @@
                             throw Error('Please sign into an account with both the OFFICE and SERVICE roles!')
                         }
                     } else {
-                        var result = {
-                            type: 'access_token',
-                            value: this.accessToken
-                        }
+                        var result = [
+                            {
+                                type: 'cloudcard.api.accessToken',
+                                value: this.accessToken
+                            }
+                        ]
                         this.$emit('set_value', result)
                     }
                 })

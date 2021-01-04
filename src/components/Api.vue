@@ -70,7 +70,7 @@
         methods: {
             emitChange() {
                 var result = {
-                    type: 'endpoint',
+                    type: 'cloudcard.api.url',
                     value: this.endpoint
                 }
                 this.$emit('set_value', result)

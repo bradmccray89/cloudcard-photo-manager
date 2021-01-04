@@ -107,7 +107,7 @@ export default {
     computed: {
         endpoint: function () {
             if (this.currentTab?.name === 'Login') {
-                return this.results.find(result => result.type === 'endpoint')?.value
+                return this.results.find(result => result.type === 'cloudcard.api.url')?.value
             } else {
                 return undefined
             }
@@ -182,13 +182,13 @@ export default {
             }
             this.cmd = this.cmd.concat(' -jar cloudcard-photo-downloader.jar')
             console.log('cmd: ', this.cmd)
-            let output = await this.execute(this.cmd)
-            let result = output.stdout ? output.stdout : output.stderr
-            let stringOutput = ''
-            for (let line of result.split('\n')) {
-                stringOutput = stringOutput.concat(`${line}\n`)
-            }
-            console.log(stringOutput)
+            // let output = await this.execute(this.cmd)
+            // let result = output.stdout ? output.stdout : output.stderr
+            // let stringOutput = ''
+            // for (let line of result.split('\n')) {
+            //     stringOutput = stringOutput.concat(`${line}\n`)
+            // }
+            // console.log(stringOutput)
         },
         async execute(cmd) {
             return new Promise(function (resolve, reject) {
@@ -204,28 +204,29 @@ export default {
         createJsonFromArray(dataArray) {
             var jsonData = {}
             dataArray.forEach(item => {
-                switch (item.type) {
-                    case 'endpoint':
-                        jsonData['cloudcard.api.url'] = item.value
-                        break;
-                    case 'access_token':
-                        jsonData['cloudcard.api.accessToken'] = item.value
-                        break;
-                    case 'fetch_status':
-                        jsonData['downloader.fetchStatuses'] = item.value
-                        break;
-                    case 'put_status':
-                        jsonData['downloader.putStatus'] = item.value
-                        break;
-                    case 'storage_service':
-                        jsonData['downloader.storageService'] = item.value
-                        break;
-                    case 'repeat':
-                        jsonData['downloader.repeat'] = item.value
-                        break;
-                    default:
-                        break;
-                }
+                jsonData[item.type] = item.value
+                // switch (item.type) {
+                //     case 'endpoint':
+                //         jsonData['cloudcard.api.url'] = item.value
+                //         break;
+                //     case 'access_token':
+                //         jsonData['cloudcard.api.accessToken'] = item.value
+                //         break;
+                //     case 'fetch_status':
+                //         jsonData['downloader.fetchStatuses'] = item.value
+                //         break;
+                //     case 'put_status':
+                //         jsonData['downloader.putStatus'] = item.value
+                //         break;
+                //     case 'storage_service':
+                //         jsonData['downloader.storageService'] = item.value
+                //         break;
+                //     case 'repeat':
+                //         jsonData['downloader.repeat'] = item.value
+                //         break;
+                //     default:
+                //         break;
+                // }
             })
             this.createArrayFromJson(jsonData)
             return jsonData
@@ -236,37 +237,37 @@ export default {
                 if (jsonData.hasOwnProperty(key)) {
                     var value = jsonData[key]
                     var item = {
-                        type: '',
-                        value: ''
+                        type: key,
+                        value: value
                     }
-                    switch (key) {
-                        case 'cloudcard.api.url':
-                            item.type = 'endpoint'
-                            item.value = value
-                            break;
-                        case 'cloudcard.api.accessToken':
-                            item.type = 'access_token'
-                            item.value = value
-                            break;
-                        case 'downloader.fetchStatuses':
-                            item.type = 'fetch_status'
-                            item.value = value
-                            break;
-                        case 'downloader.putStatus':
-                            item.type = 'put_status'
-                            item.value = value
-                            break;
-                        case 'downloader.storageService':
-                            item.type = 'storage_service'
-                            item.value = value
-                            break;
-                        case 'downloader.repeat':
-                            item.type = 'repeat'
-                            item.value = value
-                            break;
-                        default:
-                            break;
-                    }
+                    // switch (key) {
+                    //     case 'cloudcard.api.url':
+                    //         item.type = 'endpoint'
+                    //         item.value = value
+                    //         break;
+                    //     case 'cloudcard.api.accessToken':
+                    //         item.type = 'access_token'
+                    //         item.value = value
+                    //         break;
+                    //     case 'downloader.fetchStatuses':
+                    //         item.type = 'fetch_status'
+                    //         item.value = value
+                    //         break;
+                    //     case 'downloader.putStatus':
+                    //         item.type = 'put_status'
+                    //         item.value = value
+                    //         break;
+                    //     case 'downloader.storageService':
+                    //         item.type = 'storage_service'
+                    //         item.value = value
+                    //         break;
+                    //     case 'downloader.repeat':
+                    //         item.type = 'repeat'
+                    //         item.value = value
+                    //         break;
+                    //     default:
+                    //         break;
+                    // }
                     console.log('item', item)
                     this.results.push(item)
                 }

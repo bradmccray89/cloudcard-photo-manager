@@ -76,6 +76,7 @@
 
         methods: {
             login() {
+                console.log('endpoint', this.endpoint)
                 this.$http.post(this.endpoint + '/login', {
                     username: this.input.username,
                     password: this.input.password

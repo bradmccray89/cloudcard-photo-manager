@@ -2,7 +2,7 @@
   <div class="text-center">
     <v-container fluid>
       <img alt="Vue logo" src="../assets/logo.png">
-      <Welcome msg="Welcome to Cloudcar Photo Manager"/>
+      <Welcome msg="Welcome to Cloudcard Photo Manager"/>
     </v-container>
   </div>
 </template>

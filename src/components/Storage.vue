@@ -89,19 +89,13 @@
                             type: 'downloader.photoDirectories',
                             value: this.folderLocation
                         },
-                        {
-                            type: 'jarFileLocation',
-                            value: this.jarFileLocation
-                        }
                     ]
                     this.$emit('set_value', result)
                 }
             },
             setFolderForStorage(event) {
                 event.forEach(item => {
-                    if (item.type === 'jarFileLocation') {
-                        this.jarFileLocation = item.value
-                    } else {
+                    if (item.type === 'downloader.PhotoDirectories') {
                         this.folderLocation = item.value
                     }
                 })

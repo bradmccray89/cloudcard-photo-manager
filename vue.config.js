@@ -4,7 +4,19 @@ module.exports = {
   ],
   pluginOptions: {
     electronBuilder: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      builderOptions: {
+        files: [
+          "**/*"
+        ],
+        extraFiles: [
+          {
+            "from": "cloudcard-photo-downloader.jar",
+            "to": "cloudcard-photo-downloader.jar",
+            "filter": ["**/*"]
+          }
+        ]
+      }
     }
   }
 }

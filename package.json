@@ -10,9 +10,6 @@
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps"
   },
-  "extraFiles": [
-    "cloudcard-photo-downloader.jar"
-  ],
   "main": "background.js",
   "dependencies": {
     "axios": "^0.21.1",

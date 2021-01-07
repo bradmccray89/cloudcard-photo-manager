@@ -1,10 +1,8 @@
 {
     "cloudcard.api.url": "https://test-api.onlinephotosubmission.com/api",
-    "cloudcard.api.accessToken": "lap9hf5pg6fdsh4sff10b76b11k82kn3",
-    "downloader.storageService": "FileStorageService",
-    "downloader.photoDirectories": "C:\\Users\\bradm\\Desktop\\CloudCard Projects\\downloader\\cloudcard-photo-downloader\\downloaded-photos",
+    "cloudcard.api.accessToken": "af2udnqstns38gt9bos9nn1refs1bir5",
     "downloader.repeat": false,
-    "downloader.fetchStatuses": "READY_FOR_DOWNLOAD",
-    "downloader.putStatus": "DONE",
+    "downloader.fetchStatuses": "PENDING",
+    "downloader.putStatus": "PENDING",
     "downloader.minPhotoIdLength": 0
 }

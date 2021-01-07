@@ -32,17 +32,11 @@
                 <span>The absolute path to the spring <code>.jar</code> file.</span>
             </v-tooltip>
         </div>
-        <div id="folder-input">
-            <v-btn class="ma-2" @click="uploadJar()">Select Jar File</v-btn>
-            <span :v-if="jarFileName !== ''">{{ jarFileName }}</span>
-        </div>
     </v-container>
 </template>
 
 <script>
     const { dialog } = require('electron').remote
-    const path = require('path')
-    const removeFileName = dirname => path.parse(dirname).dir
 
     export default {
         name: 'FileStorage',
@@ -53,8 +47,6 @@
         data() {
             return {
                 selectedPath: '',
-                jarFileFullPath: '',
-                jarFileName: ''
             }
         },
 
@@ -74,24 +66,7 @@
                         total = index + 1
                     })
                     console.log('saveFolder')
-                    if (this.selectedPath !== '' && this.jarFileFullPath !== '') {
-                        this.emitChanges()
-                    }
-                })
-            },
-            uploadJar() {
-                dialog.showOpenDialog({
-                    properties:['openFile'],
-                    filters:[{ name: 'JAR', extensions: ['jar'] }]
-                }).then(result => {
-                    if (!result.canceled) {
-                        this.jarFileFullPath = result.filePaths[0]
-                        this.jarFileName = path.basename(result.filePaths[0])
-                        console.log('jarFileFullPath', this.jarFileFullPath)
-                        console.log(result.filePaths)
-                    }
-                    console.log('uploadJar')
-                    if (this.selectedPath !== '' && this.jarFileFullPath !== '') {
+                    if (this.selectedPath !== '') {
                         this.emitChanges()
                     }
                 })
@@ -103,10 +78,6 @@
                         type: 'downloader.PhotoDirectories',
                         value: this.selectedPath
                     },
-                    {
-                        type: 'jarFileLocation',
-                        value: this.jarFileFullPath
-                    }
                 ]
                 this.$emit('set_folders', result)
             }

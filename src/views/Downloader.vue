@@ -183,15 +183,15 @@ export default {
                     this.cmd = this.cmd.concat(param)
                 }
             }
-            this.cmd = this.cmd.concat(' -jar cloudcard-photo-downloader.jar')
+            this.cmd = this.cmd.concat(' -jar ' + '"' + this.jarFileLocation + '"')
             console.log('cmd: ', this.cmd)
-            let output = await this.execute('cd ' + '"' + this.jarFileLocation + '"' + ' && ' + this.cmd)
-            let result = output.stdout ? output.stdout : output.stderr
-            let stringOutput = ''
-            for (let line of result.split('\n')) {
-                stringOutput = stringOutput.concat(`${line}\n`)
-            }
-            console.log(stringOutput)
+            // let output = await this.execute('cd ' + '"' + this.jarFileLocation + '"' + ' && ' + this.cmd)
+            // let result = output.stdout ? output.stdout : output.stderr
+            // let stringOutput = ''
+            // for (let line of result.split('\n')) {
+            //     stringOutput = stringOutput.concat(`${line}\n`)
+            // }
+            // console.log(stringOutput)
         },
         async execute(cmd) {
             return new Promise(function (resolve, reject) {

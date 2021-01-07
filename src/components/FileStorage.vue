@@ -53,7 +53,7 @@
         data() {
             return {
                 selectedPath: '',
-                jarFilePath: '',
+                jarFileFullPath: '',
                 jarFileName: ''
             }
         },
@@ -74,7 +74,7 @@
                         total = index + 1
                     })
                     console.log('saveFolder')
-                    if (this.selectedPath !== '' && this.jarFilePath !== '') {
+                    if (this.selectedPath !== '' && this.jarFileFullPath !== '') {
                         this.emitChanges()
                     }
                 })
@@ -85,11 +85,13 @@
                     filters:[{ name: 'JAR', extensions: ['jar'] }]
                 }).then(result => {
                     if (!result.canceled) {
-                        this.jarFilePath = removeFileName(result.filePaths[0])
+                        this.jarFileFullPath = result.filePaths[0]
                         this.jarFileName = path.basename(result.filePaths[0])
+                        console.log('jarFileFullPath', this.jarFileFullPath)
+                        console.log(result.filePaths)
                     }
                     console.log('uploadJar')
-                    if (this.selectedPath !== '' && this.jarFilePath !== '') {
+                    if (this.selectedPath !== '' && this.jarFileFullPath !== '') {
                         this.emitChanges()
                     }
                 })
@@ -103,7 +105,7 @@
                     },
                     {
                         type: 'jarFileLocation',
-                        value: this.jarFilePath
+                        value: this.jarFileFullPath
                     }
                 ]
                 this.$emit('set_folders', result)

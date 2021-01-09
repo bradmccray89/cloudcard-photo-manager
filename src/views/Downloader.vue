@@ -185,13 +185,14 @@ export default {
             }
             this.cmd = this.cmd.concat(' -jar cloudcard-photo-downloader.jar')
             console.log('cmd: ', this.cmd)
-            let output = await this.execute('cd')
+            let output = await this.execute(this.cmd)
             let result = output.stdout ? output.stdout : output.stderr
             let stringOutput = ''
             for (let line of result.split('\n')) {
                 stringOutput = stringOutput.concat(`${line}\n`)
             }
             console.log(stringOutput)
+            fs.writeFileSync('downloader.txt', stringOutput)
         },
         async execute(cmd) {
             return new Promise(function (resolve, reject) {

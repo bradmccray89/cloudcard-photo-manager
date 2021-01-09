@@ -1,5 +1,12 @@
 <template>
     <v-container>
+        <v-snackbar
+            v-model="alert"
+            color="red"
+            top
+            :timeout="timeout">
+            {{ errorMessage }}
+        </v-snackbar>
         <div class="d-flex flex-row mb-1">
             <span>Login</span>
             <v-tooltip bottom max-width="350px">
@@ -79,6 +86,9 @@
             service: '',
             loggedIn: false,
             overlay: false,
+            errorMessage: '',
+            alert: false,
+            timeout: 5000,
         }),
 
         methods: {
@@ -96,11 +106,11 @@
                     this.overlay = false
                     if (!this.office || !this.service) {
                         if (!this.office) {
-                            throw Error('Please sign into an account with the OFFICE role!')
+                            this.errorAlert('Please sign into an account with the OFFICE role!')
                         } else if (!this.service) {
-                            throw Error('Please sign into an account with the SERVICE role!')
+                            this.errorAlert('Please sign into an account with the SERVICE role!')
                         } else if (!this.office && !this.service) {
-                            throw Error('Please sign into an account with both the OFFICE and SERVICE roles!')
+                            this.errorAlert('Please sign into an account with both the OFFICE and SERVICE roles!')
                         }
                     } else {
                         var result = [
@@ -115,22 +125,24 @@
                 .catch(error => {
                     this.overlay = false
                     if (error.response) {
-                        if (error.response.status.toString().startsWith('5')) {
-                            errorAlert('Something happened on our end. Please try again later.')
-                        } else if (error.response.status.toString().startsWith('4')) {
-                            alert('Make sure you entered your email and password correctly.')
+                        var status = error.response.status.toString()
+                        if (status.startsWith('5')) {
+                            this.errorAlert('Something happened on our end. Please try again later.')
+                        } else if (status.startsWith('4')) {
+                            this.errorAlert('Make sure you entered your email and password correctly.')
                         } else {
-                            console.log('error.response', error.response)
+                            this.errorAlert('An error has occurred. Please try again later.')
                         }
-                    } else if (err.request) {
-                        console.log('error.request', error.request)
+                    } else if (error.request) {
+                        this.errorAlert('An error has occurred. Make sure you have a good internet connection.')
                     } else {
-                        console.error('ERROR:', error.Message)
+                        this.errorAlert('Error: ' + error.message)
                     }
                 })
             },
             errorAlert(message) {
-                alert(message)
+                this.alert = true
+                this.errorMessage = message
             }
         }
     }

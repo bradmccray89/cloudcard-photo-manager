@@ -18,20 +18,6 @@
             <v-btn class="ma-2" @click="saveFolder()">Select Folder</v-btn>
             <span :v-if="selectedPath !== ''">{{ selectedPath }}</span>
         </div>
-        <div class="d-flex flex-row mb-1 mt-1">
-            <span>Jar File Location</span>
-            <v-tooltip bottom max-width="350px">
-                <template v-slot:activator="{ on, attrs }">
-                    <v-icon class="ml-2"
-                        v-bind="attrs"
-                        v-on="on"
-                    >
-                        info_outline
-                    </v-icon>
-                </template>
-                <span>The absolute path to the spring <code>.jar</code> file.</span>
-            </v-tooltip>
-        </div>
     </v-container>
 </template>
 

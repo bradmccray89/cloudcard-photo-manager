@@ -1,7 +1,7 @@
 <template>
   <div class="text-center">
     <v-container fluid>
-      <img alt="Vue logo" src="../assets/logo.png">
+      <img alt="CloudCard Photo Manager" src="../assets/logo-only-300x300.png">
       <Welcome msg="Welcome to Cloudcard Photo Manager"/>
     </v-container>
   </div>

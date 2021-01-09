@@ -1,8 +1,10 @@
 <template>
     <div id="nav-menu">
-        <v-app-bar app dense dark clipped-left>
+        <v-app-bar app dark clipped-left>
             <v-toolbar-title>
-                <v-btn class="home-button" text to="/" exact>Cloudcard</v-btn>
+                <v-btn class="home-button" large text to="/" exact>
+                    <img src="../assets/cc-logo-sm.png" />
+                </v-btn>
             </v-toolbar-title>
         </v-app-bar>
         <v-navigation-drawer permanent app clipped>
@@ -232,6 +234,7 @@ export default {
         padding: 0 !important;
     }
     .home-button {
+        padding: 1em;
         font-size: 1.2em
     }
 </style>

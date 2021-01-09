@@ -154,7 +154,6 @@ export default {
         },
         saveValueToResults() {
             var foundIndex = this.results.findIndex(result => this.value.type === result.type)
-            console.log('value: ', this.value)
             if (foundIndex >= 0) {
                 this.results[foundIndex] = this.value
             } else if (this.value) {
@@ -184,14 +183,12 @@ export default {
                 }
             }
             this.cmd = this.cmd.concat(' -jar cloudcard-photo-downloader.jar')
-            console.log('cmd: ', this.cmd)
             let output = await this.execute(this.cmd)
             let result = output.stdout ? output.stdout : output.stderr
             let stringOutput = ''
             for (let line of result.split('\n')) {
                 stringOutput = stringOutput.concat(`${line}\n`)
             }
-            console.log(stringOutput)
             fs.writeFileSync('downloader.txt', stringOutput)
         },
         async execute(cmd) {
@@ -222,7 +219,6 @@ export default {
                         type: key,
                         value: value
                     }
-                    console.log('item', item)
                     this.results.push(item)
                 }
             }

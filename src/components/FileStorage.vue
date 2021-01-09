@@ -56,7 +56,6 @@
                     properties:['openDirectory', 'createDirectory']
                 }).then(result => {
                     var total = 0
-                    console.log('result')
                     result.filePaths.forEach((path, index) => {
                         if (index === 0) {
                             this.selectedPath = path
@@ -65,14 +64,12 @@
                         }
                         total = index + 1
                     })
-                    console.log('saveFolder')
                     if (this.selectedPath !== '') {
                         this.emitChanges()
                     }
                 })
             },
             emitChanges() {
-                console.log('in emitter')
                 var result = [
                     {
                         type: 'downloader.PhotoDirectories',

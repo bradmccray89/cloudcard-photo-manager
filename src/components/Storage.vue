@@ -99,7 +99,6 @@
                         this.folderLocation = item.value
                     }
                 })
-                console.log('event', event)
                 this.emitChange()
             }
         }

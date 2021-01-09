@@ -41,6 +41,12 @@
             @click="login()">
                 Login
         </v-btn>
+        <v-overlay :value="overlay">
+            <v-progress-circular
+                indeterminate
+                color="primary">
+            </v-progress-circular>
+        </v-overlay>
     </v-container>
 </template>
 
@@ -72,10 +78,12 @@
             office: '',
             service: '',
             loggedIn: false,
+            overlay: false,
         }),
 
         methods: {
             login() {
+                this.overlay = true
                 this.$http.post(this.endpoint + '/login', {
                     username: this.input.username,
                     password: this.input.password
@@ -85,6 +93,7 @@
                     this.roles = result.data.roles
                     this.office = this.roles.includes('ROLE_OFFICE')
                     this.service = this.roles.includes('ROLE_SERVICE')
+                    this.overlay = false
                     if (!this.office || !this.service) {
                         if (!this.office) {
                             throw Error('Please sign into an account with the OFFICE role!')
@@ -104,8 +113,24 @@
                     }
                 })
                 .catch(error => {
-                    console.error('ERROR:', error.message)
+                    this.overlay = false
+                    if (error.response) {
+                        if (error.response.status.toString().startsWith('5')) {
+                            errorAlert('Something happened on our end. Please try again later.')
+                        } else if (error.response.status.toString().startsWith('4')) {
+                            alert('Make sure you entered your email and password correctly.')
+                        } else {
+                            console.log('error.response', error.response)
+                        }
+                    } else if (err.request) {
+                        console.log('error.request', error.request)
+                    } else {
+                        console.error('ERROR:', error.Message)
+                    }
                 })
+            },
+            errorAlert(message) {
+                alert(message)
             }
         }
     }

@@ -10,11 +10,26 @@
 <script>
 import Welcome from '@/components/Welcome.vue'
 
+const fs = require('fs')
+
 export default {
   name: 'Home',
 
   components: {
     Welcome
+  },
+
+  created: function() {
+    let jsonFile = 'application-properties.json'
+    if (fs.existsSync(jsonFile)) {
+      let rawFileData = fs.readFileSync(jsonFile)
+      let fileData = JSON.parse(rawFileData)
+      console.log(fileData)
+    }
+  },
+
+  methods: {
+
   }
 }
 </script>

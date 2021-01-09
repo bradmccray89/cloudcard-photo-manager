@@ -34,6 +34,8 @@
 <script>
     import FileStorage from './FileStorage'
 
+    const path = require('path')
+
     export default {
         name: 'Storage',
 
@@ -70,16 +72,16 @@
                     }
                 ],
                 storageChoice: '',
-                folderLocation: '',
-                folderLocationObject: {},
-                jarFileLocation: '',
-                jarFileLocationObject: {}
+                photoStorageLocation: '',
+                summaryLocation: ''
             }
         },
 
         methods: {
             emitChange() {
-                if (this.storageType !== '' && this.folderLocation !== '') {
+                console.log('emitter')
+                if (this.storageType !== '' && this.photoStorageLocation !== '') {
+                    this.summaryLocation = path.dirname(this.photoStorageLocation)
                     var result = [
                         {
                             type: 'downloader.storageService',
@@ -87,16 +89,20 @@
                         },
                         {
                             type: 'downloader.photoDirectories',
-                            value: this.folderLocation
+                            value: this.photoStorageLocation
                         },
+                        {
+                            type: 'SimpleSummaryService.directory',
+                            value: this.summaryLocation
+                        }
                     ]
                     this.$emit('set_value', result)
                 }
             },
             setFolderForStorage(event) {
                 event.forEach(item => {
-                    if (item.type === 'downloader.PhotoDirectories') {
-                        this.folderLocation = item.value
+                    if (item.type === 'downloader.photoDirectories') {
+                        this.photoStorageLocation = item.value
                     }
                 })
                 this.emitChange()

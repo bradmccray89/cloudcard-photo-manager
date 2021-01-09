@@ -58,7 +58,7 @@
             emitChanges() {
                 var result = [
                     {
-                        type: 'downloader.PhotoDirectories',
+                        type: 'downloader.photoDirectories',
                         value: this.selectedPath
                     },
                 ]

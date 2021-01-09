@@ -1,8 +1,0 @@
-{
-    "cloudcard.api.url": "https://test-api.onlinephotosubmission.com/api",
-    "cloudcard.api.accessToken": "af2udnqstns38gt9bos9nn1refs1bir5",
-    "downloader.repeat": false,
-    "downloader.fetchStatuses": "PENDING",
-    "downloader.putStatus": "PENDING",
-    "downloader.minPhotoIdLength": 0
-}

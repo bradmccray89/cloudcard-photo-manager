@@ -2,7 +2,7 @@
   <div class="text-center">
     <v-container fluid>
       <img alt="CloudCard Photo Manager" src="../assets/logo-only-300x300.png">
-      <Welcome msg="Welcome to Cloudcard Photo Manager"/>
+      <Welcome msg="Welcome to Cloudcard Photo Manager" v-bind:showRedownloadButton="showRedownloadButton"/>
     </v-container>
   </div>
 </template>
@@ -19,12 +19,18 @@ export default {
     Welcome
   },
 
+  data: () => {
+    return {
+      savedDownloadSettings: [],
+      showRedownloadButton: false
+    }
+  },
+
   created: function() {
     let jsonFile = 'application-properties.json'
     if (fs.existsSync(jsonFile)) {
-      let rawFileData = fs.readFileSync(jsonFile)
-      let fileData = JSON.parse(rawFileData)
-      console.log(fileData)
+      this.showRedownloadButton = true
+      this.savedDownloadSettings = JSON.parse(fs.readFileSync(jsonFile))
     }
   },
 

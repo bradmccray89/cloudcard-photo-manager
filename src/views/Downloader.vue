@@ -118,6 +118,9 @@ export default {
     },
 
     created: function () {
+        if (this.$route.query.inputDataFromFile.length !== 0) {
+            this.results = this.$route.query.inputDataFromFile
+        }
     },
 
     methods: {

@@ -9,7 +9,7 @@
             <v-row class="d-flex justify-center mb-3">
                 <v-btn
                     class="mb-3 mt-5"
-                    to="/Downloader">
+                    :to="{ path: '/Downloader/Api', query: { inputDataFromFile: this.results } }">
                         New Download
                 </v-btn>
             </v-row>
@@ -55,8 +55,6 @@ export default {
     } else if (fs.existsSync(this.savedDownloadScriptShell)) {
         this.shell = fs.readFileSync(this.savedDownloadScriptShell)
     }
-    console.log(this.batch)
-    console.log(this.shell)
   },
 
   methods: {
@@ -70,15 +68,16 @@ export default {
         }
     },
     getFileData() {
-        this.savedDownloadSettings = JSON.parse(fs.readFileSync(this.savedDownloadSettingsFileName))
-        for (var key in this.savedDownloadSettings) {
-            var value = this.savedDownloadSettings[key]
-            var item = {
-                type: key,
-                value: value
+        if (fs.existsSync(this.savedDownloadSettingsFileName)) {
+            this.savedDownloadSettings = JSON.parse(fs.readFileSync(this.savedDownloadSettingsFileName))
+            for (var key in this.savedDownloadSettings) {
+                var value = this.savedDownloadSettings[key]
+                var item = {
+                    type: key,
+                    value: value
+                }
+                this.results.push(item)
             }
-            console.log(key + ': ', value)
-            this.results.push(item)
         }
     }
   }

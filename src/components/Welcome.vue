@@ -9,7 +9,7 @@
             <v-row class="d-flex justify-center mb-3">
                 <v-btn
                     class="mb-3 mt-5"
-                    :to="{ path: '/Downloader/Api', query: { inputDataFromFile: this.results } }">
+                    :to="{ path: '/Downloader/Api', query: { jsonInputData: this.savedDownloadSettings } }">
                         New Download
                 </v-btn>
             </v-row>

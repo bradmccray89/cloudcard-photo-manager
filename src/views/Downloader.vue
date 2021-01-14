@@ -26,9 +26,11 @@
             <v-container fluid>
                 <router-view 
                     v-on:set_value="setValue($event)"
-                    v-bind:data="results[currentTabIndex]"
-                    v-bind:endpoint="endpoint"
-                    v-bind:fetchData="results[currentTabIndex + 1]">
+                    v-bind:apiData="apiData"
+                    v-bind:loginData="loginData"
+                    v-bind:storageData="storageData"
+                    v-bind:repeatData="repeatData"
+                    v-bind:statusData="statusData">
                 </router-view>
             </v-container>
         </v-main>
@@ -103,7 +105,12 @@ export default {
             ],
             results: [],
             value: '',
-            jarFileLocation: ''
+            jarFileLocation: '',
+            apiData: '',
+            loginData: '',
+            storageData: '',
+            repeatData: '',
+            statusData: ''
         }
     },
 
@@ -227,7 +234,7 @@ export default {
                     this.results.push(item)
                 }
             }
-        }
+        },
     }
 };
 </script>

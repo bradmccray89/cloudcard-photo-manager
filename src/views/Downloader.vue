@@ -103,9 +103,8 @@ export default {
                     component: Status
                 },
             ],
-            results: [],
+            downloadData: {},
             value: '',
-            jarFileLocation: '',
             apiData: '',
             loginData: '',
             storageData: '',
@@ -117,16 +116,21 @@ export default {
     computed: {
         endpoint: function () {
             if (this.currentTab?.name === 'Login') {
-                return this.results.find(result => result.type === 'cloudcard.api.url')?.value
+                return this.downloadData.find(result => result.type === 'cloudcard.api.url')?.value
             } else {
                 return undefined
+            }
+        },
+        apiData: function () {
+            return {
+                'cloudcard.api.url': this.downloadData['cloudcard.api.url'],
             }
         },
     },
 
     created: function () {
         if (this.$route.query.inputDataFromFile.length !== 0) {
-            this.results = this.$route.query.inputDataFromFile
+            this.downloadData = this.$route.query.jsonInputData
         }
     },
 
@@ -148,15 +152,11 @@ export default {
         },
         setValue(event) {
             event.forEach(item => {
-                if (item.type !== 'jarFileLocation') {
-                    this.value = {
-                        type: item.type,
-                        value: item.value
-                    }
-                    this.saveValueToResults()
-                } else {
-                    this.jarFileLocation = item.value
+                this.value = {
+                    type: item.type,
+                    value: item.value
                 }
+                this.saveValueToDownloadData()
             })
             if (!this.tabs[this.currentTabIndex + 1]) {
                 this.saveToFile()
@@ -164,12 +164,12 @@ export default {
                 this.goToNextStep()
             }
         },
-        saveValueToResults() {
-            var foundIndex = this.results.findIndex(result => this.value.type === result.type)
+        saveValueToDownloadData() {
+            var foundIndex = this.downloadData.findIndex(result => this.value.type === result.type)
             if (foundIndex >= 0) {
-                this.results[foundIndex] = this.value
+                this.downloadData[foundIndex] = this.value
             } else if (this.value) {
-                this.results.push(this.value);
+                this.downloadData.push(this.value);
             }
             this.value = '';
         },
@@ -178,7 +178,7 @@ export default {
             this.setCurrentTab()
         },
         saveToFile(filename) {
-            var dataToSave = this.createJsonFromArray(this.results)
+            var dataToSave = this.createJsonFromArray(this.downloadData)
             fs.writeFileSync('application-properties.json', JSON.stringify(dataToSave, null, 4))
             this.runDownloadScript(dataToSave)
         },
@@ -215,23 +215,23 @@ export default {
             })
         },
         createJsonFromArray(dataArray) {
-            var jsonData = {}
+            var downloadData = {}
             dataArray.forEach(item => {
-                jsonData[item.type] = item.value
+                downloadData[item.type] = item.value
             })
-            this.createArrayFromJson(jsonData)
-            return jsonData
+            this.createArrayFromJson(downloadData)
+            return downloadData
         },
-        createArrayFromJson(jsonData) {
+        createArrayFromJson(downloadData) {
             var dataArray = []
-            for (var key in jsonData) {
-                if (jsonData.hasOwnProperty(key)) {
-                    var value = jsonData[key]
+            for (var key in downloadData) {
+                if (downloadData.hasOwnProperty(key)) {
+                    var value = downloadData[key]
                     var item = {
                         type: key,
                         value: value
                     }
-                    this.results.push(item)
+                    this.downloadData.push(item)
                 }
             }
         },

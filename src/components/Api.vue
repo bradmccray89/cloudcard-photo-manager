@@ -15,10 +15,10 @@
             </v-tooltip>
         </div>
         <v-select
-            v-model="endpoint"
+            v-model="apiData"
             :items="api"
             item-text="name"
-            item-value="url"
+            item-value="value"
             label="API Endpoint"
             hint="Choose an API to use"
             dense
@@ -33,11 +33,11 @@
         name: 'Api',
 
         props: {
-            data: {
+            apiData: {
                 type: Object,
                 default: function() {
                     return {
-                        type: 'cloudcard.api.url',
+                        name: 'cloudcard.api.url',
                         value: 'https://api.onlinephotosubmission.com/api'
                     }
                 }
@@ -45,7 +45,8 @@
         },
 
         created: function () {
-            this.endpoint = this.api.find(f => f.url === this.data.value).url
+            console.log('apiData', this.apiData)
+            this.endpoint = this.api.find(f => f.value === this.apiData['cloudcard.api.url']).value
         },
 
         data() {
@@ -56,11 +57,11 @@
                 api: [
                     {
                         name: 'Production',
-                        url: 'https://api.onlinephotosubmission.com/api'
+                        value: 'https://api.onlinephotosubmission.com/api'
                     },
                     {
                         name: 'Test',
-                        url: 'https://test-api.onlinephotosubmission.com/api'
+                        value: 'https://test-api.onlinephotosubmission.com/api'
                     }
                 ],
                 endpoint: ''
@@ -69,12 +70,9 @@
 
         methods: {
             emitChange() {
-                var result = [
-                    {
-                        type: 'cloudcard.api.url',
-                        value: this.endpoint
+                var result = {
+                        'cloudcard.api.url': this.apiData
                     }
-                ]
                 this.$emit('set_value', result)
             }
         }

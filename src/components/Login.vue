@@ -20,6 +20,10 @@
                 </template>
                 <span>Login to get your access token in order to download your organizations photos. Make sure to login with an account with the "SERVICE" and "OFFICE" roles</span>
             </v-tooltip>
+            <v-spacer></v-spacer>
+            <span class="ml-5" v-if="loginData.accessToken.value">
+                <span>Currently logged in as <strong>{{ loginData.username.value }}</strong></span>
+            </span>
         </div>
         <v-form id="login-info"
             v-model="valid"
@@ -42,7 +46,7 @@
             </v-text-field>
         </v-form>
         <v-btn
-            class="float-right mb-3"
+            class="float-right"
             color="primary"
             :disabled="!input.username || !input.password || !this.valid || this.validateOverride"
             @click="login()">
@@ -181,7 +185,4 @@
 </script>
 
 <style scoped>
-    #login-info {
-        width: 80%;
-    }
 </style>

@@ -76,14 +76,32 @@
     export default {
         name: 'Status',
 
-        props: [
-            'data',
-            'fetchData'
-        ],
+        props: {
+            statusData: {
+                type: Object,
+                default: function() {
+                    return {
+                        fetchStatuses: {
+                            type: 'downloader.fetchStatuses',
+                            value: this.fetchStatus
+                        },
+                        putStatus: {
+                            type: 'downloader.putStatus',
+                            value: this.putStatus
+                        },
+                        minimumIdLength: {
+                            type: 'downloader.minPhotoIdLength',
+                            value: this.minimumIdLength
+                        }
+                    }
+                }
+            }
+        },
 
         created: function () {
-            this.putStatus = (this.data) ? this.data.value : 'DOWNLOADED'
-            this.fetchStatus = (this.fetchData) ? this.fetchData.value : 'READY_FOR_DOWNLOAD'
+            this.fetchStatus = this.statusData.fetchStatuses.value
+            this.putStatus = this.statusData.putStatus.value
+            this.minimumIdLength = this.statusData.minimumIdLength.value
         },
 
         data () {

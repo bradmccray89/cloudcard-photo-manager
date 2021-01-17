@@ -144,6 +144,30 @@ export default {
                 type: 'SimpleSummaryService.directory',
                 value: this.downloadData['SimpleSummaryService.directory']
             }
+        },
+        this.repeatData = {
+            repeat: {
+                type: 'downloader.repeat',
+                value: this.downloadData['downloader.repeat']
+            },
+            delay: {
+                type: 'donwloader.delay.milliseconds',
+                value: this.downloadData['downloader.delay.milliseconds']
+            }
+        },
+        this.statusData = {
+            fetchStatuses: {
+                type: 'downloader.fetchStatuses',
+                value: this.fetchStatus
+            },
+            putStatus: {
+                type: 'downloader.putStatus',
+                value: this.putStatus
+            },
+            minimumIdLength: {
+                type: 'downloader.minPhotoIdLength',
+                value: this.minimumIdLength
+            }
         }
     },
 

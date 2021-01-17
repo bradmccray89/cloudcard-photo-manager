@@ -36,8 +36,8 @@
                     <span>The amount of time the downloader will wait in between download attempts.</span>
                 </v-tooltip>
             </div>
-            <div class="delay-input">
-                <v-text-field
+            <div class="d-flex">
+                <v-text-field class="flex-grow-1 mr-2"
                     v-model="days"
                     :rules="dayRules"
                     hide-details="auto"
@@ -46,7 +46,7 @@
                     solo>
                     <span slot="append">days</span>
                 </v-text-field>
-                <v-text-field class="delay-input"
+                <v-text-field class="delay-input flex-grow-1 mr-2"
                     v-model="hours"
                     :rules="hourRules"
                     hide-details="auto"
@@ -55,7 +55,7 @@
                     solo>
                     <span slot="append">hours</span>
                 </v-text-field>
-                <v-text-field class="delay-input"
+                <v-text-field class="delay-input flex-grow-1"
                     v-model="minutes"
                     :rules="minuteRules"
                     hide-details="auto"
@@ -77,6 +77,24 @@
 <script>
     export default {
         name: 'Storage',
+
+        props: {
+            repeatData: {
+                type: Object,
+                default: function() {
+                    return {
+                        repeat: {
+                            type: 'downloader.repeat',
+                            value: true
+                        },
+                        delay: {
+                            type: 'downloader.delay.milliseconds',
+                            value: 60000
+                        }
+                    }
+                }
+            }
+        },
 
         data: () => ({
             days: 0,
@@ -101,35 +119,34 @@
             ],
         }),
 
+        created: function () {
+            this.repeat = this.repeatData.repeat.value
+            this.delay =  this.repeatData.delay.value
+        },
+
         methods: {
             setRepeat() {
-                if (this.repeat) {
-                    var result = [
-                        {
-                            type: 'downloader.repeat',
-                            value: this.repeat
-                        },
-                        {
-                            type: 'downloader.delay.milliseconds',
-                            value: this.calculateDelay()
-                        }
-                    ]
-                    this.$emit('set_value', result)
-                } else {
-                    var result = [
-                        {
-                            type: 'downloader.repeat',
-                            value: false
-                        }
-                    ]
-                    this.$emit('set_value', result)
-                }
+                var result = [
+                    {
+                        type: 'downloader.repeat',
+                        value: this.repeat
+                    },
+                    {
+                        type: 'downloader.delay.milliseconds',
+                        value: this.calculateDelay()
+                    }
+                ]
+                this.$emit('set_value', result)
             },
             calculateDelay() {
-                let msDays = (this.days * 24 * 60 * 60 * 1000)
-                let msHours = (this.hours * 60 * 60 * 1000)
-                let msMinutes = (this.minutes * 60 * 1000)
-                this.delay = msDays + msHours + msMinutes
+                if (this.repeat) {
+                    let msDays = (this.days * 24 * 60 * 60 * 1000)
+                    let msHours = (this.hours * 60 * 60 * 1000)
+                    let msMinutes = (this.minutes * 60 * 1000)
+                    this.delay = msDays + msHours + msMinutes
+                } else {
+                    this.delay = 0
+                }
                 return this.delay
             }
         }
@@ -137,19 +154,6 @@
 </script>
 
 <style scoped>
-    .delay-input {
-        display: flex;
-        justify-content: center;
-        max-width: 500px;
-    }
-    .delay-input > * {
-        min-width: 120px;
-        width: 20%;
-        margin-right: 10px;
-    }
-    v-text-field {
-        margin-right: 10px;
-    }
     .v-input--selection-controls {
         padding-top: 0;
     }

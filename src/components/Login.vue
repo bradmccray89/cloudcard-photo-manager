@@ -44,7 +44,7 @@
         <v-btn
             class="float-right mb-3"
             color="primary"
-            :disabled="!input.username || !input.password"
+            :disabled="!input.username || !input.password || !this.valid || this.validateOverride"
             @click="login()">
                 Login
         </v-btn>
@@ -61,17 +61,45 @@
     export default {
         name: 'Login',
 
-        props: [
-            'data',
-            'endpoint'
-        ],
+        props: {
+            loginData: {
+                type: Object,
+                default: function() {
+                    return {
+                        accessToken: {
+                            type: 'cloudcard.api.accessToken',
+                            value: ''
+                        },
+                        username: {
+                            type: 'username',
+                            value: ''
+                        }
+                    }
+                }
+            },
+            apiData: {
+                type: Object,
+                default: function() {
+                    return {
+                        type: 'cloudcard.api.url',
+                        value: ''
+                    }
+                }
+            }
+        },
 
         created: function () {
-            this.loggedIn = this.data?.value ? true : false
+            this.loggedIn = (this.loginData.accessToken.value != '')
+            this.endpoint = this.apiData.value
+            if (this.endpoint == '') {
+                this.validateOverride = true
+                this.errorAlert('No API is chosen. Please go back to \'API\' step to choose one to login to.')
+            }
         },
 
         data: () => ({
-            valid: true,
+            valid: false,
+            validateOverride: false,
             usernameRules: [
                 value => !!value || 'Username is Required.',
                 value => /^[\w-\+\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value) || 'Must be a valid E-mail'
@@ -117,6 +145,10 @@
                             {
                                 type: 'cloudcard.api.accessToken',
                                 value: this.accessToken
+                            },
+                            {
+                                type: 'username',
+                                value: this.input.username
                             }
                         ]
                         this.$emit('set_value', result)

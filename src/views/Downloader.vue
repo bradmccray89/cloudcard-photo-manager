@@ -113,24 +113,37 @@ export default {
         }
     },
 
-    computed: {
-        endpoint: function () {
-            if (this.currentTab?.name === 'Login') {
-                return this.downloadData.find(result => result.type === 'cloudcard.api.url')?.value
-            } else {
-                return undefined
-            }
-        },
-        apiData: function () {
-            return {
-                'cloudcard.api.url': this.downloadData['cloudcard.api.url'],
-            }
-        },
-    },
-
     created: function () {
-        if (this.$route.query.inputDataFromFile.length !== 0) {
+        if (this.$route.query.jsonInputData.length !== 0) {
             this.downloadData = this.$route.query.jsonInputData
+        }
+        this.apiData = {
+            type: 'cloudcard.api.url',
+            value: this.downloadData['cloudcard.api.url']
+        },
+        this.loginData = {
+            accessToken: {
+                type: 'cloudcard.api.accessToken',
+                value: this.downloadData['cloudcard.api.accessToken']
+            },
+            username: {
+                type: 'username',
+                value: this.downloadData['username']
+            }
+        },
+        this.storageData = {
+            storageType: {
+                type: 'downloader.storageService',
+                value: this.downloadData['downloader.storageService']
+            },
+            photoStorageLocation: {
+                type: 'downloader.photoDirectories',
+                value: this.downloadData['downloader.photoDirectories']
+            },
+            summaryLocation: {
+                type: 'SimpleSummaryService.directory',
+                value: this.downloadData['SimpleSummaryService.directory']
+            }
         }
     },
 
@@ -158,6 +171,7 @@ export default {
                 }
                 this.saveValueToDownloadData()
             })
+            console.log('downloadData: ', this.downloadData)
             if (!this.tabs[this.currentTabIndex + 1]) {
                 this.saveToFile()
             } else {
@@ -165,12 +179,8 @@ export default {
             }
         },
         saveValueToDownloadData() {
-            var foundIndex = this.downloadData.findIndex(result => this.value.type === result.type)
-            if (foundIndex >= 0) {
-                this.downloadData[foundIndex] = this.value
-            } else if (this.value) {
-                this.downloadData.push(this.value);
-            }
+            console.log('value:', this.value)
+            this.downloadData[this.value.type] = this.value.value
             this.value = '';
         },
         goToNextStep() {

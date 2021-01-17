@@ -15,7 +15,7 @@
             </v-tooltip>
         </div>
         <v-select
-            v-model="apiData"
+            v-model="apiChoice"
             :items="api"
             item-text="name"
             item-value="value"
@@ -37,7 +37,7 @@
                 type: Object,
                 default: function() {
                     return {
-                        name: 'cloudcard.api.url',
+                        type: 'cloudcard.api.url',
                         value: 'https://api.onlinephotosubmission.com/api'
                     }
                 }
@@ -45,8 +45,8 @@
         },
 
         created: function () {
-            console.log('apiData', this.apiData)
-            this.endpoint = this.api.find(f => f.value === this.apiData['cloudcard.api.url']).value
+            this.endpoint = this.api.find(f => f.value === this.apiData['cloudcard.api.url'])?.value
+            this.apiChoice = this.api.find(f => f.value === this.apiData.value)
         },
 
         data() {
@@ -64,15 +64,18 @@
                         value: 'https://test-api.onlinephotosubmission.com/api'
                     }
                 ],
-                endpoint: ''
+                apiChoice: {}
             }
         },
 
         methods: {
             emitChange() {
-                var result = {
-                        'cloudcard.api.url': this.apiData
+                var result = [
+                    {
+                        type: this.apiData.type,
+                        value: this.endpoint
                     }
+                ]
                 this.$emit('set_value', result)
             }
         }

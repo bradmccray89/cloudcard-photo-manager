@@ -16,7 +16,7 @@
         </div>
         <v-select
             v-model="storageChoice"
-            :items="storageType"
+            :items="storageTypes"
             item-text="name"
             item-value="entry"
             label="Storage Service"
@@ -44,24 +44,36 @@
         },
 
         props: {
-            data: {
+            storageData: {
                 type: Object,
                 default: function() {
                     return {
-                        type: 'storage_service',
-                        value: 'FileStorageService'
+                        storageType: {
+                            type: 'downloader.storageService',
+                            value: this.downloadData['downloader.storageService']
+                        },
+                        photoStorageLocation: {
+                            type: 'downloader.photoDirectories',
+                            value: this.downloadData['downloader.photoDirectories']
+                        },
+                        summaryLocation: {
+                            type: 'SimpleSummaryService.directory',
+                            value: this.downloadData['SimpleSummaryService.directory']
+                        }
                     }
                 }
             }
         },
 
         created: function () {
-            this.storageChoice = this.storageType.find(f => f.entry === this.data?.value)?.entry
+            this.storageChoice = this.storageTypes.find(f => f.entry === this.storageData.storageType.value).entry
+            this.photoStorageLocation = this.storageData.photoStorageLocation.value
+            this.summaryLocation = this.storageData.summaryLocation.value
         },
 
         data() {
             return {
-                storageType: [
+                storageTypes: [
                     {
                         name: 'File Storage',
                         entry: 'FileStorageService'

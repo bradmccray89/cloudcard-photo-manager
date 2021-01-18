@@ -158,15 +158,15 @@ export default {
         this.statusData = {
             fetchStatuses: {
                 type: 'downloader.fetchStatuses',
-                value: this.fetchStatus
+                value: this.downloadData['downloader.fetchStatuses']
             },
             putStatus: {
                 type: 'downloader.putStatus',
-                value: this.putStatus
+                value: this.downloadData['downloader.putStatus']
             },
             minimumIdLength: {
                 type: 'downloader.minPhotoIdLength',
-                value: this.minimumIdLength
+                value: this.downloadData['downloader.minPhotoIdLength']
             }
         }
     },

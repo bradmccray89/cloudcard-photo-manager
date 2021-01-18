@@ -20,6 +20,7 @@
             dense
             chips
             label="Input Photo Status"
+            multiple
             solo>
         </v-select>
         <div class="d-flex flex-row mb-1">
@@ -99,14 +100,14 @@
         },
 
         created: function () {
-            this.fetchStatus = this.statusData.fetchStatuses.value
+            this.fetchStatus = this.statusData.fetchStatuses.value.split(',')
             this.putStatus = this.statusData.putStatus.value
             this.minimumIdLength = this.statusData.minimumIdLength.value
         },
 
         data () {
             return {
-                fetchStatus: '',
+                fetchStatus: [],
                 putStatus: '',
                 minimumIdLength: 0,
                 idRules: [
@@ -126,10 +127,18 @@
 
         methods: {
             setPhotoStatuses() {
+                var concatFetchStatuses = ''
+                this.fetchStatus.forEach((status, index) => {
+                    if (index === 0) {
+                        concatFetchStatuses = concatFetchStatuses.concat(status)
+                    } else {
+                        concatFetchStatuses = concatFetchStatuses.concat(',' + status)
+                    }
+                })
                 var result = [
                     {
                         type: 'downloader.fetchStatuses',
-                        value: this.fetchStatus
+                        value: concatFetchStatuses
                     },
                     {
                         type: 'downloader.putStatus',
@@ -140,7 +149,7 @@
                         value: this.minimumIdLength
                     }
                 ]
-                this.$emit('set_value', result)
+                // this.$emit('set_value', result)
             },
         }
     }

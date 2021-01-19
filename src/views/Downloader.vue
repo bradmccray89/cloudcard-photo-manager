@@ -21,12 +21,15 @@
                     </v-list-item>
                 </v-list-item-group>
             </v-list>
+            <v-divider></v-divider>
             <div>
-                <v-btn
-                    x-small
-                    @click="toggle()">
-                    Advanced Settings
-                </v-btn>
+                <v-switch class="advanced-settings p-0 ml-4 mt-0"
+                    v-model="advancedSettings"
+                    inset
+                    dense
+                    hide-details
+                    :label="'Advanced Settings'">
+                </v-switch>
             </div>
             <AdvancedSettings v-if="advancedSettings"></AdvancedSettings>
         </v-navigation-drawer>

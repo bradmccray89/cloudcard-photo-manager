@@ -1,5 +1,5 @@
 <template>    
-    <v-list>
+    <v-list dense rounded nav>
         <v-list-item-group
             color="primary">
             <v-list-item

@@ -30,7 +30,7 @@
             </div>
             <AdvancedSettings v-if="advancedSettings"></AdvancedSettings>
         </v-navigation-drawer>
-        <v-main>
+        <v-main class="mr-10">
             <v-container fluid>
                 <router-view 
                     v-on:set_value="setValue($event)"

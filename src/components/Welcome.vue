@@ -10,7 +10,7 @@
                 <v-btn
                     class="mb-3 mt-5"
                     :to="{ path: '/Downloader/Api', query: { jsonInputData: this.savedDownloadSettings } }">
-                        New Download
+                        Change Settings
                 </v-btn>
             </v-row>
             <v-row class="d-flex justify-center">
@@ -19,7 +19,7 @@
                     color="primary"
                     v-if="showRedownloadButton"
                     @click="redownloadPhotos">
-                        Re-run Download
+                        Run Downloader
                 </v-btn>
             </v-row>
         </v-container>

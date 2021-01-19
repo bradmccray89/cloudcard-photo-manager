@@ -21,6 +21,14 @@
                     </v-list-item>
                 </v-list-item-group>
             </v-list>
+            <div>
+                <v-btn
+                    x-small
+                    @click="toggle()">
+                    Advanced Settings
+                </v-btn>
+            </div>
+            <AdvancedSettings v-if="advancedSettings"></AdvancedSettings>
         </v-navigation-drawer>
         <v-main>
             <v-container fluid>
@@ -43,6 +51,7 @@ import Api from '../components/Api'
 import Storage from '../components/Storage'
 import Repeat from '../components/Repeat'
 import Status from '../components/Status'
+import AdvancedSettings from '../components/AdvancedSettings'
 import { exec } from 'child_process'
 
 const fs = require('fs')
@@ -56,7 +65,8 @@ export default {
         Api,
         Storage,
         Repeat,
-        Status
+        Status,
+        AdvancedSettings
     },
 
     watch: {
@@ -67,6 +77,7 @@ export default {
 
     data () {
         return {
+            advancedSettings: false,
             cmd: 'java',
             currentTab: null,
             currentTabIndex: 0,
@@ -172,6 +183,9 @@ export default {
     },
 
     methods: {
+        toggle() {
+            this.advancedSettings = !this.advancedSettings
+        },
         setCurrentTab(currentPath = null) {
             if (currentPath) {
                 this.currentTab = this.tabs.find((tab, index) => {

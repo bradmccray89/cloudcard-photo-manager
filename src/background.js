@@ -20,7 +20,9 @@ async function createWindow() {
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
     },
-    autoHideMenuBar: true
+    autoHideMenuBar: true,
+    icon: 'src/assets/logo-only-40x40.png',
+    title: 'Cloudcard Photo Manager'
   })
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {

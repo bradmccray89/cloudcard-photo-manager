@@ -22,8 +22,8 @@ export default {
             tabs: [
                 {
                     id: 1,
-                    name: "API",
-                    url: "/Downloader/API",
+                    name: "Scripts",
+                    url: "/Downloader/Scripts",
                 },
                 {
                     id: 2,

@@ -41,7 +41,8 @@
                     v-bind:loginData="loginData"
                     v-bind:storageData="storageData"
                     v-bind:repeatData="repeatData"
-                    v-bind:statusData="statusData">
+                    v-bind:statusData="statusData"
+                    v-bind:scriptData="scriptData">
                 </router-view>
             </v-container>
         </v-main>
@@ -123,7 +124,8 @@ export default {
             loginData: '',
             storageData: '',
             repeatData: '',
-            statusData: ''
+            statusData: '',
+            scriptData: {}
         }
     },
 
@@ -213,9 +215,7 @@ export default {
                 this.saveValueToDownloadData()
             })
             console.log('downloadData: ', this.downloadData)
-            if (!this.tabs[this.currentTabIndex + 1]) {
-                this.saveToFile()
-            } else {
+            if (this.tabs[this.currentTabIndex + 1]) {
                 this.goToNextStep()
             }
         },

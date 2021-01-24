@@ -86,8 +86,8 @@
                     </v-tooltip>
                 </div>
                 <v-file-input class="mb-2"
-                    outlined
                     dense
+                    solo
                     hide-details
                     @change="setPostDownload">
                 </v-file-input>

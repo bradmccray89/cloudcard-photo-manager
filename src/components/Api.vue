@@ -73,9 +73,10 @@
                 var result = [
                     {
                         type: this.apiData.type,
-                        value: this.endpoint
+                        value: this.apiChoice
                     }
                 ]
+                console.log('result', result)
                 this.$emit('set_value', result)
             }
         }

@@ -28,11 +28,13 @@
         <FileStorage v-if="storageChoice === 'FileStorageService'"
             v-on:set_folders="setFolderForStorage">
         </FileStorage>
+        <DatabaseConnection v-if="storageChoice === 'SimpleDatabaseStorageService'"></DatabaseConnection>
     </v-container>
 </template>
 
 <script>
     import FileStorage from './FileStorage'
+    import DatabaseConnection from './DatabaseConnection'
 
     const path = require('path')
 

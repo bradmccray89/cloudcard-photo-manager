@@ -42,10 +42,30 @@ const routes = [
         name: 'Storage',
         component: () => import('../components/Storage')
       },
-            {
+      {
         path: 'Scripts',
         name: 'Scripts',
         component: () => import('../components/Scripts')
+      },
+      {
+        path: 'FileNameResolver',
+        name: 'File Name Resolver',
+        component: () => import('../components/FileNameResolver')
+      },
+      {
+        path: 'Pre-Processor',
+        name: 'Pre-Processor',
+        component: () => import('../components/Pre-Processor')
+      },
+      {
+        path: 'Post-Processor',
+        name: 'Post-Processor',
+        component: () => import('../components/Post-Processor')
+      },
+      {
+        path: 'SummaryService',
+        name: 'Summary Service',
+        component: () => import('../components/SummaryService')
       }
     ]
   }

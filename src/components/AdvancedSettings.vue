@@ -27,23 +27,23 @@ export default {
                 },
                 {
                     id: 2,
-                    name: "Login",
-                    url: "/Downloader/Login",
+                    name: "File Name Resolver",
+                    url: "/Downloader/FileNameResolver",
                 },
                 {
                     id: 3,
-                    name: "Storage",
-                    url: "/Downloader/Storage",
+                    name: "Pre-Processor",
+                    url: "/Downloader/Pre-Processor",
                 },
                 {
                     id: 4,
-                    name: "Repeat",
-                    url: "/Downloader/Repeat",
+                    name: "Post-Processor",
+                    url: "/Downloader/Post-Processor",
                 },
                 {
                     id: 5,
-                    name: "Status",
-                    url: "/Downloader/Status",
+                    name: "Summary Service",
+                    url: "/Downloader/SummaryService",
                 },
             ]
         }

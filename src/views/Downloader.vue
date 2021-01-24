@@ -133,58 +133,7 @@ export default {
         if (this.$route.query.jsonInputData.length !== 0) {
             this.downloadData = this.$route.query.jsonInputData
         }
-        this.apiData = {
-            type: 'cloudcard.api.url',
-            value: this.downloadData['cloudcard.api.url']
-        },
-        this.loginData = {
-            accessToken: {
-                type: 'cloudcard.api.accessToken',
-                value: this.downloadData['cloudcard.api.accessToken']
-            },
-            username: {
-                type: 'username',
-                value: this.downloadData['username']
-            }
-        },
-        this.storageData = {
-            storageType: {
-                type: 'downloader.storageService',
-                value: this.downloadData['downloader.storageService']
-            },
-            photoStorageLocation: {
-                type: 'downloader.photoDirectories',
-                value: this.downloadData['downloader.photoDirectories']
-            },
-            summaryLocation: {
-                type: 'SimpleSummaryService.directory',
-                value: this.downloadData['SimpleSummaryService.directory']
-            }
-        },
-        this.repeatData = {
-            repeat: {
-                type: 'downloader.repeat',
-                value: this.downloadData['downloader.repeat']
-            },
-            delay: {
-                type: 'donwloader.delay.milliseconds',
-                value: this.downloadData['downloader.delay.milliseconds']
-            }
-        },
-        this.statusData = {
-            fetchStatuses: {
-                type: 'downloader.fetchStatuses',
-                value: this.downloadData['downloader.fetchStatuses']
-            },
-            putStatus: {
-                type: 'downloader.putStatus',
-                value: this.downloadData['downloader.putStatus']
-            },
-            minimumIdLength: {
-                type: 'downloader.minPhotoIdLength',
-                value: this.downloadData['downloader.minPhotoIdLength']
-            }
-        }
+        this.setPropDataForComponents()
     },
 
     methods: {
@@ -214,7 +163,6 @@ export default {
                 }
                 this.saveValueToDownloadData()
             })
-            console.log('downloadData: ', this.downloadData)
             if (this.tabs[this.currentTabIndex + 1]) {
                 this.goToNextStep()
             }
@@ -222,14 +170,16 @@ export default {
         saveValueToDownloadData() {
             console.log('value:', this.value)
             this.downloadData[this.value.type] = this.value.value
+            console.log('downloadData', this.downloadData)
             this.value = '';
+            this.setPropDataForComponents()
         },
         goToNextStep() {
             this.$router.push({ name: this.tabs[this.currentTabIndex + 1].name })
             this.setCurrentTab()
         },
-        saveToFile(filename) {
-            var dataToSave = this.createJsonFromArray(this.downloadData)
+        saveToFile() {
+            var dataToSave = this.downloadData
             fs.writeFileSync('application-properties.json', JSON.stringify(dataToSave, null, 4))
             this.runDownloadScript(dataToSave)
         },
@@ -265,24 +215,57 @@ export default {
                 });
             })
         },
-        createJsonFromArray(dataArray) {
-            var downloadData = {}
-            dataArray.forEach(item => {
-                downloadData[item.type] = item.value
-            })
-            this.createArrayFromJson(downloadData)
-            return downloadData
-        },
-        createArrayFromJson(downloadData) {
-            var dataArray = []
-            for (var key in downloadData) {
-                if (downloadData.hasOwnProperty(key)) {
-                    var value = downloadData[key]
-                    var item = {
-                        type: key,
-                        value: value
-                    }
-                    this.downloadData.push(item)
+        setPropDataForComponents() {
+            this.apiData = {
+                type: 'cloudcard.api.url',
+                value: this.downloadData['cloudcard.api.url']
+            },
+            this.loginData = {
+                accessToken: {
+                    type: 'cloudcard.api.accessToken',
+                    value: this.downloadData['cloudcard.api.accessToken']
+                },
+                username: {
+                    type: 'username',
+                    value: this.downloadData['username']
+                }
+            },
+            this.storageData = {
+                storageType: {
+                    type: 'downloader.storageService',
+                    value: this.downloadData['downloader.storageService']
+                },
+                photoStorageLocation: {
+                    type: 'downloader.photoDirectories',
+                    value: this.downloadData['downloader.photoDirectories']
+                },
+                summaryLocation: {
+                    type: 'SimpleSummaryService.directory',
+                    value: this.downloadData['SimpleSummaryService.directory']
+                }
+            },
+            this.repeatData = {
+                repeat: {
+                    type: 'downloader.repeat',
+                    value: this.downloadData['downloader.repeat']
+                },
+                delay: {
+                    type: 'donwloader.delay.milliseconds',
+                    value: this.downloadData['downloader.delay.milliseconds']
+                }
+            },
+            this.statusData = {
+                fetchStatuses: {
+                    type: 'downloader.fetchStatuses',
+                    value: this.downloadData['downloader.fetchStatuses']
+                },
+                putStatus: {
+                    type: 'downloader.putStatus',
+                    value: this.downloadData['downloader.putStatus']
+                },
+                minimumIdLength: {
+                    type: 'downloader.minPhotoIdLength',
+                    value: this.downloadData['downloader.minPhotoIdLength']
                 }
             }
         },

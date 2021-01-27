@@ -27,13 +27,17 @@
     export default {
         name: 'FileStorage',
 
-        props: {
-        },
+        props: [
+            'selectedPath'
+        ],
 
         data() {
             return {
-                selectedPath: '',
             }
+        },
+
+        created: function() {
+
         },
 
         methods: {

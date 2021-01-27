@@ -26,6 +26,7 @@
         </v-select>
         <v-divider></v-divider>
         <FileStorage v-if="storageChoice === 'FileStorageService'"
+            v-bind:selectedPath="storageData.photoStorageLocation.value"
             v-on:set_folders="setFolderForStorage">
         </FileStorage>
         <DatabaseConnection v-if="storageChoice === 'SimpleDatabaseStorageService'"></DatabaseConnection>

@@ -76,7 +76,6 @@
                         value: this.apiChoice
                     }
                 ]
-                console.log('result', result)
                 this.$emit('set_value', result)
             }
         }

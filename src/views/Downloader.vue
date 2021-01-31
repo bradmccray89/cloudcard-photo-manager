@@ -25,7 +25,6 @@
             <div>
                 <v-switch class="advanced-settings p-0 ml-4 mt-0"
                     v-model="advancedSettings"
-                    inset
                     dense
                     hide-details
                     :label="'Advanced Settings'">
@@ -42,7 +41,8 @@
                     v-bind:storageData="storageData"
                     v-bind:repeatData="repeatData"
                     v-bind:statusData="statusData"
-                    v-bind:scriptData="scriptData">
+                    v-bind:scriptData="scriptData"
+                    v-bind:dbConnectionData="dbConnectionData">
                 </router-view>
             </v-container>
         </v-main>
@@ -59,7 +59,6 @@ import AdvancedSettings from '../components/AdvancedSettings'
 import { exec } from 'child_process'
 
 const fs = require('fs')
-const execSync = require('child_process').execSync
 
 export default {
     name: 'Downloader',
@@ -125,7 +124,8 @@ export default {
             storageData: '',
             repeatData: '',
             statusData: '',
-            scriptData: {}
+            scriptData: {},
+            databaseConnectionData: {}
         }
     },
 
@@ -165,12 +165,10 @@ export default {
             })
             if (this.tabs[this.currentTabIndex + 1]) {
                 this.goToNextStep()
-            }
+            }    
         },
         saveValueToDownloadData() {
-            console.log('value:', this.value)
             this.downloadData[this.value.type] = this.value.value
-            console.log('downloadData', this.downloadData)
             this.value = '';
             this.setPropDataForComponents()
         },
@@ -242,8 +240,50 @@ export default {
                 summaryLocation: {
                     type: 'SimpleSummaryService.directory',
                     value: this.downloadData['SimpleSummaryService.directory']
+                },
+                dbTableName: {
+                    type: 'db.mapping.table',
+                    value: this.downloadData['db.mapping.table']
+                },
+                dbStudentColumnName: {
+                    type: 'db.mapping.column.studentId',
+                    value: this.downloadData['db.mapping.column.studentId']
+                },
+                dbPhotoColumnName: {
+                    type: 'db.mapping.column.photoId',
+                    value: this.downloadData['db.mapping.column.photoId']
                 }
             },
+            this.databaseConnectionData = {
+                dataSourceEnable: {
+                    type: 'db.datasource.enabled',
+                    value: this.downloadData['db.datasource.enabled']
+                },
+                driverClassName: {
+                    type: 'db.datasource.driverClassName',
+                    value: this.downloadData['db.datasource.driverClassName']
+                },
+                url: {
+                    type: 'db.datasource.url',
+                    value: this.downloadData['db.datasource.url']
+                },
+                username: {
+                    type: 'db.datasource.username',
+                    value: this.downloadData['db.datasource.username']
+                },
+                password: {
+                    type: 'db.datasource.password',
+                    value: this.downloadData['db.datasource.password']
+                },
+                schema: {
+                    type: 'db.datasource.schema',
+                    value: this.downloadData['db.datasource.schema']
+                },
+                dialect: {
+                    type: 'spring.jpa.hibernate.dialect',
+                    value: this.downloadData['spring.jpa.hibernate.dialect']
+                }
+            }
             this.repeatData = {
                 repeat: {
                     type: 'downloader.repeat',

@@ -22,20 +22,31 @@
             label="Storage Service"
             dense
             solo
-            @change="emitChange()">
+            @change="changeData()">
         </v-select>
         <v-divider></v-divider>
         <FileStorage v-if="storageChoice === 'FileStorageService'"
             v-bind:selectedPath="storageData.photoStorageLocation.value"
             v-on:set_folders="setFolderForStorage">
         </FileStorage>
-        <DatabaseConnection v-if="storageChoice === 'SimpleDatabaseStorageService'"></DatabaseConnection>
+        <DatabaseStorage v-if="storageChoice === 'SimpleDatabaseStorageService'"
+            v-bind:databaseData="databaseData"
+            v-bind:dbConnectionData="dbConnectionData"
+            v-on:setDbData="setDbData">
+        </DatabaseStorage>
+        <div class="d-flex float-right">
+            <v-btn
+                color="primary"
+                @click="emitChange">
+                Next
+            </v-btn>
+        </div>
     </v-container>
 </template>
 
 <script>
     import FileStorage from './FileStorage'
-    import DatabaseConnection from './DatabaseConnection'
+    import DatabaseStorage from './DatabaseStorage'
 
     const path = require('path')
 
@@ -44,6 +55,7 @@
 
         components: {
             FileStorage,
+            DatabaseStorage
         },
 
         props: {
@@ -62,6 +74,53 @@
                         summaryLocation: {
                             type: 'SimpleSummaryService.directory',
                             value: this.downloadData['SimpleSummaryService.directory']
+                        },
+                        dbTableName: {
+                            type: 'db.mapping.table',
+                            value: this.downloadData['db.mapping.table']
+                        },
+                        dbStudentColumnName: {
+                            type: 'db.mapping.column.studentId',
+                            value: this.downloadData['db.mapping.column.studentId']
+                        },
+                        dbPhotoColumnName: {
+                            type: 'db.mapping.column.photoId',
+                            value: this.downloadData['db.mapping.column.photoId']
+                        }
+                    }
+                }
+            },
+            dbConnectionData: {
+                type: Object,
+                default: function() {
+                    return {
+                        dataSourceEnable: {
+                            type: 'db.datasource.enabled',
+                            value: this.downloadData['db.datasource.enabled']
+                        },
+                        driverClassName: {
+                            type: 'db.datasource.driverClassName',
+                            value: this.downloadData['db.datasource.driverClassName']
+                        },
+                        url: {
+                            type: 'db.datasource.url',
+                            value: this.downloadData['db.datasource.url']
+                        },
+                        username: {
+                            type: 'db.datasource.username',
+                            value: this.downloadData['db.datasource.username']
+                        },
+                        password: {
+                            type: 'db.datasource.password',
+                            value: this.downloadData['db.datasource.password']
+                        },
+                        schema: {
+                            type: 'db.datasource.schema',
+                            value: this.downloadData['db.datasource.schema']
+                        },
+                        dialect: {
+                            type: 'spring.jpa.hibernate.dialect',
+                            value: this.downloadData['spring.jpa.hibernate.dialect']
                         }
                     }
                 }
@@ -72,6 +131,9 @@
             this.storageChoice = this.storageTypes.find(f => f.entry === this.storageData.storageType.value).entry
             this.photoStorageLocation = this.storageData.photoStorageLocation.value
             this.summaryLocation = this.storageData.summaryLocation.value
+            this.databaseData['dbTableName'] = this.storageData.dbTableName
+            this.databaseData['dbStudentColumnName'] = this.storageData.dbStudentColumnName
+            this.databaseData['dbPhotoColumnName'] = this.storageData.dbPhotoColumnName
         },
 
         data() {
@@ -88,16 +150,24 @@
                 ],
                 storageChoice: '',
                 photoStorageLocation: '',
-                summaryLocation: ''
+                summaryLocation: '',
+                databaseData: {},
+                dbTable: '',
+                dbStudentColumn: '',
+                dbPhotoColumn: ''
             }
         },
 
         methods: {
-            emitChange() {
-                console.log('emitter')
+            changeData() {
                 if (this.storageType !== '' && this.photoStorageLocation !== '') {
                     this.summaryLocation = path.dirname(this.photoStorageLocation)
-                    var result = [
+                }
+            },
+            emitChange() {
+                var result = []
+                if (this.storageChoice === 'FileStorageService') {
+                    result = [
                         {
                             type: 'downloader.storageService',
                             value: this.storageChoice
@@ -111,8 +181,27 @@
                             value: this.summaryLocation
                         }
                     ]
-                    this.$emit('set_value', result)
+                } else if (this.storageChoice === 'SimpleDatabaseStorageService') {
+                    result = [
+                        {
+                            type: 'downloader.storageService',
+                            value: this.storageChoice
+                        },
+                        {
+                            type: 'db.mapping.table',
+                            value: this.dbTable ? this.dbTable : this.databaseData.dbTableName.value
+                        },
+                        {
+                            type: 'db.mapping.column.studentId',
+                            value: this.dbStudentColumn ? this.dbStudentColumn : this.databaseData.dbStudentColumnName.value
+                        },
+                        {
+                            type: 'db.mapping.column.photoId',
+                            value: this.dbPhotoColumn ? this.dbPhotoColumn : this.databaseData.dbPhotoColumnName.value
+                        }
+                    ]
                 }
+                this.$emit('set_value', result)
             },
             setFolderForStorage(event) {
                 event.forEach(item => {
@@ -120,7 +209,15 @@
                         this.photoStorageLocation = item.value
                     }
                 })
-                this.emitChange()
+            },
+            setDbData(data) {
+                this.databaseData.dbTableName = data.tableName
+                this.databaseData.dbStudentColumnName = data.studentName
+                this.databaseData.dbPhotoColumnName = data.photoName
+
+                this.dbTable = data.tableName.value
+                this.dbStudentColumn = data.studentName.value
+                this.dbPhotoColumn = data.photoName.value
             }
         }
     }

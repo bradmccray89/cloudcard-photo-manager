@@ -254,7 +254,7 @@ export default {
                     value: this.downloadData['db.mapping.column.photoId']
                 }
             },
-            this.databaseConnectionData = {
+            this.dbConnectionData = {
                 dataSourceEnable: {
                     type: 'db.datasource.enabled',
                     value: this.downloadData['db.datasource.enabled']

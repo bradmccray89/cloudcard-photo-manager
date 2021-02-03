@@ -7,34 +7,44 @@
                 </v-btn>
             </v-toolbar-title>
         </v-app-bar>
-        <v-navigation-drawer permanent app clipped>
-            <v-list dense rounded nav>
-                <v-list-item-group
-                    color="primary">
-                    <v-list-item
-                        v-for="tab in tabs"
-                        v-bind:key="tab.id"
-                        :to="tab.name" exact>
-                        <v-list-item-content>
-                            <v-list-item-title v-text="tab.name"></v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list-item-group>
-            </v-list>
-            <v-divider></v-divider>
-            <div>
-                <v-switch class="advanced-settings p-0 ml-4 mt-0"
-                    v-model="advancedSettings"
-                    dense
-                    hide-details
-                    :label="'Advanced Settings'">
-                </v-switch>
+        <v-navigation-drawer class="nav-drawer" permanent app clipped>
+            <div class="nav-container">
+                <v-list dense rounded nav>
+                    <v-list-item-group
+                        color="primary">
+                        <v-list-item
+                            v-for="tab in tabs"
+                            v-bind:key="tab.id"
+                            :to="tab.name" exact>
+                            <v-list-item-content>
+                                <v-list-item-title v-text="tab.name"></v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list-item-group>
+                </v-list>
+                <v-divider></v-divider>
+                <div>
+                    <v-switch class="advanced-settings p-0 ml-4 mt-0"
+                        v-model="advancedSettings"
+                        dense
+                        hide-details
+                        :label="'Advanced Settings'">
+                    </v-switch>
+                </div>
+                <AdvancedSettings v-if="advancedSettings"></AdvancedSettings>
+                <div class="spacer"></div>
+                <div class="finish-button">
+                    <v-btn block
+                        color="success">
+                        <i class="far fa-check-circle mr-1"></i>
+                        Finish
+                    </v-btn>
+                </div>
             </div>
-            <AdvancedSettings v-if="advancedSettings"></AdvancedSettings>
         </v-navigation-drawer>
         <v-main class="mr-10">
             <v-container fluid>
-                <router-view 
+                <router-view
                     v-on:set_value="setValue($event)"
                     v-bind:apiData="apiData"
                     v-bind:loginData="loginData"
@@ -320,5 +330,22 @@ export default {
     .home-button {
         padding: 1em;
         font-size: 1.2em
+    }
+    /* .nav-drawer {
+        display: flex;
+        flex-flow: column;
+        height: 100%;
+    } */
+    .nav-container {
+        display: flex;
+        flex-flow: column;
+        height: 100%;
+    }
+    .finish-button {
+        flex: 0 1 auto;
+        margin: 0 2em 1em 2em;
+    }
+    .spacer {
+        flex: 1 1 auto;
     }
 </style>

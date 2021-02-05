@@ -60,17 +60,35 @@
             dense
             solo>
         </v-text-field>
-        <v-btn class="db-button mb-3"
-            small
-            color="secondary"
-            block>
-            Add Database Connection
-        </v-btn>
+        <div class="text-center">
+            <v-dialog
+                v-model="dialog"
+                persistent>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn class="db-button mb-3"
+                    color="secondary"
+                    block
+                    small
+                    v-bind="attrs"
+                    v-on="on"
+                    >
+                        Add Database Connection
+                    </v-btn>
+                </template>
+                <DatabaseConnection></DatabaseConnection>
+            </v-dialog>
+        </div>
     </v-container>
 </template>
 <script>
+import DatabaseConnection from './DatabaseConnection'
+
 export default {
     name: 'DatabaseStorage',
+
+    components: {
+        DatabaseConnection
+    },
 
     props: {
         databaseData: {
@@ -98,14 +116,15 @@ export default {
         return {
             tableName: '',
             studentColumnName: '',
-            photoColumnName: ''
+            photoColumnName: '',
+            dialog: false
         }
     },
 
     created: function() {
-        this.tableName = this.databaseData['dbTableName'].value,
-        this.studentColumnName = this.databaseData['dbStudentColumnName'].value,
-        this.photoColumnName = this.databaseData['dbPhotoColumnName'].value
+        // this.tableName = this.databaseData['dbTableName'].value,
+        // this.studentColumnName = this.databaseData['dbStudentColumnName'].value,
+        // this.photoColumnName = this.databaseData['dbPhotoColumnName'].value
     },
 
     methods: {

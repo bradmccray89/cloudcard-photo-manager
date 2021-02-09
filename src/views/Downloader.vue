@@ -67,8 +67,10 @@ import Repeat from '../components/Repeat'
 import Status from '../components/Status'
 import AdvancedSettings from '../components/AdvancedSettings'
 import { exec } from 'child_process'
+import FileService from '../services/file.service'
 
 const fs = require('fs')
+const fileService = new FileService()
 
 export default {
     name: 'Downloader',
@@ -143,7 +145,7 @@ export default {
         if (this.$route.query.jsonInputData.length !== 0) {
             this.downloadData = this.$route.query.jsonInputData
         }
-        this.setPropDataForComponents()
+        fileService.setPropDataForComponents()
     },
 
     methods: {

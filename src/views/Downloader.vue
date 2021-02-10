@@ -131,13 +131,14 @@ export default {
             ],
             downloadData: {},
             value: '',
-            apiData: '',
-            loginData: '',
-            storageData: '',
-            repeatData: '',
-            statusData: '',
+            apiData: {},
+            loginData: {},
+            storageData: {},
+            repeatData: {},
+            statusData: {},
             scriptData: {},
-            databaseConnectionData: {}
+            databaseConnectionData: {},
+            propData: {}
         }
     },
 
@@ -145,7 +146,8 @@ export default {
         if (this.$route.query.jsonInputData.length !== 0) {
             this.downloadData = this.$route.query.jsonInputData
         }
-        fileService.setPropDataForComponents()
+        this.propData = fileService.setPropData(this.downloadData)
+        console.log('propData', this.propData)
     },
 
     methods: {
@@ -226,100 +228,13 @@ export default {
             })
         },
         setPropDataForComponents() {
-            this.apiData = {
-                type: 'cloudcard.api.url',
-                value: this.downloadData['cloudcard.api.url']
-            },
-            this.loginData = {
-                accessToken: {
-                    type: 'cloudcard.api.accessToken',
-                    value: this.downloadData['cloudcard.api.accessToken']
-                },
-                username: {
-                    type: 'username',
-                    value: this.downloadData['username']
-                }
-            },
-            this.storageData = {
-                storageType: {
-                    type: 'downloader.storageService',
-                    value: this.downloadData['downloader.storageService']
-                },
-                photoStorageLocation: {
-                    type: 'downloader.photoDirectories',
-                    value: this.downloadData['downloader.photoDirectories']
-                },
-                summaryLocation: {
-                    type: 'SimpleSummaryService.directory',
-                    value: this.downloadData['SimpleSummaryService.directory']
-                },
-                dbTableName: {
-                    type: 'db.mapping.table',
-                    value: this.downloadData['db.mapping.table']
-                },
-                dbStudentColumnName: {
-                    type: 'db.mapping.column.studentId',
-                    value: this.downloadData['db.mapping.column.studentId']
-                },
-                dbPhotoColumnName: {
-                    type: 'db.mapping.column.photoId',
-                    value: this.downloadData['db.mapping.column.photoId']
-                }
-            },
-            this.dbConnectionData = {
-                dataSourceEnable: {
-                    type: 'db.datasource.enabled',
-                    value: this.downloadData['db.datasource.enabled']
-                },
-                driverClassName: {
-                    type: 'db.datasource.driverClassName',
-                    value: this.downloadData['db.datasource.driverClassName']
-                },
-                url: {
-                    type: 'db.datasource.url',
-                    value: this.downloadData['db.datasource.url']
-                },
-                username: {
-                    type: 'db.datasource.username',
-                    value: this.downloadData['db.datasource.username']
-                },
-                password: {
-                    type: 'db.datasource.password',
-                    value: this.downloadData['db.datasource.password']
-                },
-                schema: {
-                    type: 'db.datasource.schema',
-                    value: this.downloadData['db.datasource.schema']
-                },
-                dialect: {
-                    type: 'spring.jpa.hibernate.dialect',
-                    value: this.downloadData['spring.jpa.hibernate.dialect']
-                }
-            }
-            this.repeatData = {
-                repeat: {
-                    type: 'downloader.repeat',
-                    value: this.downloadData['downloader.repeat']
-                },
-                delay: {
-                    type: 'donwloader.delay.milliseconds',
-                    value: this.downloadData['downloader.delay.milliseconds']
-                }
-            },
-            this.statusData = {
-                fetchStatuses: {
-                    type: 'downloader.fetchStatuses',
-                    value: this.downloadData['downloader.fetchStatuses']
-                },
-                putStatus: {
-                    type: 'downloader.putStatus',
-                    value: this.downloadData['downloader.putStatus']
-                },
-                minimumIdLength: {
-                    type: 'downloader.minPhotoIdLength',
-                    value: this.downloadData['downloader.minPhotoIdLength']
-                }
-            }
+            console.log('propData', this.propData)
+            this.apiData = this.propData.apiData
+            this.loginData = this.propData.loginData
+            this.storageData = this.propData.storageData
+            this.dbConnectionData = this.propData.dbConnectionData
+            this.repeatData = this.propData.repeatData
+            this.statusData = this.propData.statusData
         },
     }
 };
@@ -333,11 +248,6 @@ export default {
         padding: 1em;
         font-size: 1.2em
     }
-    /* .nav-drawer {
-        display: flex;
-        flex-flow: column;
-        height: 100%;
-    } */
     .nav-container {
         display: flex;
         flex-flow: column;

@@ -137,7 +137,7 @@ export default {
             repeatData: {},
             statusData: {},
             scriptData: {},
-            databaseConnectionData: {},
+            dbConnectionData: {},
             propData: {}
         }
     },
@@ -147,7 +147,7 @@ export default {
             this.downloadData = this.$route.query.jsonInputData
         }
         this.propData = fileService.setPropData(this.downloadData)
-        console.log('propData', this.propData)
+        this.setPropDataForComponents()
     },
 
     methods: {
@@ -228,7 +228,6 @@ export default {
             })
         },
         setPropDataForComponents() {
-            console.log('propData', this.propData)
             this.apiData = this.propData.apiData
             this.loginData = this.propData.loginData
             this.storageData = this.propData.storageData

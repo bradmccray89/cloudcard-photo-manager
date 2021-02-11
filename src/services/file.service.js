@@ -1,6 +1,5 @@
 export default class FileService {
     setPropData(data) {
-        console.log('file service')
         return {
             apiData: {
                 type: 'cloudcard.api.url',

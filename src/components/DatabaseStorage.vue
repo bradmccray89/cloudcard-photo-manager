@@ -63,6 +63,7 @@
         <div class="text-center">
             <v-dialog
                 v-model="dialog"
+                max-width="600px"
                 persistent>
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn class="db-button mb-3"
@@ -75,7 +76,7 @@
                         Add Database Connection
                     </v-btn>
                 </template>
-                <DatabaseConnection></DatabaseConnection>
+                <DatabaseConnection v-on:closeDialog="closeDialog"></DatabaseConnection>
             </v-dialog>
         </div>
     </v-container>
@@ -97,15 +98,15 @@ export default {
                 return {
                     dbTableName: {
                         type: 'db.mapping.table',
-                        value: this.downloadData['db.mapping.table']
+                        value: 'CLOUDCARD'
                     },
                     dbStudentColumnName: {
                         type: 'db.mapping.column.studentId',
-                        value: this.downloadData['db.mapping.column.studentId']
+                        value: 'STUDENT_ID'
                     },
                     dbPhotoColumnName: {
                         type: 'db.mapping.column.photoId',
-                        value: this.downloadData['db.mapping.column.photoId']
+                        value: 'PHOTO'
                     }
                 }
             }
@@ -122,9 +123,9 @@ export default {
     },
 
     created: function() {
-        // this.tableName = this.databaseData['dbTableName'].value,
-        // this.studentColumnName = this.databaseData['dbStudentColumnName'].value,
-        // this.photoColumnName = this.databaseData['dbPhotoColumnName'].value
+        this.tableName = this.databaseData['dbTableName'].value,
+        this.studentColumnName = this.databaseData['dbStudentColumnName'].value,
+        this.photoColumnName = this.databaseData['dbPhotoColumnName'].value
     },
 
     methods: {
@@ -144,6 +145,9 @@ export default {
                 }
             }
             this.$emit('setDbData', data)
+        },
+        closeDialog() {
+            this.dialog = false;
         }
     }
     

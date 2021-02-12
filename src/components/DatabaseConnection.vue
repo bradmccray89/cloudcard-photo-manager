@@ -8,7 +8,7 @@
         <v-card-text>
             <v-container>
                 <v-form lazy-validation>
-                    <div class="d-flex flex-row align-center mb-1">
+                    <div class="d-flex flex-row align-center">
                         <v-checkbox
                         v-model="dataSourceEnable"
                         dense
@@ -25,40 +25,93 @@
                                     info_outline
                                 </v-icon>
                             </template>
-                            <span>Allows database connection settings to be used when downloading photos.</span>
+                            <span>Must be selected for the database connection information to be used.</span>
                         </v-tooltip>
                     </div>
-                    <div class="d-flex flex-row mb-8">
-                        <div class="flex-col flex-grow-1 mr-5">
-                            <div class="d-flex flex-row mb-1">
+                    <v-row>
+                        <v-col col="6">
+                            <div>
                                 <span>Driver Class Name</span>
                             </div>
                             <v-select
                                 v-model="driverClassName"
                                 :items="driverClassOptions"
-                                item-text="name"
-                                item-value="entry"
+                                item-text="type"
+                                item-value="value"
                                 outlined
                                 dense>
                             </v-select>
-                        </div>
-                        <div class="flex-col flex-grow-1">
-                            <div class="d-flex flex-row mb-1">
+                        </v-col>
+                        <v-col col="6">
+                            <div>
                                 <span>Hibernate Dialect</span>
                             </div>
                             <v-select
                                 v-model="dialect"
                                 :items="dialectOptions"
-                                item-text="name"
-                                item-value="entry"
+                                item-text="type"
+                                item-value="value"
                                 outlined
                                 dense>
                             </v-select>
-                        </div>
-                    </div>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col col="6">
+                            <div>
+                                <span>DataSource URL</span>
+                            </div>
+                            <v-text-field
+                                v-model="url"
+                                outlined
+                                dense>
+                            </v-text-field>
+                        </v-col>
+                        <v-col col="6">
+                            <div>
+                                <span>Schema</span>
+                            </div>
+                            <v-text-field
+                                v-model="schema"
+                                outlined
+                                dense>
+                            </v-text-field>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col col="6">
+                            <div>
+                                <span>Username</span>
+                            </div>
+                            <v-text-field
+                                v-model="username"
+                                outlined
+                                dense>
+                            </v-text-field>
+                        </v-col>
+                        <v-col col="6">
+                            <div>
+                                <span>Password</span>
+                            </div>
+                            <v-text-field
+                                v-model="password"
+                                type="password"
+                                outlined
+                                dense>
+                            </v-text-field>
+                        </v-col>
+                    </v-row>
                 </v-form>
             </v-container>
         </v-card-text>
+        <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+                color="primary"
+                @click="save">
+                Save
+            </v-btn>
+        </v-card-actions>
     </v-card>
 </template>
 <script>
@@ -114,30 +167,30 @@ export default {
             dialect: '',
             dialectOptions: [
                 {
-                    name: 'Oracle',
-                    entry: 'org.hibernate.dialect.Oracle10gDialect'
+                    type: 'Oracle',
+                    value: 'org.hibernate.dialect.Oracle10gDialect'
                 },
                 {
-                    name: 'MS SQLServer',
-                    entry: 'org.hibernate.dialect.SQLServer2012Dialect'
+                    type: 'MS SQLServer',
+                    value: 'org.hibernate.dialect.SQLServer2012Dialect'
                 },
                 {
-                    name: 'MySQL',
-                    entry: 'org.hibernate.dialect.MySQL5InnoDBDialect'
+                    type: 'MySQL',
+                    value: 'org.hibernate.dialect.MySQL5InnoDBDialect'
                 }
             ],
             driverClassOptions: [
                 {
-                    name: 'Oracle',
-                    entry: 'oracle.jdbc.OracleDriver'
+                    type: 'Oracle',
+                    value: 'oracle.jdbc.OracleDriver'
                 },
                 {
-                    name: 'MS SQLServer',
-                    entry: 'com.microsoft.sqlserver.jdbc.SQLServerDriver'
+                    type: 'MS SQLServer',
+                    value: 'com.microsoft.sqlserver.jdbc.SQLServerDriver'
                 },
                 {
-                    name: 'MySQL',
-                    entry: 'com.mysql.jdbc.Driver'
+                    type: 'MySQL',
+                    value: 'com.mysql.jdbc.Driver'
                 }
             ]
         }
@@ -161,6 +214,19 @@ export default {
         },
         closeDialog() {
             this.$emit('closeDialog')
+        },
+        save() {
+            this.dbConnectionData.dataSourceEnable.value = this.dataSourceEnable
+            this.dbConnectionData.driverClassName.value = this.driverClassName
+            this.dbConnectionData.url.value = this.url
+            this.dbConnectionData.username.value = this.username
+            this.dbConnectionData.password.value = this.password
+            this.dbConnectionData.dialect.value = this.dialect
+            this.dbConnectionData.schema.value = this.schema
+
+            console.log('dbConnectionData', this.dbConnectionData)
+
+            this.$emit('saveDatabaseConnection', this.dbConnectionData)
         }
     }
     

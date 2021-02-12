@@ -6,6 +6,8 @@
                     <img src="../assets/cc-logo-sm.png" />
                 </v-btn>
             </v-toolbar-title>
+            <v-spacer></v-spacer>
+            <span v-if="downloadData.username">{{downloadData.username}}</span>
         </v-app-bar>
         <v-navigation-drawer class="nav-drawer" permanent app clipped>
             <div class="nav-container">

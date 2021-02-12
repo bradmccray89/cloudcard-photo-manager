@@ -63,7 +63,7 @@
         <div class="text-center">
             <v-dialog
                 v-model="dialog"
-                max-width="600px"
+                max-width="800px"
                 persistent>
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn class="db-button mb-3"
@@ -76,7 +76,10 @@
                         Add Database Connection
                     </v-btn>
                 </template>
-                <DatabaseConnection v-on:closeDialog="closeDialog"></DatabaseConnection>
+                <DatabaseConnection
+                    v-on:closeDialog="closeDialog"
+                    v-on:saveDatabaseConnection="saveDatabaseConnection">
+                </DatabaseConnection>
             </v-dialog>
         </div>
     </v-container>
@@ -148,6 +151,10 @@ export default {
         },
         closeDialog() {
             this.dialog = false;
+        },
+        saveDatabaseConnection(dbConnectionData) {
+            this.closeDialog()
+            console.log('dbConnection from db storage', dbConnectionData)
         }
     }
     

@@ -22,7 +22,7 @@
             </v-tooltip>
             <v-spacer></v-spacer>
             <span class="ml-5" v-if="loginData.accessToken.value">
-                <span>Currently logged in as <strong>{{ loginData.username.value }}</strong></span>
+                <span>Currently logged in</span>
             </span>
         </div>
         <v-form id="login-info"

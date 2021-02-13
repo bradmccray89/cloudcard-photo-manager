@@ -77,6 +77,7 @@
                     </v-btn>
                 </template>
                 <DatabaseConnection
+                    v-bind:databaseConnectionData="databaseConnectionData"
                     v-on:closeDialog="closeDialog"
                     v-on:saveDatabaseConnection="saveDatabaseConnection">
                 </DatabaseConnection>
@@ -113,7 +114,7 @@ export default {
                     }
                 }
             }
-        }
+        },
     },
 
     data() {
@@ -121,7 +122,8 @@ export default {
             tableName: '',
             studentColumnName: '',
             photoColumnName: '',
-            dialog: false
+            dialog: false,
+            databaseConnectionData: {}
         }
     },
 
@@ -145,8 +147,16 @@ export default {
                 photoName: {
                     type: 'db.mapping.column.photoId',
                     value: this.photoColumnName
-                }
+                },
+                dataSourceEnable: this.databaseConnectionData.dataSourceEnable,
+                driverClassName: this.databaseConnectionData.driverClassName,
+                url: this.databaseConnectionData.url,
+                username: this.databaseConnectionData.username,
+                password: this.databaseConnectionData.password,
+                schema: this.databaseConnectionData.schema,
+                dialect: this.databaseConnectionData.dialect
             }
+            console.log('data', data)
             this.$emit('setDbData', data)
         },
         closeDialog() {
@@ -154,7 +164,8 @@ export default {
         },
         saveDatabaseConnection(dbConnectionData) {
             this.closeDialog()
-            console.log('dbConnection from db storage', dbConnectionData)
+            this.databaseConnectionData = dbConnectionData
+            this.emitChange()
         }
     }
     

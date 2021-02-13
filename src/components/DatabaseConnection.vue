@@ -224,8 +224,6 @@ export default {
             this.dbConnectionData.dialect.value = this.dialect
             this.dbConnectionData.schema.value = this.schema
 
-            console.log('dbConnectionData', this.dbConnectionData)
-
             this.$emit('saveDatabaseConnection', this.dbConnectionData)
         }
     }

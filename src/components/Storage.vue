@@ -131,9 +131,9 @@
             this.storageChoice = this.storageTypes.find(f => f.entry === this.storageData.storageType.value).entry
             this.photoStorageLocation = this.storageData.photoStorageLocation.value
             this.summaryLocation = this.storageData.summaryLocation.value
-            this.databaseData['dbTableName'] = this.storageData.dbTableName
-            this.databaseData['dbStudentColumnName'] = this.storageData.dbStudentColumnName
-            this.databaseData['dbPhotoColumnName'] = this.storageData.dbPhotoColumnName
+            this.databaseData.dbTableName = this.storageData.dbTableName
+            this.databaseData.dbStudentColumnName = this.storageData.dbStudentColumnName
+            this.databaseData.dbPhotoColumnName = this.storageData.dbPhotoColumnName
         },
 
         data() {
@@ -198,6 +198,38 @@
                         {
                             type: 'db.mapping.column.photoId',
                             value: this.dbPhotoColumn ? this.dbPhotoColumn : this.databaseData.dbPhotoColumnName.value
+                        },
+                        {
+                            type: 'db.datasource.enabled',
+                            value: this.databaseData.dataSourceEnable
+                        },
+                        {
+                            type: 'db.datasource.driverClassName',
+                            value: this.databaseData.driverClassName
+                        },
+                        {
+                            type: 'db.datasource.url',
+                            value: this.databaseData.url
+                        },
+                        {
+                            type: 'db.datasource.username',
+                            value: this.databaseData.username
+                        },
+                        {
+                            type: 'db.datasource.password',
+                            value: this.databaseData.password
+                        },
+                        {
+                            type: 'db.datasource.schema',
+                            value: this.databaseData.schema
+                        },
+                        {
+                            type: 'spring.jpa.hibernate.dialect',
+                            value: this.databaseData.dialect
+                        },
+                        {
+                            type: 'SimpleSummaryService.directory',
+                            value: this.summaryLocation
                         }
                     ]
                 }
@@ -214,11 +246,21 @@
                 this.databaseData.dbTableName = data.tableName
                 this.databaseData.dbStudentColumnName = data.studentName
                 this.databaseData.dbPhotoColumnName = data.photoName
+                this.databaseData.driverClassName = data.driverClassName
+                this.databaseData.url = data.url
+                this.databaseData.dataSourceEnable = data.dataSourceEnable
+                this.databaseData.dialect = data.dialect
+                this.databaseData.username = data.username
+                this.databaseData.password = data.password
+                this.databaseData.schema = data.schema
 
                 this.dbTable = data.tableName.value
                 this.dbStudentColumn = data.studentName.value
                 this.dbPhotoColumn = data.photoName.value
             },
+            setDbConnectionData(data) {
+
+            }
         }
     }
 </script>

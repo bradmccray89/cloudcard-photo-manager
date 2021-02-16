@@ -119,7 +119,7 @@ export default {
     name: 'DatabaseConnection',
 
     props: {
-        dbConnectionData: {
+        databaseConnectionData: {
             type: Object,
             default: function() {
                 return {
@@ -197,34 +197,29 @@ export default {
     },
 
     created: function() {
-        this.dataSourceEnable = this.dbConnectionData.dataSourceEnable ? this.dbConnectionData.dataSourceEnable.value : false
-        this.driverClassName = this.dbConnectionData.driverClassName.value
-        this.url = this.dbConnectionData.url.value
-        this.username = this.dbConnectionData.username.value
-        this.password = this.dbConnectionData.password.value
-        this.schema = this.dbConnectionData.schema.value
-        this.dialect = this.dbConnectionData.dialect ? this.dialectOptions.find(f => f.entry === this.dbConnectionData.dialect.value) : ''
+        this.dataSourceEnable = this.databaseConnectionData.dataSourceEnable ? this.databaseConnectionData.dataSourceEnable.value : false
+        this.driverClassName = this.databaseConnectionData.driverClassName.value
+        this.url = this.databaseConnectionData.url.value
+        this.username = this.databaseConnectionData.username.value
+        this.password = this.databaseConnectionData.password.value
+        this.schema = this.databaseConnectionData.schema.value
+        this.dialect = this.databaseConnectionData.dialect.value
     },
 
     methods: {
-        emitChange() {
-            var data = {
-            }
-            this.$emit('setDbConnectionData', data)
-        },
         closeDialog() {
             this.$emit('closeDialog')
         },
         save() {
-            this.dbConnectionData.dataSourceEnable.value = this.dataSourceEnable
-            this.dbConnectionData.driverClassName.value = this.driverClassName
-            this.dbConnectionData.url.value = this.url
-            this.dbConnectionData.username.value = this.username
-            this.dbConnectionData.password.value = this.password
-            this.dbConnectionData.dialect.value = this.dialect
-            this.dbConnectionData.schema.value = this.schema
+            this.databaseConnectionData.dataSourceEnable.value = this.dataSourceEnable
+            this.databaseConnectionData.driverClassName.value = this.driverClassName
+            this.databaseConnectionData.url.value = this.url
+            this.databaseConnectionData.username.value = this.username
+            this.databaseConnectionData.password.value = this.password
+            this.databaseConnectionData.dialect.value = this.dialect
+            this.databaseConnectionData.schema.value = this.schema
 
-            this.$emit('saveDatabaseConnection', this.dbConnectionData)
+            this.$emit('saveDatabaseConnection', this.databaseConnectionData)
         }
     }
     

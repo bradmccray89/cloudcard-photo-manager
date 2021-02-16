@@ -35,11 +35,19 @@
                 </div>
                 <AdvancedSettings v-if="advancedSettings"></AdvancedSettings>
                 <div class="spacer"></div>
-                <div class="finish-button">
+                <div class="finish-buttons">
                     <v-btn block
-                        color="success">
-                        <i class="far fa-check-circle mr-1"></i>
-                        Finish
+                        color="primary"
+                        @click="save">
+                        <i class="far fa-save mr-1"></i>
+                        Save
+                    </v-btn>                    
+                    <v-btn class="mt-3"
+                        block
+                        color="secondary"
+                        @click="saveAndRun">
+                        <i class="far fa-save mr-1"></i>
+                        Save & Run
                     </v-btn>
                 </div>
             </div>
@@ -185,6 +193,7 @@ export default {
         },
         saveValueToDownloadData() {
             this.downloadData[this.value.type] = this.value.value
+            console.log('downloadData', this.downloadData)
             this.value = '';
             this.setPropDataForComponents()
         },
@@ -192,9 +201,12 @@ export default {
             this.$router.push({ name: this.tabs[this.currentTabIndex + 1].name })
             this.setCurrentTab()
         },
-        saveToFile() {
+        save() {
             var dataToSave = this.downloadData
             fs.writeFileSync('application-properties.json', JSON.stringify(dataToSave, null, 4))
+        },
+        saveAndRun() {
+            this.save();
             this.runDownloadScript(dataToSave)
         },
         async runDownloadScript(jsonScriptData) {
@@ -254,7 +266,7 @@ export default {
         flex-flow: column;
         height: 100%;
     }
-    .finish-button {
+    .finish-buttons {
         flex: 0 1 auto;
         margin: 0 2em 1em 2em;
     }

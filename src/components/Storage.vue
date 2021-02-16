@@ -201,31 +201,31 @@
                         },
                         {
                             type: 'db.datasource.enabled',
-                            value: this.databaseData.dataSourceEnable
+                            value: this.databaseData.dataSourceEnable.value
                         },
                         {
                             type: 'db.datasource.driverClassName',
-                            value: this.databaseData.driverClassName
+                            value: this.databaseData.driverClassName.value
                         },
                         {
                             type: 'db.datasource.url',
-                            value: this.databaseData.url
+                            value: this.databaseData.url.value
                         },
                         {
                             type: 'db.datasource.username',
-                            value: this.databaseData.username
+                            value: this.databaseData.username.value
                         },
                         {
                             type: 'db.datasource.password',
-                            value: this.databaseData.password
+                            value: this.databaseData.password.value
                         },
                         {
                             type: 'db.datasource.schema',
-                            value: this.databaseData.schema
+                            value: this.databaseData.schema.value
                         },
                         {
                             type: 'spring.jpa.hibernate.dialect',
-                            value: this.databaseData.dialect
+                            value: this.databaseData.dialect.value
                         },
                         {
                             type: 'SimpleSummaryService.directory',
@@ -258,9 +258,6 @@
                 this.dbStudentColumn = data.studentName.value
                 this.dbPhotoColumn = data.photoName.value
             },
-            setDbConnectionData(data) {
-
-            }
         }
     }
 </script>

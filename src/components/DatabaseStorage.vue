@@ -77,7 +77,7 @@
                     </v-btn>
                 </template>
                 <DatabaseConnection
-                    v-bind:databaseConnectionData="databaseConnectionData"
+                    v-bind:databaseConnectionData="dbConnectionData"
                     v-on:closeDialog="closeDialog"
                     v-on:saveDatabaseConnection="saveDatabaseConnection">
                 </DatabaseConnection>
@@ -115,6 +115,14 @@ export default {
                 }
             }
         },
+        dbConnectionData: {
+            type: Object,
+            default: function() {
+                return {
+
+                }
+            }
+        }
     },
 
     data() {
@@ -123,13 +131,12 @@ export default {
             studentColumnName: '',
             photoColumnName: '',
             dialog: false,
-            databaseConnectionData: {}
         }
     },
 
     created: function() {
-        this.tableName = this.databaseData['dbTableName'].value,
-        this.studentColumnName = this.databaseData['dbStudentColumnName'].value,
+        this.tableName = this.databaseData['dbTableName'].value
+        this.studentColumnName = this.databaseData['dbStudentColumnName'].value
         this.photoColumnName = this.databaseData['dbPhotoColumnName'].value
     },
 
@@ -156,7 +163,6 @@ export default {
                 schema: this.databaseConnectionData.schema,
                 dialect: this.databaseConnectionData.dialect
             }
-            console.log('data', data)
             this.$emit('setDbData', data)
         },
         closeDialog() {

@@ -257,6 +257,8 @@
                 this.dbTable = data.tableName.value
                 this.dbStudentColumn = data.studentName.value
                 this.dbPhotoColumn = data.photoName.value
+
+                this.emitChange()
             },
         }
     }

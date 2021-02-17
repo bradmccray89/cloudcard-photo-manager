@@ -27,7 +27,7 @@ export default {
                 },
                 {
                     id: 2,
-                    name: "File Name Resolver",
+                    name: "FileNameResolver",
                     url: "/Downloader/FileNameResolver",
                 },
                 {
@@ -42,7 +42,7 @@ export default {
                 },
                 {
                     id: 5,
-                    name: "Summary Service",
+                    name: "SummaryService",
                     url: "/Downloader/SummaryService",
                 },
             ]

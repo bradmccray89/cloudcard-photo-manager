@@ -181,17 +181,20 @@ export default {
         },
         setValue(event) {
             event.forEach(item => {
-                this.value = {
-                    type: item.type,
-                    value: item.value
+                if (item.value !== '') {
+                    this.value = {
+                        type: item.type,
+                        value: item.value
+                    }
+                    this.saveValueToDownloadData()
                 }
-                this.saveValueToDownloadData()
             })
-            if (this.tabs[this.currentTabIndex + 1]) {
-                this.goToNextStep()
-            }    
+            // if (this.tabs[this.currentTabIndex + 1]) {
+            //     this.goToNextStep()
+            // }    
         },
         saveValueToDownloadData() {
+            console.log('value', this.value)
             this.downloadData[this.value.type] = this.value.value
             this.value = '';
             this.setPropDataForComponents()
@@ -202,7 +205,15 @@ export default {
         },
         save() {
             var dataToSave = this.downloadData
-            fs.writeFileSync('application-properties.json', JSON.stringify(dataToSave, null, 4))
+            for (var key in dataToSave) {
+                if (dataToSave[key] === '') {
+                    delete dataToSave[key]
+                }
+            }
+            console.log('dataToSave', dataToSave)
+            fs.writeFile('application-properties.json', '', function(){
+                fs.writeFileSync('application-properties.json', JSON.stringify(dataToSave, null, 4))
+            })
         },
         saveAndRun() {
             this.save();

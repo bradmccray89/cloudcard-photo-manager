@@ -62,7 +62,8 @@
                     v-bind:repeatData="repeatData"
                     v-bind:statusData="statusData"
                     v-bind:scriptData="scriptData"
-                    v-bind:dbConnectionData="dbConnectionData">
+                    v-bind:dbConnectionData="dbConnectionData"
+                    v-bind:fileNameResolverData="fileNameResolverData">
                 </router-view>
             </v-container>
         </v-main>
@@ -148,6 +149,7 @@ export default {
             statusData: {},
             scriptData: {},
             dbConnectionData: {},
+            fileNameResolverData: {},
             propData: {}
         }
     },
@@ -194,7 +196,6 @@ export default {
             // }    
         },
         saveValueToDownloadData() {
-            console.log('value', this.value)
             this.downloadData[this.value.type] = this.value.value
             this.value = '';
             this.setPropDataForComponents()
@@ -258,6 +259,7 @@ export default {
             this.dbConnectionData = this.propData.dbConnectionData
             this.repeatData = this.propData.repeatData
             this.statusData = this.propData.statusData
+            this.fileNameResolverData = this.propData.fileNameResolverData
         },
     }
 };

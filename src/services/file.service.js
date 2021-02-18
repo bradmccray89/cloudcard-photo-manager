@@ -94,6 +94,16 @@ export default class FileService {
                     type: 'downloader.minPhotoIdLength',
                     value: data['downloader.minPhotoIdLength']
                 }
+            },
+            fileNameResolverData: {
+                resolver: {
+                    type: 'downloader.fileNameResolver',
+                    value: data['downloader.fileNameResolver']
+                },
+                query: {
+                    type: 'DatabaseFileNameResolver.baseFileName.query',
+                    value: data['DatabaseFileNameResolver.baseFileName.query']
+                }
             }
         }
     }

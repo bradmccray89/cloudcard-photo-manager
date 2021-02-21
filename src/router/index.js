@@ -53,14 +53,9 @@ const routes = [
         component: () => import('../components/FileNameResolver')
       },
       {
-        path: 'Pre-Processor',
-        name: 'Pre-Processor',
-        component: () => import('../components/Pre-Processor')
-      },
-      {
-        path: 'Post-Processor',
-        name: 'Post-Processor',
-        component: () => import('../components/Post-Processor')
+        path: 'Processor',
+        name: 'Processor',
+        component: () => import('../components/Processor')
       },
       {
         path: 'SummaryService',

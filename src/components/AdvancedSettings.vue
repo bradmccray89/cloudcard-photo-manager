@@ -32,16 +32,11 @@ export default {
                 },
                 {
                     id: 3,
-                    name: "Pre-Processor",
-                    url: "/Downloader/Pre-Processor",
+                    name: "Processor",
+                    url: "/Downloader/Processor",
                 },
                 {
                     id: 4,
-                    name: "Post-Processor",
-                    url: "/Downloader/Post-Processor",
-                },
-                {
-                    id: 5,
                     name: "SummaryService",
                     url: "/Downloader/SummaryService",
                 },

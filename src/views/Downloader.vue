@@ -150,6 +150,8 @@ export default {
             scriptData: {},
             dbConnectionData: {},
             fileNameResolverData: {},
+            processorData: {},
+            summaryServiceData: {},
             propData: {}
         }
     },
@@ -191,9 +193,6 @@ export default {
                     this.saveValueToDownloadData()
                 }
             })
-            // if (this.tabs[this.currentTabIndex + 1]) {
-            //     this.goToNextStep()
-            // }    
         },
         saveValueToDownloadData() {
             this.downloadData[this.value.type] = this.value.value
@@ -215,15 +214,9 @@ export default {
             fs.writeFile('application-properties.json', '', function(){
                 fs.writeFileSync('application-properties.json', JSON.stringify(dataToSave, null, 4))
             })
-        },
-        saveAndRun() {
-            this.save();
-            this.runDownloadScript(dataToSave)
-        },
-        async runDownloadScript(jsonScriptData) {
-            for (var key in jsonScriptData) {
-                if (jsonScriptData.hasOwnProperty(key)) {
-                    var val = jsonScriptData[key]
+            for (var key in dataToSave) {
+                if (dataToSave.hasOwnProperty(key)) {
+                    var val = dataToSave[key]
                     if (key === 'downloader.photoDirectories') {
                         var param = ' -D' + key + '="' + val + '"'
                     } else {
@@ -233,6 +226,13 @@ export default {
                 }
             }
             this.cmd = this.cmd.concat(' -jar cloudcard-photo-downloader.jar')
+            fs.writeFile('run.bat', this.cmd)
+        },
+        saveAndRun() {
+            this.save();
+            this.runDownloadScript(dataToSave)
+        },
+        async runDownloadScript() {
             let output = await this.execute(this.cmd)
             let result = output.stdout ? output.stdout : output.stderr
             let stringOutput = ''
@@ -260,6 +260,8 @@ export default {
             this.repeatData = this.propData.repeatData
             this.statusData = this.propData.statusData
             this.fileNameResolverData = this.propData.fileNameResolverData
+            this.processorData = this.propData.processorData
+            this.summaryServiceData = this.propData.summaryServiceData
         },
     }
 };

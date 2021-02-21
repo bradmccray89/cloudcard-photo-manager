@@ -104,6 +104,50 @@ export default class FileService {
                     type: 'DatabaseFileNameResolver.baseFileName.query',
                     value: data['DatabaseFileNameResolver.baseFileName.query']
                 }
+            },
+            processorData: {
+                preProcessor: {
+                    type: 'downloader.preProcessor',
+                    value: data['downloader.preProcessor']
+                },
+                bytesLink: {
+                    type: 'BytesLinkPreprocessor.urlTemplate',
+                    value: data['BytesLinkPreprocessor.urlTemplate']
+                },
+                postProcessor: {
+                    type: 'downloader.postProcessor',
+                    value: data['downloader.postProcessor']
+                },
+                photoFilePath: {
+                    type: 'DatabasePostProcessor.override.photoFilePath',
+                    value: data['DatabasePostProcessor.override.photoFilePath']
+                },
+                query: {
+                    type: 'DatabasePostProcessor.query',
+                    value: data['DatabasePostProcessor.query']
+                },
+                paramNames: {
+                    type: 'DatabasePostProcessor.query.paramNames',
+                    value: data['DatabasePostProcessor.query.paramNames']
+                },
+                paramTypes: {
+                    type: 'DatabasePostProcessor.query.paramTypes',
+                    value: data['DatabasePostProcessor.query.paramTypes']
+                }
+            },
+            summaryServiceData: {
+                summaryService: {
+                    type: 'downloader.SummaryService',
+                    value: data['downloader.SummaryService']
+                },
+                fileName: {
+                    type: 'SimpleSummaryService.fileName',
+                    value: data['SimpleSummaryService.fileName']
+                },
+                directory: {
+                    type: 'SimpleSummaryService.directory',
+                    value: data['SimpleSummaryService.directory']
+                }
             }
         }
     }

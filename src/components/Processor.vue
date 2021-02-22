@@ -20,6 +20,7 @@
                 <v-select
                     v-model="preProcessorSelection"
                     :items="preProcessorOptions"
+                    hide-details
                     dense
                     outlined
                     @change="emitChange()">
@@ -44,6 +45,7 @@
                     <v-textarea
                         v-model="urlTemplate"
                         rows="1"
+                        hide-details
                         auto-grow
                         outlined
                         dense
@@ -52,7 +54,7 @@
                 </div>
             </v-col>
         </v-row>
-        <v-divider class="mb-3"></v-divider>
+        <v-divider class="my-3"></v-divider>
         <v-row>
             <v-col col="6">
                 <div class="d-flex flex-row mb-1">
@@ -73,6 +75,7 @@
                 <v-select
                     v-model="postProcessorSelection"
                     :items="postProcessorOptions"
+                    hide-details
                     dense
                     outlined
                     @change="emitChange()">
@@ -97,6 +100,7 @@
                     <v-textarea
                         v-model="query"
                         rows="1"
+                        hide-details
                         auto-grow
                         outlined
                         dense

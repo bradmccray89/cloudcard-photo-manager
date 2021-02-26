@@ -186,13 +186,11 @@ export default {
         },
         setValue(event) {
             event.forEach(item => {
-                if (item.value !== '') {
-                    this.value = {
-                        type: item.type,
-                        value: item.value
-                    }
-                    this.saveValueToDownloadData()
+                this.value = {
+                    type: item.type,
+                    value: item.value
                 }
+                this.saveValueToDownloadData()
             })
         },
         saveValueToDownloadData() {
@@ -206,15 +204,17 @@ export default {
         },
         save() {
             var dataToSave = this.downloadData
+            console.log('dataToSave1', dataToSave)
             for (var key in dataToSave) {
                 if (dataToSave[key] === '') {
                     delete dataToSave[key]
                 }
             }
-            console.log('dataToSave', dataToSave)
-            fs.writeFile('application-properties.json', '', function(){
+            console.log('dataToSave2', dataToSave)
+            fs.writeFile('application-properties.json', '', function() {
                 fs.writeFileSync('application-properties.json', JSON.stringify(dataToSave, null, 4))
             })
+            this.cmd = 'java'
             for (var key in dataToSave) {
                 if (dataToSave.hasOwnProperty(key)) {
                     var val = dataToSave[key]
@@ -227,7 +227,10 @@ export default {
                 }
             }
             this.cmd = this.cmd.concat(' -jar cloudcard-photo-downloader.jar')
-            fs.writeFileSync('run.bat', this.cmd)
+            const commandToSave = this.cmd
+            fs.writeFile( 'run.bat', '', function() {
+                fs.writeFileSync('run.bat', commandToSave)
+            })
         },
         saveAndRun() {
             this.save();

@@ -99,6 +99,7 @@
 
 <script>
     const fs = require('fs')
+    const path = require('path')
 
     export default {
         name: 'Scripts',
@@ -152,22 +153,24 @@
 
         methods: {
             setFileObjects() {
-                this.postDownloadFile = this.postDownloadFilePath !== '' ? new File(fs.readFileSync(this.postDownloadFilePath), this.postDownloadFilePath) : null
-                console.log(this.postDownloadFile)
+                this.preExecuteFile = this.preExecuteFilePath !== '' ? new File(fs.readFileSync(this.preExecuteFilePath), path.basename(this.preExecuteFilePath)) : null
+                this.postExecuteFile = this.postExecuteFilePath !== '' ? new File(fs.readFileSync(this.postExecuteFilePath), path.basename(this.postExecuteFilePath)) : null
+                this.preDownloadFile = this.preDownloadFilePath !== '' ? new File(fs.readFileSync(this.preDownloadFilePath), path.basename(this.preDownloadFilePath)) : null
+                this.postDownloadFile = this.postDownloadFilePath !== '' ? new File(fs.readFileSync(this.postDownloadFilePath), path.basename(this.postDownloadFilePath)) : null
             },
             setPreExecute(event) {
-                this.preExecuteFile = event
-                this.preExecuteFilePath = event.path
+                this.preExecuteFile = event ? event : null
+                this.preExecuteFilePath = event ? event.path : ''
                 this.emitChanges()
             },
             setPreDownload(event) {
-                this.preDownloadFile = event
-                this.preDownloadFilePath = event.path
+                this.preDownloadFile = event ? event : null
+                this.preDownloadFilePath = event ? event.path : ''
                 this.emitChanges()
             },
             setPostExecute(event) {
-                this.postExecuteFile = event
-                this.postExecuteFilePath = event.path
+                this.postExecuteFile = event ? event : null
+                this.postExecuteFilePath = event ? event.path : ''
                 this.emitChanges()
             },
             setPostDownload(event) {

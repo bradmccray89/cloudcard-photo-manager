@@ -4,6 +4,7 @@ import { app, protocol, BrowserWindow } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
+const path = require('path')
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -12,6 +13,8 @@ protocol.registerSchemesAsPrivileged([
 
 async function createWindow() {
   // Create the browser window.
+  const iconPath = isDevelopment ? path.join(__dirname, '../src/assets/logo-only-40x40.png') : path.join(__dirname, '../../src/assets/logo-only-40x40.png')
+
   const win = new BrowserWindow({
     width: 1200,
     height: 700,
@@ -21,8 +24,9 @@ async function createWindow() {
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
     },
     autoHideMenuBar: true,
-    icon: 'src/assets/logo-only-40x40.png',
+    // icon: iconPath,
     title: 'Cloudcard Photo Manager'
+    // title: path.join(__dirname, '../../src/assets/logo-only-40x40.png')
   })
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {

@@ -17,7 +17,7 @@
                 <v-btn
                     class="mb-3"
                     color="primary"
-                    v-if="showRedownloadButton"
+                    :disabled="!showRedownloadButton"
                     @click="redownloadPhotos">
                         Run Downloader
                 </v-btn>
@@ -32,10 +32,16 @@ const fs = require('fs')
 export default {
   name: 'Welcome',
 
-  props: [ 
-    'msg',
-    'showRedownloadButton'
-  ],
+  props: {
+    msg: {
+        type: String,
+        default: 'Welcome to Cloudcard Photo Manager' 
+    },
+    showRedownloadButton: {
+        type: Boolean,
+        default: false
+    }
+  },
 
   data: () => {
     return {

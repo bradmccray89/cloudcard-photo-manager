@@ -2,7 +2,7 @@
   <div class="text-center">
     <v-container fluid>
       <img alt="CloudCard Photo Manager" src="../assets/logo-only-300x300.png">
-      <Welcome msg="Welcome to Cloudcard Photo Manager" v-bind:showRedownloadButton="showRedownloadButton"/>
+      <Welcome v-bind:showRedownloadButton="showRedownloadButton"/>
     </v-container>
   </div>
 </template>
@@ -11,6 +11,7 @@
 import Welcome from '@/components/Welcome.vue'
 
 const fs = require('fs')
+const app = require('electron').remote.app
 
 export default {
   name: 'Home',
@@ -27,6 +28,7 @@ export default {
   },
 
   created: function() {
+    console.log('path', app.getAppPath())
     let jsonFile = 'application-properties.json'
     if (fs.existsSync(jsonFile)) {
       this.showRedownloadButton = true

@@ -65,27 +65,27 @@
                     return {
                         storageType: {
                             type: 'downloader.storageService',
-                            value: this.downloadData['downloader.storageService']
+                            value: 'FileStorageService'
                         },
                         photoStorageLocation: {
                             type: 'downloader.photoDirectories',
-                            value: this.downloadData['downloader.photoDirectories']
+                            value: 'downloaded-photos'
                         },
                         summaryLocation: {
                             type: 'SimpleSummaryService.directory',
-                            value: this.downloadData['SimpleSummaryService.directory']
+                            value: ''
                         },
                         dbTableName: {
                             type: 'db.mapping.table',
-                            value: this.downloadData['db.mapping.table']
+                            value: 'CLOUDCARD_PHOTOS'
                         },
                         dbStudentColumnName: {
                             type: 'db.mapping.column.studentId',
-                            value: this.downloadData['db.mapping.column.studentId']
+                            value: 'STUDENT_ID'
                         },
                         dbPhotoColumnName: {
                             type: 'db.mapping.column.photoId',
-                            value: this.downloadData['db.mapping.column.photoId']
+                            value: 'PHOTO'
                         }
                     }
                 }
@@ -96,31 +96,31 @@
                     return {
                         dataSourceEnable: {
                             type: 'db.datasource.enabled',
-                            value: this.downloadData['db.datasource.enabled']
+                            value: false
                         },
                         driverClassName: {
                             type: 'db.datasource.driverClassName',
-                            value: this.downloadData['db.datasource.driverClassName']
+                            value: ''
                         },
                         url: {
                             type: 'db.datasource.url',
-                            value: this.downloadData['db.datasource.url']
+                            value: ''
                         },
                         username: {
                             type: 'db.datasource.username',
-                            value: this.downloadData['db.datasource.username']
+                            value: ''
                         },
                         password: {
                             type: 'db.datasource.password',
-                            value: this.downloadData['db.datasource.password']
+                            value: ''
                         },
                         schema: {
                             type: 'db.datasource.schema',
-                            value: this.downloadData['db.datasource.schema']
+                            value: ''
                         },
                         dialect: {
                             type: 'spring.jpa.hibernate.dialect',
-                            value: this.downloadData['spring.jpa.hibernate.dialect']
+                            value: ''
                         }
                     }
                 }
@@ -128,7 +128,8 @@
         },
 
         created: function () {
-            this.storageChoice = this.storageTypes.find(f => f.entry === this.storageData.storageType.value).entry
+            const storageMatch = this.storageTypes.find(f => f.entry === this.storageData.storageType.value)
+            this.storageChoice = storageMatch ? storageMatch.entry : this.storageData.value
             this.photoStorageLocation = this.storageData.photoStorageLocation.value
             this.summaryLocation = this.storageData.summaryLocation.value
             this.databaseData.dbTableName = this.storageData.dbTableName
@@ -160,8 +161,9 @@
 
         methods: {
             changeData() {
-                if (this.storageType !== '' && this.photoStorageLocation !== '') {
-                    this.summaryLocation = path.dirname(this.photoStorageLocation)
+                console.log('photoStorageLocation', this.photoStorageLocation)
+                if (this.storageType !== '' && this.photoStorageLocation) {
+                    this.summaryLocation = path.dirname(this.photoStorageLocation.toString())
                 }
             },
             emitChange() {

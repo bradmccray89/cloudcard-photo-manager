@@ -85,8 +85,10 @@
                 type: Object,
                 default: function() {
                     return {
-                        type: 'cloudcard.api.url',
-                        value: ''
+                        api: {
+                            type: 'cloudcard.api.url',
+                            value: ''
+                        }
                     }
                 }
             }
@@ -94,8 +96,9 @@
 
         created: function () {
             this.loggedIn = (this.loginData.accessToken.value != '')
-            this.endpoint = this.apiData.value
-            if (this.endpoint == '') {
+            this.endpoint = this.apiData.api.value
+            console.log('endpoint', this.endpoint)
+            if (this.endpoint === '') {
                 this.validateOverride = true
                 this.errorAlert('No API is chosen. Please go back to \'API\' step to choose one to login to.')
             }

@@ -7,14 +7,11 @@ module.exports = {
       nodeIntegration: true,
       builderOptions: {
         files: [
-          "**/*"
+          "**/*",
+          "build/icon.*",
         ],
         extraFiles: [
-          {
-            "from": "cloudcard-photo-downloader.jar",
-            "to": "cloudcard-photo-downloader.jar",
-            "filter": ["**/*"]
-          }
+          "cloudcard-photo-downloader.jar",
         ]
       }
     }

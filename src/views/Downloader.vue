@@ -157,11 +157,10 @@ export default {
     },
 
     created: function () {
-        if (this.$route.query.jsonInputData.length !== 0) {
+        if (this.$route.query.jsonInputData && this.$route.query.jsonInputData.length !== 0) {
             this.downloadData = this.$route.query.jsonInputData
         }
-        this.propData = fileService.setPropData(this.downloadData)
-        this.setPropDataForComponents()
+            this.setPropDataForComponents()
     },
 
     methods: {
@@ -184,7 +183,9 @@ export default {
             }
         },
         setValue(event) {
+            console.log('setValue', event)
             event.forEach(item => {
+                console.log(item)
                 if (item.value !== '') {
                     this.value = {
                         type: item.type,
@@ -253,6 +254,8 @@ export default {
             })
         },
         setPropDataForComponents() {
+            console.log('downloadData', this.downloadData)
+            this.propData = fileService.setPropData(this.downloadData)
             this.apiData = this.propData.apiData
             this.loginData = this.propData.loginData
             this.storageData = this.propData.storageData

@@ -37,16 +37,17 @@
                 type: Object,
                 default: function() {
                     return {
-                        type: 'cloudcard.api.url',
-                        value: 'https://api.onlinephotosubmission.com/api'
+                        api: {
+                            type: 'cloudcard.api.url',
+                            value: 'https://api.onlinephotosubmission.com/api'
+                        }
                     }
                 }
             }
         },
 
         created: function () {
-            this.endpoint = this.api.find(f => f.value === this.apiData['cloudcard.api.url'])?.value
-            this.apiChoice = this.api.find(f => f.value === this.apiData.value)
+            this.apiChoice = this.api.find(f => f.value === this.apiData.api.value)
         },
 
         data() {
@@ -72,7 +73,7 @@
             emitChange() {
                 var result = [
                     {
-                        type: this.apiData.type,
+                        type: 'cloudcard.api.url',
                         value: this.apiChoice
                     }
                 ]

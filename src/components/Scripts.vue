@@ -18,7 +18,7 @@
                     </v-tooltip>
                 </div>
                 <v-file-input class="mb-2"
-                    outlined
+                    solo
                     dense
                     hide-details
                     @change="setPreExecute">
@@ -40,7 +40,7 @@
                     </v-tooltip>
                 </div>
                 <v-file-input class="mb-2"
-                    outlined
+                    solo
                     dense
                     hide-details
                     @change="setPostExecute">
@@ -64,7 +64,7 @@
                     </v-tooltip>
                 </div>
                 <v-file-input class="mb-2"
-                    outlined
+                    solo
                     dense
                     hide-details
                     @change="setPreDownload">

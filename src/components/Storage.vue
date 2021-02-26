@@ -22,7 +22,7 @@
             label="Storage Service"
             dense
             solo
-            @change="changeData()">
+            @change="emitChange()">
         </v-select>
         <v-divider></v-divider>
         <FileStorage v-if="storageChoice === 'FileStorageService'"
@@ -34,21 +34,12 @@
             v-bind:dbConnectionData="dbConnectionData"
             v-on:setDbData="setDbData">
         </DatabaseStorage>
-        <div class="d-flex float-right">
-            <v-btn
-                color="primary"
-                @click="emitChange">
-                Next
-            </v-btn>
-        </div>
     </v-container>
 </template>
 
 <script>
     import FileStorage from './FileStorage'
     import DatabaseStorage from './DatabaseStorage'
-
-    const path = require('path')
 
     export default {
         name: 'Storage',
@@ -70,10 +61,6 @@
                         photoStorageLocation: {
                             type: 'downloader.photoDirectories',
                             value: 'downloaded-photos'
-                        },
-                        summaryLocation: {
-                            type: 'SimpleSummaryService.directory',
-                            value: ''
                         },
                         dbTableName: {
                             type: 'db.mapping.table',
@@ -131,7 +118,6 @@
             const storageMatch = this.storageTypes.find(f => f.entry === this.storageData.storageType.value)
             this.storageChoice = storageMatch ? storageMatch.entry : this.storageData.value
             this.photoStorageLocation = this.storageData.photoStorageLocation.value
-            this.summaryLocation = this.storageData.summaryLocation.value
             this.databaseData.dbTableName = this.storageData.dbTableName
             this.databaseData.dbStudentColumnName = this.storageData.dbStudentColumnName
             this.databaseData.dbPhotoColumnName = this.storageData.dbPhotoColumnName
@@ -151,7 +137,6 @@
                 ],
                 storageChoice: '',
                 photoStorageLocation: '',
-                summaryLocation: '',
                 databaseData: {},
                 dbTable: '',
                 dbStudentColumn: '',
@@ -160,12 +145,6 @@
         },
 
         methods: {
-            changeData() {
-                console.log('photoStorageLocation', this.photoStorageLocation)
-                if (this.storageType !== '' && this.photoStorageLocation) {
-                    this.summaryLocation = path.dirname(this.photoStorageLocation.toString())
-                }
-            },
             emitChange() {
                 var result = []
                 if (this.storageChoice === 'FileStorageService') {
@@ -178,10 +157,6 @@
                             type: 'downloader.photoDirectories',
                             value: this.photoStorageLocation
                         },
-                        {
-                            type: 'SimpleSummaryService.directory',
-                            value: this.summaryLocation
-                        }
                     ]
                 } else if (this.storageChoice === 'SimpleDatabaseStorageService') {
                     result = [
@@ -203,31 +178,31 @@
                         },
                         {
                             type: 'db.datasource.enabled',
-                            value: this.databaseData.dataSourceEnable.value
+                            value: this.databaseData.dataSourceEnable?.value
                         },
                         {
                             type: 'db.datasource.driverClassName',
-                            value: this.databaseData.driverClassName.value
+                            value: this.databaseData.driverClassName?.value
                         },
                         {
                             type: 'db.datasource.url',
-                            value: this.databaseData.url.value
+                            value: this.databaseData.url?.value
                         },
                         {
                             type: 'db.datasource.username',
-                            value: this.databaseData.username.value
+                            value: this.databaseData.username?.value
                         },
                         {
                             type: 'db.datasource.password',
-                            value: this.databaseData.password.value
+                            value: this.databaseData.password?.value
                         },
                         {
                             type: 'db.datasource.schema',
-                            value: this.databaseData.schema.value
+                            value: this.databaseData.schema?.value
                         },
                         {
                             type: 'spring.jpa.hibernate.dialect',
-                            value: this.databaseData.dialect.value
+                            value: this.databaseData.dialect?.value
                         },
                         {
                             type: 'SimpleSummaryService.directory',
@@ -243,6 +218,7 @@
                         this.photoStorageLocation = item.value
                     }
                 })
+                this.emitChange()
             },
             setDbData(data) {
                 this.databaseData.dbTableName = data.tableName

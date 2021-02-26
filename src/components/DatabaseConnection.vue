@@ -38,7 +38,7 @@
                                 :items="driverClassOptions"
                                 item-text="type"
                                 item-value="value"
-                                outlined
+                                solo
                                 dense>
                             </v-select>
                         </v-col>
@@ -51,7 +51,7 @@
                                 :items="dialectOptions"
                                 item-text="type"
                                 item-value="value"
-                                outlined
+                                solo
                                 dense>
                             </v-select>
                         </v-col>
@@ -63,7 +63,7 @@
                             </div>
                             <v-text-field
                                 v-model="url"
-                                outlined
+                                solo
                                 dense>
                             </v-text-field>
                         </v-col>
@@ -73,7 +73,7 @@
                             </div>
                             <v-text-field
                                 v-model="schema"
-                                outlined
+                                solo
                                 dense>
                             </v-text-field>
                         </v-col>
@@ -85,7 +85,7 @@
                             </div>
                             <v-text-field
                                 v-model="username"
-                                outlined
+                                solo
                                 dense>
                             </v-text-field>
                         </v-col>
@@ -95,9 +95,17 @@
                             </div>
                             <v-text-field
                                 v-model="password"
-                                type="password"
-                                outlined
+                                :type="passwordFieldType"
+                                solo
                                 dense>
+                                <v-btn
+                                    class="mt-0"
+                                    icon
+                                    @click="togglePassword"
+                                    slot="append">
+                                    <v-icon v-if="!showPassword">mdi-eye</v-icon>
+                                    <v-icon v-if="showPassword">mdi-eye-off</v-icon>
+                                </v-btn>
                             </v-text-field>
                         </v-col>
                     </v-row>
@@ -163,6 +171,8 @@ export default {
             url: '',
             username: '',
             password: '',
+            passwordFieldType: 'password',
+            showPassword: false,
             schema: '',
             dialect: '',
             dialectOptions: [
@@ -207,6 +217,10 @@ export default {
     },
 
     methods: {
+        togglePassword() { 
+            this.showPassword = !this.showPassword
+            this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password'
+        },
         closeDialog() {
             this.$emit('closeDialog')
         },

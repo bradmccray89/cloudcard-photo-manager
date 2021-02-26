@@ -21,7 +21,8 @@
             chips
             label="Input Photo Status"
             multiple
-            solo>
+            solo
+            @change="emitChange">
         </v-select>
         <div class="d-flex flex-row mb-1">
             <span>Output Photo Status</span>
@@ -42,7 +43,8 @@
             :items="photoStatus"
             dense
             label="Output Photo Status"
-            solo>
+            solo
+            @change="emitChange">
         </v-select>
         <div class="d-flex flex-row mb-1">
             <span>Minimum Photo ID Length</span>
@@ -63,13 +65,9 @@
             :rules="idRules"
             dense
             hide-details="auto"
-            solo>
+            solo
+            @change="emitChange">
         </v-text-field>
-        <v-btn
-            class="float-right mb-3 mt-3"
-            @click="setPhotoStatuses()">
-                Next
-        </v-btn>
     </v-container>
 </template>
 
@@ -126,7 +124,7 @@
         },
 
         methods: {
-            setPhotoStatuses() {
+            emitChange() {
                 var concatFetchStatuses = ''
                 this.fetchStatus.forEach((status, index) => {
                     if (index === 0) {
@@ -149,7 +147,7 @@
                         value: this.minimumIdLength
                     }
                 ]
-                // this.$emit('set_value', result)
+                this.$emit('set_value', result)
             },
         }
     }

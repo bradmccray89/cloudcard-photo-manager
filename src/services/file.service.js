@@ -26,10 +26,6 @@ export default class FileService {
                     type: 'downloader.photoDirectories',
                     value: data['downloader.photoDirectories'] || 'downloaded-photos'
                 },
-                summaryLocation: {
-                    type: 'SimpleSummaryService.directory',
-                    value: data['SimpleSummaryService.directory'] || 'summary'
-                },
                 dbTableName: {
                     type: 'db.mapping.table',
                     value: data['db.mapping.table'] || 'CLOUDCARD_PHOTOS'
@@ -151,6 +147,28 @@ export default class FileService {
                     value: data['SimpleSummaryService.directory'] || 'summary'
                 }
             }
+        }
+    }
+
+    setDefaults() {
+        return {
+            'cloudcard.api.url': 'https://api.onlinephotosubmission.com/api',
+            'downloader.storageService': 'FileStorageService',
+            'downloader.photoDirectories': 'downloaded-photos',
+            'db.mapping.table': 'CLOUDCARD_PHOTOS',
+            'db.mapping.column.studentId': 'STUDENT_ID',
+            'db.mapping.column.photoId': 'PHOTO',
+            'db.datasource.enabled': false,
+            'downloader.repeat': true,
+            'donwloader.delay.milliseconds': 600000,
+            'downloader.fetchStatuses': 'READY_FOR_DOWNLOAD',
+            'downloader.putStatus': 'DOWNLOADED',
+            'downloader.minPhotoIdLength': 0,
+            'downloader.fileNameResolver': 'SimpleFileNameResolver',
+            'downloader.preProcessor': 'DoNothingPreProcessor',
+            'downloader.postProcessor': 'DoNothingPostProcessor',
+            'downloader.SummaryService': 'SimpleSummaryService',
+            'SimpleSummaryService.directory': 'summary'
         }
     }
 }

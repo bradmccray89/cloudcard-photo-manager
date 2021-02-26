@@ -21,7 +21,7 @@
             hint="Select a file name resolver to use"
             persistent-hint
             dense
-            outlined
+            solo
             @change="emitChange()">
         </v-select>
         <div v-if="resolverName === 'DatabaseFileNameResolver'">
@@ -43,7 +43,7 @@
             <v-textarea
                 v-model="dbNameQuery"
                 placeholder="ex. SELECT TOP 1 student_id FROM my_table WHERE external_id = ? AND other_column LIKE 'abc%' ORDER BY date_created DESC"
-                outlined
+                solo
                 dense
                 @change="emitChange()">
             </v-textarea>

@@ -159,6 +159,8 @@ export default {
     created: function () {
         if (this.$route.query.jsonInputData && this.$route.query.jsonInputData.length !== 0) {
             this.downloadData = this.$route.query.jsonInputData
+        } else {
+            this.downloadData = fileService.setDefaults()
         }
             this.setPropDataForComponents()
     },
@@ -183,9 +185,7 @@ export default {
             }
         },
         setValue(event) {
-            console.log('setValue', event)
             event.forEach(item => {
-                console.log(item)
                 if (item.value !== '') {
                     this.value = {
                         type: item.type,
@@ -196,6 +196,7 @@ export default {
             })
         },
         saveValueToDownloadData() {
+            console.log('value', this.value.value)
             this.downloadData[this.value.type] = this.value.value
             this.value = '';
             this.setPropDataForComponents()
@@ -227,7 +228,7 @@ export default {
                 }
             }
             this.cmd = this.cmd.concat(' -jar cloudcard-photo-downloader.jar')
-            fs.writeFile('run.bat', this.cmd)
+            fs.writeFileSync('run.bat', this.cmd)
         },
         saveAndRun() {
             this.save();
@@ -254,7 +255,6 @@ export default {
             })
         },
         setPropDataForComponents() {
-            console.log('downloadData', this.downloadData)
             this.propData = fileService.setPropData(this.downloadData)
             this.apiData = this.propData.apiData
             this.loginData = this.propData.loginData

@@ -16,13 +16,14 @@
         </div>
         <div id="folder-input">
             <v-btn class="ma-2" @click="saveFolder()">Select Folder</v-btn>
-            <span :v-if="selectedPath !== ''">{{ selectedPath }}</span>
+            <span :v-if="downloadDirectory !== ''">{{ downloadDirectory }}</span>
         </div>
     </v-container>
 </template>
 
 <script>
-    const { dialog } = require('electron').remote
+    const { app, dialog } = require('electron').remote
+    const path = require('path')
 
     export default {
         name: 'FileStorage',
@@ -33,11 +34,12 @@
 
         data() {
             return {
+                downloadDirectory: ''
             }
         },
 
         created: function() {
-
+            this.downloadDirectory = this.selectedPath === 'downloaded-photos' ? path.join(app.getPath('documents') || __dirname, this.selectedPath) : this.selectedPath
         },
 
         methods: {
@@ -48,13 +50,14 @@
                     var total = 0
                     result.filePaths.forEach((path, index) => {
                         if (index === 0) {
-                            this.selectedPath = path
+                            this.downloadDirectory = path
                         } else {
-                            this.selectedPath = this.selectedPath + ',' + path
+                            this.downloadDirectory = this.downloadDirectory + ',' + path
                         }
                         total = index + 1
                     })
-                    if (this.selectedPath !== '') {
+                    console.log('downloadDirectory', this.downloadDirectory)
+                    if (this.downloadDirectory !== '') {
                         this.emitChanges()
                     }
                 })
@@ -63,9 +66,10 @@
                 var result = [
                     {
                         type: 'downloader.photoDirectories',
-                        value: this.selectedPath
-                    },
+                        value: this.downloadDirectory
+                    }
                 ]
+                console.log('result', result)
                 this.$emit('set_folders', result)
             }
         }

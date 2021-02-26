@@ -22,7 +22,7 @@
                     :items="preProcessorOptions"
                     hide-details
                     dense
-                    outlined
+                    solo
                     @change="emitChange()">
                 </v-select>
             </v-col>
@@ -47,7 +47,7 @@
                         rows="1"
                         hide-details
                         auto-grow
-                        outlined
+                        solo
                         dense
                         @change="emitChange()">
                     </v-textarea>
@@ -77,7 +77,7 @@
                     :items="postProcessorOptions"
                     hide-details
                     dense
-                    outlined
+                    solo
                     @change="emitChange()">
                 </v-select>
             </v-col>
@@ -102,7 +102,7 @@
                         rows="1"
                         hide-details
                         auto-grow
-                        outlined
+                        solo
                         dense
                         placeholder="ex. UPDATE my_table SET date_created = ?, file_location = ? WHERE student_id = ?"
                         @change="emitChange()">

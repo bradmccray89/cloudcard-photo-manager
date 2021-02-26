@@ -7,6 +7,7 @@
                 v-model="repeat"
                 dense
                 solo
+                @change="emitChange"
                 >
                 </v-checkbox>
                 <span>Repeat download</span>
@@ -43,7 +44,8 @@
                     hide-details="auto"
                     :disabled="!repeat"
                     dense
-                    solo>
+                    solo
+                    @change="emitChange">
                     <span slot="append">days</span>
                 </v-text-field>
                 <v-text-field class="delay-input flex-grow-1 mr-2"
@@ -52,7 +54,8 @@
                     hide-details="auto"
                     :disabled="!repeat"
                     dense
-                    solo>
+                    solo
+                    @change="emitChange">
                     <span slot="append">hours</span>
                 </v-text-field>
                 <v-text-field class="delay-input flex-grow-1"
@@ -61,16 +64,12 @@
                     hide-details="auto"
                     :disabled="!repeat"
                     dense
-                    solo>
+                    solo
+                    @change="emitChange">
                     <span slot="append">minutes</span>
                 </v-text-field>
             </div>
         </v-form>
-        <v-btn
-            class="float-right mb-3 mt-3"
-            @click="setRepeat()">
-                Next
-        </v-btn>
     </v-container>
 </template>
 
@@ -125,7 +124,7 @@
         },
 
         methods: {
-            setRepeat() {
+            emitChange() {
                 var result = [
                     {
                         type: 'downloader.repeat',

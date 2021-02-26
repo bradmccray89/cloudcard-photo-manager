@@ -22,7 +22,7 @@
             </v-tooltip>
             <v-spacer></v-spacer>
             <span class="ml-5" v-if="loginData.accessToken.value">
-                <span>Currently logged in</span>
+                <v-icon color="green">mdi-checkbox-marked-circle-outline</v-icon><span color="green">Logged in</span>
             </span>
         </div>
         <v-form id="login-info"
@@ -37,21 +37,30 @@
                 hide-details="auto">
             </v-text-field>
             <v-text-field
+                id="password"
+                :type="passwordFieldType"
                 v-model="input.password"
                 class="mt-2"
-                type="password"
                 solo
                 dense
                 label="Password">
+                <v-btn
+                    icon
+                    @click="togglePassword"
+                    slot="append">
+                    <v-icon v-if="!showPassword">mdi-eye</v-icon>
+                    <v-icon v-if="showPassword">mdi-eye-off</v-icon>
+                </v-btn>
             </v-text-field>
+            <v-btn
+                class="float-right"
+                color="primary"
+                type="submit"
+                :disabled="!input.username || !input.password || !this.valid || this.validateOverride"
+                @click="login">
+                    Login
+            </v-btn>
         </v-form>
-        <v-btn
-            class="float-right"
-            color="primary"
-            :disabled="!input.username || !input.password || !this.valid || this.validateOverride"
-            @click="login()">
-                Login
-        </v-btn>
         <v-overlay :value="overlay">
             <v-progress-circular
                 indeterminate
@@ -97,7 +106,6 @@
         created: function () {
             this.loggedIn = (this.loginData.accessToken.value != '')
             this.endpoint = this.apiData.api.value
-            console.log('endpoint', this.endpoint)
             if (this.endpoint === '') {
                 this.validateOverride = true
                 this.errorAlert('No API is chosen. Please go back to \'API\' step to choose one to login to.')
@@ -124,10 +132,17 @@
             errorMessage: '',
             alert: false,
             timeout: 5000,
+            showPassword: false,
+            passwordFieldType: 'password'
         }),
 
         methods: {
-            login() {
+            togglePassword() {
+                this.showPassword = !this.showPassword
+                this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password'
+            },
+            login(event) {
+                event.preventDefault()
                 this.overlay = true
                 this.$http.post(this.endpoint + '/login', {
                     username: this.input.username,
@@ -188,4 +203,7 @@
 </script>
 
 <style scoped>
+.v-input__append-inner {
+    margin-top: .1em;
+}
 </style>

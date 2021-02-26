@@ -150,22 +150,18 @@
             setPreExecute(event) {
                 this.preExecuteFile = event
                 this.preExecuteFilePath = event.path
-                console.log('preExecuteFile: ', this.preExecuteFile)
             },
             setPreDownload(event) {
                 this.preDownloadFile = event
                 this.preDownloadFilePath = event.path
-                console.log('preDownloadFile: ', this.preDownloadFile)
             },
             setPostExecute(event) {
                 this.postExecuteFile = event
                 this.postExecuteFilePath = event.path
-                console.log('postExecuteFile: ', this.postExecuteFile)
             },
             setPostDownload(event) {
                 this.postDownloadFile = event
                 this.postDownloadFilePath = event.path
-                console.log('postDownloadFile: ', this.postDownloadFile)
             }
         }
     }

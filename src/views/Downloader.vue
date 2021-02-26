@@ -196,7 +196,6 @@ export default {
             })
         },
         saveValueToDownloadData() {
-            console.log('value', this.value.value)
             this.downloadData[this.value.type] = this.value.value
             this.value = '';
             this.setPropDataForComponents()

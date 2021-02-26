@@ -81,7 +81,6 @@ export default {
     },
 
     created: function() {
-        console.log('fileNameResolverData', this.fileNameResolverData)
         this.resolverName = this.fileNameResolverData.resolver.value
         this.dbNameQuery = this.fileNameResolverData.query.value
     },

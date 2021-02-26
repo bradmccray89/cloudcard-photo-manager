@@ -56,7 +56,6 @@
                         }
                         total = index + 1
                     })
-                    console.log('downloadDirectory', this.downloadDirectory)
                     if (this.downloadDirectory !== '') {
                         this.emitChanges()
                     }
@@ -69,7 +68,6 @@
                         value: this.downloadDirectory
                     }
                 ]
-                console.log('result', result)
                 this.$emit('set_folders', result)
             }
         }

@@ -24,9 +24,7 @@ async function createWindow() {
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
     },
     autoHideMenuBar: true,
-    // icon: iconPath,
     title: 'Cloudcard Photo Manager'
-    // title: path.join(__dirname, '../../src/assets/logo-only-40x40.png')
   })
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {

@@ -103,6 +103,24 @@ export default class FileService {
                     value: data['DatabaseFileNameResolver.baseFileName.query'] || ''
                 }
             },
+            scriptData: {
+                preExecuteScript: {
+                    type: 'ShellCommandService.preExecuteCommand',
+                    value: data['ShellCommandService.preExecuteCommand'] || ''
+                },
+                preDownloadScript: {
+                    type: 'ShellCommandService.preDownloadCommand',
+                    value: data['ShellCommandService.preDownloadCommand'] || ''
+                },
+                postExecuteScript: {
+                    type: 'ShellCommandService.postExecuteCommand',
+                    value: data['ShellCommandService.postExecuteCommand'] || ''
+                },
+                postDownloadScript: {
+                    type: 'ShellCommandService.postDownloadCommand',
+                    value: data['ShellCommandService.postDownloadCommand'] || ''
+                }
+            },
             processorData: {
                 preProcessor: {
                     type: 'downloader.preProcessor',

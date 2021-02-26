@@ -89,6 +89,7 @@
                     dense
                     solo
                     hide-details
+                    v-model="postDownloadFile"
                     @change="setPostDownload">
                 </v-file-input>
             </div>
@@ -97,6 +98,8 @@
 </template>
 
 <script>
+    const fs = require('fs')
+
     export default {
         name: 'Scripts',
 
@@ -140,28 +143,59 @@
         },
 
         created: function() {
-            this.preExecuteFilePath = this.scriptData.preExecuteScript?.value
-            this.preDownloadFilePath = this.scriptData.preDownloadScript?.value
-            this.postExecuteFilePath = this.scriptData.postExecuteScript?.value
-            this.postDownloadFilePath = this.scriptData.postDownloadScript?.value
+            this.preExecuteFilePath = this.scriptData.preExecuteScript.value
+            this.preDownloadFilePath = this.scriptData.preDownloadScript.value
+            this.postExecuteFilePath = this.scriptData.postExecuteScript.value
+            this.postDownloadFilePath = this.scriptData.postDownloadScript.value
+            this.setFileObjects()
         },
 
         methods: {
+            setFileObjects() {
+                this.postDownloadFile = this.postDownloadFilePath !== '' ? new File(fs.readFileSync(this.postDownloadFilePath), this.postDownloadFilePath) : null
+                console.log(this.postDownloadFile)
+            },
             setPreExecute(event) {
                 this.preExecuteFile = event
                 this.preExecuteFilePath = event.path
+                this.emitChanges()
             },
             setPreDownload(event) {
                 this.preDownloadFile = event
                 this.preDownloadFilePath = event.path
+                this.emitChanges()
             },
             setPostExecute(event) {
                 this.postExecuteFile = event
                 this.postExecuteFilePath = event.path
+                this.emitChanges()
             },
             setPostDownload(event) {
-                this.postDownloadFile = event
-                this.postDownloadFilePath = event.path
+                this.postDownloadFile = event ? event : null
+                this.postDownloadFilePath = event ? event.path : ''
+                this.emitChanges()
+            },
+            emitChanges() {
+                const result = [
+                    {
+                        type: 'ShellCommandService.preExecuteCommand',
+                        value: this.preExecuteFilePath
+                    },
+                    {
+                        type: 'ShellCommandService.preDownloadCommand',
+                        value: this.preDownloadFilePath
+                    },
+                    {
+                        type: 'ShellCommandService.postExecuteCommand',
+                        value: this.postExecuteFilePath
+                    },
+                    {
+                        type: 'ShellCommandService.postDownloadCommand',
+                        value: this.postDownloadFilePath
+                    }
+                ]
+                console.log('result', result)
+                this.$emit('set_value', result)
             }
         }
     }

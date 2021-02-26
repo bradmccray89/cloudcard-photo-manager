@@ -162,7 +162,7 @@ export default {
         } else {
             this.downloadData = fileService.setDefaults()
         }
-            this.setPropDataForComponents()
+        this.setPropDataForComponents()
     },
 
     methods: {
@@ -262,6 +262,7 @@ export default {
             this.repeatData = this.propData.repeatData
             this.statusData = this.propData.statusData
             this.fileNameResolverData = this.propData.fileNameResolverData
+            this.scriptData = this.propData.scriptData
             this.processorData = this.propData.processorData
             this.summaryServiceData = this.propData.summaryServiceData
         },

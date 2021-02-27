@@ -42,7 +42,7 @@ export default class FileService {
             dbConnectionData: {
                 dataSourceEnable: {
                     type: 'db.datasource.enabled',
-                    value: data['db.datasource.enabled'] || false
+                    value: data['db.datasource.enabled']
                 },
                 driverClassName: {
                     type: 'db.datasource.driverClassName',
@@ -72,10 +72,10 @@ export default class FileService {
             repeatData: {
                 repeat: {
                     type: 'downloader.repeat',
-                    value: data['downloader.repeat'] || true
+                    value: data['downloader.repeat']
                 },
                 delay: {
-                    type: 'donwloader.delay.milliseconds',
+                    type: 'downloader.delay.milliseconds',
                     value: data['downloader.delay.milliseconds'] || 600000
                 }
             },
@@ -90,7 +90,7 @@ export default class FileService {
                 },
                 minimumIdLength: {
                     type: 'downloader.minPhotoIdLength',
-                    value: data['downloader.minPhotoIdLength'] || 0
+                    value: data['downloader.minPhotoIdLength']
                 }
             },
             fileNameResolverData: {
@@ -153,8 +153,8 @@ export default class FileService {
             },
             summaryServiceData: {
                 summaryService: {
-                    type: 'downloader.SummaryService',
-                    value: data['downloader.SummaryService'] || 'SimpleSummaryService'
+                    type: 'downloader.summaryService',
+                    value: data['downloader.summaryService'] || 'SimpleSummaryService'
                 },
                 fileName: {
                     type: 'SimpleSummaryService.fileName',
@@ -178,14 +178,14 @@ export default class FileService {
             'db.mapping.column.photoId': 'PHOTO',
             'db.datasource.enabled': false,
             'downloader.repeat': true,
-            'donwloader.delay.milliseconds': 600000,
+            'downloader.delay.milliseconds': 600000,
             'downloader.fetchStatuses': 'READY_FOR_DOWNLOAD',
             'downloader.putStatus': 'DOWNLOADED',
             'downloader.minPhotoIdLength': 0,
             'downloader.fileNameResolver': 'SimpleFileNameResolver',
             'downloader.preProcessor': 'DoNothingPreProcessor',
             'downloader.postProcessor': 'DoNothingPostProcessor',
-            'downloader.SummaryService': 'SimpleSummaryService',
+            'downloader.summaryService': 'SimpleSummaryService',
             'SimpleSummaryService.directory': 'summary'
         }
     }

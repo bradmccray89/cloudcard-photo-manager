@@ -69,6 +69,12 @@
                 </router-view>
             </v-container>
         </v-main>
+        <v-overlay :value="loading">
+            <v-progress-circular
+                indeterminate
+                color="primary">
+            </v-progress-circular>
+        </v-overlay>
     </div>
 </template>
 
@@ -84,6 +90,8 @@ import FileService from '../services/file.service'
 
 const fs = require('fs')
 const fileService = new FileService()
+const path = require('path')
+const { app } = require('electron').remote
 
 export default {
     name: 'Downloader',
@@ -107,6 +115,8 @@ export default {
         return {
             advancedSettings: false,
             cmd: 'java',
+            loading: false,
+            downloadSuccess: false,
             currentTab: null,
             currentTabIndex: 0,
             nextTab: null,
@@ -211,6 +221,10 @@ export default {
                     delete dataToSave[key]
                 }
             }
+            if (dataToSave['downloader.repeat'] === false) {
+                delete dataToSave['downloader.delay.milliseconds']
+            }
+            this.downloadData = dataToSave
             fs.writeFile('application-properties.json', '', function() {
                 fs.writeFileSync('application-properties.json', JSON.stringify(dataToSave, null, 4))
             })
@@ -218,12 +232,14 @@ export default {
             for (var key in dataToSave) {
                 if (dataToSave.hasOwnProperty(key)) {
                     var val = dataToSave[key]
-                    if (key === this.doesNotNeedQuotes(key)) {
-                        var param = ' -D' + key + '=' + val
-                    } else {
-                        var param = ' -D' + key + '="' + val + '"'
+                    if (this.addToCommand(key)) {
+                        if (this.doesNotNeedQuotes(key)) {
+                            var param = ' -D' + key + '=' + val
+                        } else {
+                            var param = ' -D' + key + '="' + val + '"'
+                        }
+                        this.cmd = this.cmd.concat(param)
                     }
-                    this.cmd = this.cmd.concat(param)
                 }
             }
             this.cmd = this.cmd.concat(' -jar cloudcard-photo-downloader.jar')
@@ -234,16 +250,22 @@ export default {
         },
         saveAndRun() {
             this.save();
-            this.runDownloadScript(dataToSave)
+            this.runDownloadScript(this.downloadData)
         },
         async runDownloadScript() {
+            this.loading = true
             let output = await this.execute(this.cmd)
+            this.loading = false
+            this.downloadSuccess = (output.stderr === '')
             let result = output.stdout ? output.stdout : output.stderr
             let stringOutput = ''
             for (let line of result.split('\n')) {
                 stringOutput = stringOutput.concat(`${line}\n`)
             }
-            fs.writeFileSync('downloader.txt', stringOutput)
+            fs.writeFileSync(path.join(this.summaryServiceData.directory.value, 'downloader.txt'), stringOutput)
+            if (this.downloadSuccess) {
+                this.$router.push({ path:'/', query: { downloadSuccessful: this.downloadSuccess } })
+            }
         },
         async execute(cmd) {
             return new Promise(function (resolve, reject) {
@@ -267,6 +289,9 @@ export default {
                 value === 'downloader.delay.milliseconds' ||
                 value === 'downloader.repeat' ||
                 value === 'downloader.storageService'
+        },
+        addToCommand(value) {
+            return value !== 'username'
         },
         setPropDataForComponents() {
             this.propData = fileService.setPropData(this.downloadData)

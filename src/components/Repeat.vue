@@ -143,8 +143,6 @@
                     let msHours = (this.hours * 60 * 60 * 1000)
                     let msMinutes = (this.minutes * 60 * 1000)
                     this.delay = msDays + msHours + msMinutes
-                } else {
-                    this.delay = 0
                 }
                 return this.delay
             }

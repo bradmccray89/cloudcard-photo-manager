@@ -63,7 +63,9 @@
                     v-bind:statusData="statusData"
                     v-bind:scriptData="scriptData"
                     v-bind:dbConnectionData="dbConnectionData"
-                    v-bind:fileNameResolverData="fileNameResolverData">
+                    v-bind:fileNameResolverData="fileNameResolverData"
+                    v-bind:processorData="processorData"
+                    v-bind:summaryServiceData="summaryServiceData">
                 </router-view>
             </v-container>
         </v-main>
@@ -204,13 +206,11 @@ export default {
         },
         save() {
             var dataToSave = this.downloadData
-            console.log('dataToSave1', dataToSave)
             for (var key in dataToSave) {
                 if (dataToSave[key] === '') {
                     delete dataToSave[key]
                 }
             }
-            console.log('dataToSave2', dataToSave)
             fs.writeFile('application-properties.json', '', function() {
                 fs.writeFileSync('application-properties.json', JSON.stringify(dataToSave, null, 4))
             })
@@ -218,10 +218,10 @@ export default {
             for (var key in dataToSave) {
                 if (dataToSave.hasOwnProperty(key)) {
                     var val = dataToSave[key]
-                    if (key === 'downloader.photoDirectories') {
-                        var param = ' -D' + key + '="' + val + '"'
-                    } else {
+                    if (key === this.doesNotNeedQuotes(key)) {
                         var param = ' -D' + key + '=' + val
+                    } else {
+                        var param = ' -D' + key + '="' + val + '"'
                     }
                     this.cmd = this.cmd.concat(param)
                 }
@@ -255,6 +255,18 @@ export default {
                     }
                 });
             })
+        },
+        doesNotNeedQuotes(value) {
+            return value === 'downloader.summaryService' ||
+                value === 'downloader.postProcessor' ||
+                value === 'downloader.preProcessor' ||
+                value === 'downloader.fileNameResolver' ||
+                value === 'db.datasource.driverClassName' ||
+                value === 'db.datasource.enabled' ||
+                value === 'downloader.minPhotoIdLength' ||
+                value === 'downloader.delay.milliseconds' ||
+                value === 'downloader.repeat' ||
+                value === 'downloader.storageService'
         },
         setPropDataForComponents() {
             this.propData = fileService.setPropData(this.downloadData)

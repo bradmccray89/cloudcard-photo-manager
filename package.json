@@ -1,6 +1,7 @@
 {
   "name": "cloudcard-photo-manager",
-  "version": "0.1.0",
+  "author": "Brandon McCray <bradmccray89@gmail.com>",
+  "version": "1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

@@ -1,4 +1,4 @@
-# cloudcard-photo-manager
+# Cloudcard Photo Manager
 
 ## Project setup
 ```
@@ -14,3 +14,9 @@ npm run electron:serve
 ```
 npm run electron:build
 ```
+
+
+## Install and Run Downloader
+
+Click [here](https://github.com/bradmccray89/cloudcard-photo-manager/raw/master/dist_electron/cloudcard-photo-manager%20Setup%201.0.0.exe) to download Cloudcard Photo Downloader application
+

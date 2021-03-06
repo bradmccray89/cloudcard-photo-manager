@@ -69,12 +69,15 @@
                 </router-view>
             </v-container>
         </v-main>
-        <v-overlay :value="loading">
+        <v-overlay :value="showLogger">
+            <Logger v-bind:output="stringOutput" v-on:close="closeLogger"></Logger>
+        </v-overlay>
+        <!-- <v-overlay :value="loading">
             <v-progress-circular
                 indeterminate
                 color="primary">
             </v-progress-circular>
-        </v-overlay>
+        </v-overlay> -->
     </div>
 </template>
 
@@ -85,6 +88,7 @@ import Storage from '../components/Storage'
 import Repeat from '../components/Repeat'
 import Status from '../components/Status'
 import AdvancedSettings from '../components/AdvancedSettings'
+import Logger from '../components/Logger'
 import { exec } from 'child_process'
 import FileService from '../services/file.service'
 
@@ -102,7 +106,8 @@ export default {
         Storage,
         Repeat,
         Status,
-        AdvancedSettings
+        AdvancedSettings,
+        Logger
     },
 
     watch: {
@@ -117,6 +122,8 @@ export default {
             cmd: 'java',
             loading: false,
             downloadSuccess: false,
+            showLogger: false,
+            stringOutput: '',
             currentTab: null,
             currentTabIndex: 0,
             nextTab: null,
@@ -254,13 +261,14 @@ export default {
         },
         async runDownloadScript() {
             this.loading = true
+            this.showLogger = true
             let output = await this.execute(this.cmd)
             this.loading = false
             this.downloadSuccess = (output.stderr === '')
             let result = output.stdout ? output.stdout : output.stderr
-            let stringOutput = ''
+            this.stringOutput = ''
             for (let line of result.split('\n')) {
-                stringOutput = stringOutput.concat(`${line}\n`)
+                this.stringOutput = this.stringOutput.concat(`${line}\n`)
             }
             fs.writeFileSync(path.join(this.summaryServiceData.directory.value, 'downloader.txt'), stringOutput)
             if (this.downloadSuccess) {
@@ -306,6 +314,9 @@ export default {
             this.processorData = this.propData.processorData
             this.summaryServiceData = this.propData.summaryServiceData
         },
+        closeLogger() {
+            this.showLogger = false
+        }
     }
 };
 </script>

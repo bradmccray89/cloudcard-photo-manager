@@ -70,7 +70,7 @@
             </v-container>
         </v-main>
         <v-overlay :value="showLogger">
-            <Logger v-bind:output="stringOutput" v-on:close="closeLogger"></Logger>
+            <Logger v-bind:file="downloadLogFile" v-on:close="closeLogger"></Logger>
         </v-overlay>
         <!-- <v-overlay :value="loading">
             <v-progress-circular
@@ -124,6 +124,7 @@ export default {
             downloadSuccess: false,
             showLogger: false,
             stringOutput: '',
+            downloadLogFile: '',
             currentTab: null,
             currentTabIndex: 0,
             nextTab: null,
@@ -261,6 +262,7 @@ export default {
         },
         async runDownloadScript() {
             this.loading = true
+            this.downloadLogFile = path.join(this.summaryServiceData.directory.value, 'downloader.txt')
             this.showLogger = true
             let output = await this.execute(this.cmd)
             this.loading = false
@@ -270,10 +272,10 @@ export default {
             for (let line of result.split('\n')) {
                 this.stringOutput = this.stringOutput.concat(`${line}\n`)
             }
-            fs.writeFileSync(path.join(this.summaryServiceData.directory.value, 'downloader.txt'), stringOutput)
-            if (this.downloadSuccess) {
-                this.$router.push({ path:'/', query: { downloadSuccessful: this.downloadSuccess } })
-            }
+            fs.writeFileSync(this.downloadLogFile, this.stringOutput)
+            // if (this.downloadSuccess) {
+            //     this.$router.push({ path:'/', query: { downloadSuccessful: this.downloadSuccess , downloadLogFile: this.downloadLogFile } })
+            // }
         },
         async execute(cmd) {
             return new Promise(function (resolve, reject) {

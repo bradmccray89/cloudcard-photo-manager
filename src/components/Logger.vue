@@ -1,6 +1,6 @@
 <template>
     <div class="text-center">
-        <v-card>
+        <v-card class="logger-card">
             <v-card-title>Log</v-card-title>
             <v-card-text>
                 {{ output }}
@@ -12,6 +12,7 @@
     </div>
 </template>
 <script>
+const Tail = require('tail').Tail
 export default {
     name: 'Logger',
 
@@ -23,17 +24,31 @@ export default {
     data() {
         return {
             overlay: false,
-            logInfo: ''
+            logInfo: '',
+            tail: null
         }
     },
 
     created: function() {
+        this.tail = new Tail(this.file)
+        this.tail.watch()
+        this.tail.on("line", function(data) {
+            this.logInfo += data
+            console.log('data', data)
+        })
     },
 
     methods: {
         close() {
+            this.tail.unwatch()
             this.$emit('close', null)
         }
     }
 }
 </script>
+<style scoped>
+    .logger-card {
+        height: 500px;
+        width: 700px;
+    }
+</style>

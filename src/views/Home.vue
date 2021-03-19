@@ -4,11 +4,15 @@
       <img alt="CloudCard Photo Manager" src="../assets/logo-only-300x300.png">
       <Welcome v-bind:showRedownloadButton="showRedownloadButton"/>
     </v-container>
+    <v-overlay :value="showLogger">
+      <Logger v-bind:file="downloadLogFile" v-on:close="closeLogger"></Logger>
+    </v-overlay>
   </div>
 </template>
 
 <script>
 import Welcome from '@/components/Welcome.vue'
+import Logger from '@/components/Logger.vue'
 
 const fs = require('fs')
 
@@ -16,13 +20,16 @@ export default {
   name: 'Home',
 
   components: {
-    Welcome
+    Welcome,
+    Logger
   },
 
   data: () => {
     return {
       savedDownloadSettings: [],
-      showRedownloadButton: false
+      showRedownloadButton: false,
+      showLogger: false,
+      downloadLogFile: ''
     }
   },
 
@@ -35,7 +42,9 @@ export default {
   },
 
   methods: {
-
+    closeLogger() {
+      this.showLogger = false
+    }
   }
 }
 </script>

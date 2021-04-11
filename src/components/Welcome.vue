@@ -17,8 +17,36 @@
             </v-card-text>
             <v-container>
                 <v-row class="d-flex justify-center mb-3">
+                    <v-tooltip left>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn
+                                class="mb-3 flex-grow"
+                                :disabled="!showBatchFileButton"
+                                v-bind="attrs"
+                                v-on="on"
+                                @click="showBatchFileLocation">
+                                    <v-icon>mdi-file-code</v-icon>
+                            </v-btn>
+                        </template>
+                        <span>View batch script file location</span>
+                    </v-tooltip>
+                    <v-tooltip right>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn
+                                class="ml-2 flex-grow"
+                                :disabled="!showLogFileButton"
+                                v-bind="attrs"
+                                v-on="on"
+                                @click="showLogFileLocation">
+                                    <v-icon>mdi-file-document</v-icon>
+                            </v-btn>
+                        </template>
+                        <span>View log file location</span>
+                    </v-tooltip>
+                </v-row>
+                <v-row class="d-flex justify-center mb-3">
                     <v-btn
-                        class="mb-3 mt-5"
+                        class="mb-3"
                         :to="{ path: '/Downloader/Api', query: { jsonInputData: this.savedDownloadSettings } }">
                             Change Settings
                     </v-btn>
@@ -32,9 +60,6 @@
                             Run Downloader
                     </v-btn>
                 </v-row>
-                <!-- <v-row class="d-flex justify-center mb-3 mt-3">
-                    <v-icon id="success-icon" large color="green" v-if="downloadSuccess">mdi-check-circle-outline</v-icon>
-                </v-row> -->
             </v-container>
             <v-overlay :value="loading">
                 <v-progress-circular
@@ -51,6 +76,7 @@ import { exec } from 'child_process'
 
 const fs = require('fs')
 const path = require('path')
+const { dialog } = require('electron').remote
 
 export default {
     name: 'Welcome',
@@ -79,7 +105,11 @@ export default {
             results: [],
             cmd: '',
             alertMessage: 'Download Successful!',
-            timeout: 5000
+            timeout: 5000,
+            batchFileLocation: '',
+            logFileLocation: '',
+            showBatchFileButton: false,
+            showLogFileButton: false
         }
     },
     created: function () {
@@ -89,6 +119,8 @@ export default {
         }
         if (fs.existsSync(this.savedDownloadScriptBatch)) {
             this.batch = fs.readFileSync(this.savedDownloadScriptBatch)
+            this.showBatchFileButton = true
+            this.showLogFileButton = true
         } else if (fs.existsSync(this.savedDownloadScriptShell)) {
             this.shell = fs.readFileSync(this.savedDownloadScriptShell)
         }
@@ -130,6 +162,8 @@ export default {
         getFileData() {
             if (fs.existsSync(this.savedDownloadSettingsFileName)) {
                 this.savedDownloadSettings = JSON.parse(fs.readFileSync(this.savedDownloadSettingsFileName))
+                this.batchFileLocation = this.savedDownloadSettings['batchFileLocation']
+                this.logFileLocation = this.savedDownloadSettings['logFileLocation']
                 for (var key in this.savedDownloadSettings) {
                     var value = this.savedDownloadSettings[key]
                     var item = {
@@ -139,6 +173,16 @@ export default {
                     this.results.push(item)
                 }
             }
+        },
+        showBatchFileLocation() {
+            dialog.showOpenDialog({
+                defaultPath: this.batchFileLocation
+            })
+        },
+        showLogFileLocation() {
+            dialog.showOpenDialog({
+                defaultPath: this.logFileLocation
+            })
         }
     }
 }

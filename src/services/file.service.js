@@ -1,3 +1,5 @@
+var path = require('path')
+var { app } = require('electron').remote
 export default class FileService {
     setPropData(data) {
         return {
@@ -162,7 +164,9 @@ export default class FileService {
                 },
                 directory: {
                     type: 'SimpleSummaryService.directory',
-                    value: data['SimpleSummaryService.directory'] || 'summary'
+                    value: data['SimpleSummaryService.directory'] === 'summary' ?
+                        path.join(app.getPath('documents') || __dirname, 'summary') :
+                        data['SimpleSummaryService.directory']
                 }
             }
         }

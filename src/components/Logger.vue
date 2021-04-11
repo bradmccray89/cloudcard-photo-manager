@@ -34,7 +34,6 @@ export default {
         this.tail.watch()
         this.tail.on("line", function(data) {
             this.logInfo += data
-            console.log('data', data)
         })
     },
 

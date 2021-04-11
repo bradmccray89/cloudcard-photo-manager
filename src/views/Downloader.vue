@@ -232,6 +232,10 @@ export default {
             if (dataToSave['downloader.repeat'] === false) {
                 delete dataToSave['downloader.delay.milliseconds']
             }
+            this.downloadLogFile = path.join(this.summaryServiceData.directory.value, 'downloader.txt')
+            const batchFileLocation = path.resolve('run.bat')
+            dataToSave['batchFileLocation'] = batchFileLocation
+            dataToSave['logFileLocation'] = this.downloadLogFile
             this.downloadData = dataToSave
             fs.writeFile('application-properties.json', '', function() {
                 fs.writeFileSync('application-properties.json', JSON.stringify(dataToSave, null, 4))
@@ -262,8 +266,6 @@ export default {
         },
         async runDownloadScript() {
             this.loading = true
-            this.downloadLogFile = path.join(this.summaryServiceData.directory.value, 'downloader.txt')
-            this.showLogger = true
             let output = await this.execute(this.cmd)
             this.loading = false
             this.downloadSuccess = (output.stderr === '')
@@ -273,9 +275,9 @@ export default {
                 this.stringOutput = this.stringOutput.concat(`${line}\n`)
             }
             fs.writeFileSync(this.downloadLogFile, this.stringOutput)
-            // if (this.downloadSuccess) {
-            //     this.$router.push({ path:'/', query: { downloadSuccessful: this.downloadSuccess , downloadLogFile: this.downloadLogFile } })
-            // }
+            if (this.downloadSuccess) {
+                this.$router.push({ path:'/', query: { downloadSuccessful: this.downloadSuccess , downloadLogFile: this.downloadLogFile } })
+            }
         },
         async execute(cmd) {
             return new Promise(function (resolve, reject) {

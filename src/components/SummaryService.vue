@@ -83,9 +83,7 @@ export default {
     created: function() {
         this.serviceSelection = this.summaryServiceData.summaryService.value
         this.summaryFileName = this.summaryServiceData.fileName.value
-        this.summaryDirectory = this.summaryServiceData.directory.value === 'summary' ?
-            path.join(app.getPath('documents') || __dirname, this.summaryServiceData.directory.value) :
-            this.summaryServiceData.directory.value
+        this.summaryDirectory = this.summaryServiceData.directory.value
     },
 
     methods: {

@@ -37,7 +37,7 @@
                                 :disabled="!showLogFileButton"
                                 v-bind="attrs"
                                 v-on="on"
-                                @click="showLogFileLocation">
+                                @click="openLogFile">
                                     <v-icon>mdi-file-document</v-icon>
                             </v-btn>
                         </template>
@@ -77,6 +77,7 @@ import { exec } from 'child_process'
 const fs = require('fs')
 const path = require('path')
 const { dialog } = require('electron').remote
+const shell = require('electron').shell
 
 export default {
     name: 'Welcome',
@@ -109,7 +110,8 @@ export default {
             batchFileLocation: '',
             logFileLocation: '',
             showBatchFileButton: false,
-            showLogFileButton: false
+            showLogFileButton: false,
+            showLogger: false
         }
     },
     created: function () {
@@ -164,6 +166,7 @@ export default {
                 this.savedDownloadSettings = JSON.parse(fs.readFileSync(this.savedDownloadSettingsFileName))
                 this.batchFileLocation = this.savedDownloadSettings['batchFileLocation']
                 this.logFileLocation = this.savedDownloadSettings['logFileLocation']
+                this.summaryFileLocation = this.savedDownloadSettings['SimpleSummaryService.directory']
                 for (var key in this.savedDownloadSettings) {
                     var value = this.savedDownloadSettings[key]
                     var item = {
@@ -176,13 +179,34 @@ export default {
         },
         showBatchFileLocation() {
             dialog.showOpenDialog({
+                properties: ['openFile'],
                 defaultPath: this.batchFileLocation
+            }).then(result => {
+                if (!result.canceled) {
+                    shell.openPath(result.filePaths[0])
+                }
+                console.log('result', result)
             })
         },
-        showLogFileLocation() {
-            dialog.showOpenDialog({
-                defaultPath: this.logFileLocation
-            })
+        openLogFile() {
+            const loggerInfo = {
+                logFileLocation: this.logFileLocation
+            }
+            this.$emit('openLogger', loggerInfo)
+            // dialog.showOpenDialog({
+            //     properties: ['openFile'],
+            //     defaultPath: this.logFileLocation
+            // }).then(result => {
+            //     if (!result.canceled) {
+            //         shell.openPath(result.filePaths[0])
+            //     }
+            // })
+        },
+        showSummaryFile() {
+            console.log('show summaryfile')
+        },
+        closeLogFile() {
+            this.showLogger = false
         }
     }
 }

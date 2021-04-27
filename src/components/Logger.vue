@@ -1,53 +1,32 @@
 <template>
-    <div class="text-center">
-        <v-card class="logger-card">
-            <v-card-title>Log</v-card-title>
-            <v-card-text>
-                {{ output }}
-            </v-card-text>
-            <v-card-actions>
-                <v-btn @click="close">Close</v-btn>
-            </v-card-actions>
-        </v-card>
+    <div>
+        Logger Works
     </div>
 </template>
 <script>
-const Tail = require('tail').Tail
 export default {
     name: 'Logger',
 
     props: [
-        'file',
-        'output'
+        'logFileLocation',
     ],
 
     data() {
         return {
             overlay: false,
             logInfo: '',
-            tail: null
+            tail: null,
+            fileExists: false
         }
     },
 
     created: function() {
-        this.tail = new Tail(this.file)
-        this.tail.watch()
-        this.tail.on("line", function(data) {
-            this.logInfo += data
-        })
+        console.log('logger works')
     },
 
     methods: {
-        close() {
-            this.tail.unwatch()
-            this.$emit('close', null)
-        }
     }
 }
 </script>
 <style scoped>
-    .logger-card {
-        height: 500px;
-        width: 700px;
-    }
 </style>

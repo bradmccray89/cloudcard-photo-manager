@@ -32,19 +32,22 @@
     export default {
         name: 'Api',
 
-        props: {
-            apiData: {
-                type: Object,
-                default: function() {
-                    return {
-                        api: {
-                            type: 'cloudcard.api.url',
-                            value: 'https://api.onlinephotosubmission.com/api'
-                        }
-                    }
-                }
-            }
-        },
+        props: [
+            'apiData'
+        ],
+        // {
+        //     apiData: {
+        //         type: Object,
+        //         default: function() {
+        //             return {
+        //                 api: {
+        //                     type: 'cloudcard.api.url',
+        //                     value: 'https://api.onlinephotosubmission.com/api'
+        //                 }
+        //             }
+        //         }
+        //     }
+        // },
 
         created: function () {
             this.apiChoice = this.api.find(f => f.value === this.apiData.api.value)

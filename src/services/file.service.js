@@ -190,7 +190,7 @@ export default class FileService {
             'downloader.preProcessor': 'DoNothingPreProcessor',
             'downloader.postProcessor': 'DoNothingPostProcessor',
             'downloader.summaryService': 'SimpleSummaryService',
-            'SimpleSummaryService.directory': 'summary'
+            'SimpleSummaryService.directory': path.join(app.getPath('documents') || __dirname, 'summary') 
         }
     }
 }

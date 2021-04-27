@@ -49,27 +49,9 @@ const path = require('path')
 export default {
     name: 'SummaryService',
 
-    props: {
-        summaryServiceData: {
-            type: Object,
-            default: function() {
-                return {
-                    summaryService: {
-                        type: 'downloader.summaryService',
-                        value: 'SimpleSummaryService'
-                    },
-                    fileName: {
-                        type: 'SimpleSummaryService.fileName',
-                        value: ''
-                    },
-                    directory: {
-                        type: 'SimpleSummaryService.directory',
-                        value: 'summary'
-                    }
-                }
-            }
-        }
-    },
+    props: [
+        'summaryServiceData'
+    ],
 
     data() {
         return {

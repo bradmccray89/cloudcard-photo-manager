@@ -28,6 +28,7 @@ application-properties.json
 downloader.txt
 /summary
 run.bat
+/downloaded-photos
 
 #Exceptions
 !/dist_electron/*.exe

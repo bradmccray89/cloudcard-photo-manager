@@ -69,9 +69,6 @@
                 </router-view>
             </v-container>
         </v-main>
-        <v-overlay :value="showLogger">
-            <Logger v-bind:file="downloadLogFile" v-on:close="closeLogger"></Logger>
-        </v-overlay>
         <!-- <v-overlay :value="loading">
             <v-progress-circular
                 indeterminate
@@ -88,7 +85,6 @@ import Storage from '../components/Storage'
 import Repeat from '../components/Repeat'
 import Status from '../components/Status'
 import AdvancedSettings from '../components/AdvancedSettings'
-import Logger from '../components/Logger'
 import { exec } from 'child_process'
 import FileService from '../services/file.service'
 
@@ -107,7 +103,6 @@ export default {
         Repeat,
         Status,
         AdvancedSettings,
-        Logger
     },
 
     watch: {
@@ -255,6 +250,8 @@ export default {
                 }
             }
             this.cmd = this.cmd.concat(' -jar cloudcard-photo-downloader.jar')
+            // this.cmd = this.cmd.concat(' -jar cloudcard-photo-downloader.jar > ' + '\"' + this.downloadLogFile + '\"')
+            console.log('cmd', this.cmd)
             const commandToSave = this.cmd
             fs.writeFile( 'run.bat', '', function() {
                 fs.writeFileSync('run.bat', commandToSave)

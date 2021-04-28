@@ -3,26 +3,37 @@
     <v-container fluid>
       <img alt="CloudCard Photo Manager" src="../assets/logo-only-300x300.png">
       <Welcome v-bind:showRedownloadButton="showRedownloadButton" v-on:openLogger="openLogger"/>
+      <v-row v-if="showLogger" justify="center">
+        <v-dialog
+          v-model="dialog"
+          fullscreen
+          hide-overlay
+          transition="dialog-bottom-transition"
+        >
+          <Logger></Logger>
+        </v-dialog>
+      </v-row>
     </v-container>
   </div>
 </template>
 
 <script>
 import Welcome from '@/components/Welcome.vue'
+import Logger from '@/components/Logger'
 
 const fs = require('fs')
-const electron = require('electron').remote
-const BrowserWindow = electron.BrowserWindow
 
 export default {
   name: 'Home',
 
   components: {
     Welcome,
+    Logger
   },
 
   data: () => {
     return {
+      dialog: false,
       savedDownloadSettings: [],
       showRedownloadButton: false,
       showLogger: false,
@@ -44,22 +55,7 @@ export default {
     },
     openLogger(info) {
       console.log('info', info)
-      let loggerWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
-        webPreferences: {
-          nodeIntegration: true,
-          enableRemoteModule: true,
-          webSecurity: false
-        },
-        parent: electron.getCurrentWindow(),
-        autoHideMenuBar: true,
-        title: `Logger - ${info.logFileLocation}`
-      })
-      loggerWindow.on('close', function() { loggerWindow = null })
-      const loggerUrl = window.location.origin + '/logger'
-      console.log(loggerUrl)
-      loggerWindow.loadURL(loggerUrl)
+      this.showLogger = true
     }
   }
 }

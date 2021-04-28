@@ -1,7 +1,24 @@
 <template>
-    <div>
-        Logger Works
-    </div>
+  <v-row justify="center">
+    <v-dialog
+      v-model="dialog"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+    >
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          color="primary"
+          dark
+          v-bind="attrs"
+          v-on="on"
+        >
+          Open Dialog
+        </v-btn>
+      </template>
+      Logger Works
+    </v-dialog>
+  </v-row>
 </template>
 <script>
 export default {

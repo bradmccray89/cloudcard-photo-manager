@@ -249,8 +249,8 @@ export default {
                     }
                 }
             }
-            this.cmd = this.cmd.concat(' -jar cloudcard-photo-downloader.jar')
-            // this.cmd = this.cmd.concat(' -jar cloudcard-photo-downloader.jar > ' + '\"' + this.downloadLogFile + '\"')
+            // this.cmd = this.cmd.concat(' -jar cloudcard-photo-downloader.jar')
+            this.cmd = this.cmd.concat(` -jar cloudcard-photo-downloader.jar > "${this.downloadLogFile}" 2>&1`)
             console.log('cmd', this.cmd)
             const commandToSave = this.cmd
             fs.writeFile( 'run.bat', '', function() {

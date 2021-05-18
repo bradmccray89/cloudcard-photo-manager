@@ -17,34 +17,6 @@
             </v-card-text>
             <v-container>
                 <v-row class="d-flex justify-center mb-3">
-                    <v-tooltip left>
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn
-                                class="mb-3 flex-grow"
-                                :disabled="!showBatchFileButton"
-                                v-bind="attrs"
-                                v-on="on"
-                                @click="showBatchFileLocation">
-                                    <v-icon>mdi-file-code</v-icon>
-                            </v-btn>
-                        </template>
-                        <span>View batch script file location</span>
-                    </v-tooltip>
-                    <v-tooltip right>
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn
-                                class="ml-2 flex-grow"
-                                :disabled="!showLogFileButton"
-                                v-bind="attrs"
-                                v-on="on"
-                                @click="openLogFile">
-                                    <v-icon>mdi-file-document</v-icon>
-                            </v-btn>
-                        </template>
-                        <span>View log file location</span>
-                    </v-tooltip>
-                </v-row>
-                <v-row class="d-flex justify-center mb-3">
                     <v-btn
                         class="mb-3"
                         :to="{ path: '/Downloader/Api', query: { jsonInputData: this.savedDownloadSettings } }">

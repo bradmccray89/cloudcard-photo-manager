@@ -32,13 +32,50 @@
                             Run Downloader
                     </v-btn>
                 </v-row>
+                <v-row class="my-3 d-flex justify-center align-center" v-if="showStopDownloaderButton">
+                    <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn
+                                class="flex-grow"
+                                color="error"
+                                v-bind="attrs"
+                                v-on="on"
+                                @click="stopDownloader()">
+                                    Stop Downloader
+                            </v-btn>
+                        </template>
+                        <span>Stop the current downloader</span>
+                    </v-tooltip>
+                </v-row>
+                <v-row class="my-3 d-flex justify-center align-center">
+                    <v-tooltip left>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn
+                                class="flex-grow"
+                                :disabled="!showBatchFileButton"
+                                v-bind="attrs"
+                                v-on="on"
+                                @click="showBatchFileLocation">
+                                    <v-icon>mdi-file-code</v-icon>
+                            </v-btn>
+                        </template>
+                        <span>View batch script file location</span>
+                    </v-tooltip>
+                    <v-tooltip right>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn
+                                class="ml-2 flex-grow"
+                                :disabled="!showLogFileButton"
+                                v-bind="attrs"
+                                v-on="on"
+                                @click.stop="openLogger">
+                                    <v-icon>mdi-file-document</v-icon>
+                            </v-btn>
+                        </template>
+                        <span>View log file location</span>
+                    </v-tooltip>
+                </v-row>
             </v-container>
-            <v-overlay :value="loading">
-                <v-progress-circular
-                    indeterminate
-                    color="primary">
-                </v-progress-circular>
-            </v-overlay>
         </v-card>
     </v-container>
 </template>
@@ -47,8 +84,6 @@
 import { exec } from 'child_process'
 
 const fs = require('fs')
-const path = require('path')
-const { dialog } = require('electron').remote
 const shell = require('electron').shell
 
 export default {
@@ -83,20 +118,20 @@ export default {
             logFileLocation: '',
             showBatchFileButton: false,
             showLogFileButton: false,
-            showLogger: false
+            showStopDownloaderButton: false,
+            dialog: false,
+            childProcess: null,
         }
     },
     created: function () {
         this.getFileData()
-        if (this.$route.query.downloadSuccessful) {
-            this.downloadSuccess = true
-        }
         if (fs.existsSync(this.savedDownloadScriptBatch)) {
             this.batch = fs.readFileSync(this.savedDownloadScriptBatch)
-            this.showBatchFileButton = true
-            this.showLogFileButton = true
         } else if (fs.existsSync(this.savedDownloadScriptShell)) {
             this.shell = fs.readFileSync(this.savedDownloadScriptShell)
+        }
+        if (this.$route.query.runDownload) {
+            this.runDownloadScript()
         }
     },
 
@@ -108,77 +143,61 @@ export default {
                 console.error('No script file found!')
             }
         },
-        async runDownloadScript() {
-            this.loading = true
-            let output = await this.execute('run')
-            if (!output.stderr) {
-                this.downloadSuccess = true
-            }
-            this.loading = false
-            let result = output.stdout ? output.stdout : output.stderr
-            let stringOutput = ''
-            for (let line of result.split('\n')) {
-                stringOutput = stringOutput.concat(`${line}\n`)
-            }
-            fs.writeFileSync(path.join('downloader.txt'), stringOutput)
+        runDownloadScript() {
+            this.openLogger()
+            this.execute('run')
         },
-        async execute(cmd) {
-            return new Promise(function (resolve, reject) {
-                exec(cmd, (err, stdout, stderr) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve({ stdout, stderr });
-                    }
-                });
-            })
+        execute(cmd) {
+            this.childProcess = exec(cmd)
+            if(this.childProcess.pid > 0) {
+                this.$emit('save_pid', this.childProcess.pid)
+            }
         },
         getFileData() {
             if (fs.existsSync(this.savedDownloadSettingsFileName)) {
-                this.savedDownloadSettings = JSON.parse(fs.readFileSync(this.savedDownloadSettingsFileName))
-                this.batchFileLocation = this.savedDownloadSettings['batchFileLocation']
-                this.logFileLocation = this.savedDownloadSettings['logFileLocation']
-                this.summaryFileLocation = this.savedDownloadSettings['SimpleSummaryService.directory']
-                for (var key in this.savedDownloadSettings) {
-                    var value = this.savedDownloadSettings[key]
-                    var item = {
-                        type: key,
-                        value: value
+                var fileBuffer = fs.readFileSync(this.savedDownloadSettingsFileName)
+                if (fileBuffer.length > 0) {
+                    this.savedDownloadSettings = JSON.parse(fileBuffer)
+                    this.batchFileLocation = this.savedDownloadSettings['batchFileLocation']
+                    this.showBatchFileButton = this.batchFileLocation !== '' ? true : false
+                    this.logFileLocation = this.savedDownloadSettings['logFileLocation']
+                    this.showLogFileButton = this.logFileLocation !== '' ? true : false
+                    this.summaryFileLocation = this.savedDownloadSettings['SimpleSummaryService.directory']
+                    // console.log('savedDownloadSettings[\'PID\']', this.savedDownloadSettings['PID'])
+                    // console.log('showStopDownloader', this.showStopDownloaderButton)
+                    // if (this.savedDownloadSettings['PID']) {
+                    //     this.showStopDownloaderButton = true
+                    // }
+                    for (var key in this.savedDownloadSettings) {
+                        var value = this.savedDownloadSettings[key]
+                        var item = {
+                            type: key,
+                            value: value
+                        }
+                        this.results.push(item)
                     }
-                    this.results.push(item)
                 }
             }
         },
         showBatchFileLocation() {
-            dialog.showOpenDialog({
-                properties: ['openFile'],
-                defaultPath: this.batchFileLocation
-            }).then(result => {
-                if (!result.canceled) {
-                    shell.openPath(result.filePaths[0])
-                }
-                console.log('result', result)
-            })
+            shell.showItemInFolder(this.batchFileLocation)
         },
-        openLogFile() {
+        openLogger() {
             const loggerInfo = {
                 logFileLocation: this.logFileLocation
             }
             this.$emit('openLogger', loggerInfo)
-            // dialog.showOpenDialog({
-            //     properties: ['openFile'],
-            //     defaultPath: this.logFileLocation
-            // }).then(result => {
-            //     if (!result.canceled) {
-            //         shell.openPath(result.filePaths[0])
-            //     }
-            // })
         },
         showSummaryFile() {
             console.log('show summaryfile')
         },
-        closeLogFile() {
+        closeLogger() {
             this.showLogger = false
+        },
+        stopDownloader() {
+            this.$emit('stop_downloader')
+            this.getFileData()
+            this.$forceUpdate()
         }
     }
 }

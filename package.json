@@ -19,6 +19,7 @@
     "line-reader": "^0.4.0",
     "material-design-icons-iconfont": "^6.1.0",
     "tail": "^2.2.0",
+    "tree-kill": "^1.2.2",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vuetify": "^2.4.2",

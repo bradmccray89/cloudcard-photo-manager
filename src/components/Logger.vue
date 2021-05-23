@@ -8,6 +8,7 @@
             <v-spacer></v-spacer>
             <v-btn
                 dark
+                v-if="logFileLocation"
                 @click="openLogFile"
             >
                 Open Log File
@@ -20,7 +21,7 @@
                 <v-icon>mdi-close</v-icon>
             </v-btn>
         </v-toolbar>
-        <v-card-text class="log-text-container">
+        <v-card-text class="log-text-container" ref="container">
             {{ logFileContent }}
         </v-card-text>
     </v-card>
@@ -51,28 +52,33 @@ export default {
     },
 
     beforeDestroy: function() {
-        this.tail.unwatch()
+        if (this.logFileLocation) {
+            this.tail.unwatch()
+        }
     },
 
     methods: {
         tailLogFile() {
-            const options = { follow: true, nLines: 25 }
-            this.tail = new Tail(this.logFileLocation, options)
-            this.tail.on('line', (data) => {
-                // this.$set(this.logFileContent, this.logFileContent + data + '\n')
-                this.logFileContent = this.logFileContent + data + '\n'
-            })
-            this.tail.on('error', (error) => {
-                console.log('ERROR: ', error)
-                this.tail.unwatch()
-            })
+            if (this.logFileLocation) {
+                const options = { nLines: 25 }
+                this.tail = new Tail(this.logFileLocation, options)
+                this.tail.on('line', (data) => {
+                    this.logFileContent = this.logFileContent + data + '\n'
+                })
+                this.tail.on('error', (error) => {
+                    console.log('ERROR: ', error)
+                    this.tail.unwatch()
+                })
+            }
         },
         openLogFile() {
-            shell.openPath(this.logFileLocation)
+            if (this.logFileLocation) {
+                shell.openPath(this.logFileLocation)
+            }
         },
         closeLogger() {
             this.$emit('close_logger', this.logFileLocation)
-        }
+        },
     }
 }
 </script>
@@ -81,7 +87,7 @@ export default {
         height: 85vh;
         width: unset;
         margin: 1em;
-        padding: 0;
+        padding: 5px !important;
         background-color: #e7e7e7;
         border: 1px solid rgb(190, 190, 190);
         border-radius: 5px;

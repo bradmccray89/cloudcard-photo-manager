@@ -116,7 +116,7 @@ export default {
             advancedSettings: false,
             cmd: 'java',
             loading: false,
-            downloadSuccess: false,
+            runDownload: false,
             showLogger: false,
             stringOutput: '',
             downloadLogFile: '',
@@ -218,63 +218,54 @@ export default {
             this.setCurrentTab()
         },
         save() {
-            var dataToSave = this.downloadData
-            for (var key in dataToSave) {
-                if (dataToSave[key] === '') {
-                    delete dataToSave[key]
-                }
-            }
-            if (dataToSave['downloader.repeat'] === false) {
-                delete dataToSave['downloader.delay.milliseconds']
-            }
-            this.downloadLogFile = path.join(this.summaryServiceData.directory.value, 'downloader.txt')
-            const batchFileLocation = path.resolve('run.bat')
-            dataToSave['batchFileLocation'] = batchFileLocation
-            dataToSave['logFileLocation'] = this.downloadLogFile
-            this.downloadData = dataToSave
-            fs.writeFile('application-properties.json', '', function() {
-                fs.writeFileSync('application-properties.json', JSON.stringify(dataToSave, null, 4))
-            })
-            this.cmd = 'java'
-            for (var key in dataToSave) {
-                if (dataToSave.hasOwnProperty(key)) {
-                    var val = dataToSave[key]
-                    if (this.addToCommand(key)) {
-                        if (this.doesNotNeedQuotes(key)) {
-                            var param = ' -D' + key + '=' + val
-                        } else {
-                            var param = ' -D' + key + '="' + val + '"'
-                        }
-                        this.cmd = this.cmd.concat(param)
+            return new Promise(resolve => {
+                var dataToSave = this.downloadData
+                for (var key in dataToSave) {
+                    if (dataToSave[key] === '') {
+                        delete dataToSave[key]
                     }
                 }
-            }
-            // this.cmd = this.cmd.concat(' -jar cloudcard-photo-downloader.jar')
-            this.cmd = this.cmd.concat(` -jar cloudcard-photo-downloader.jar > "${this.downloadLogFile}" 2>&1`)
-            console.log('cmd', this.cmd)
-            const commandToSave = this.cmd
-            fs.writeFile( 'run.bat', '', function() {
-                fs.writeFileSync('run.bat', commandToSave)
+                if (dataToSave['downloader.repeat'] === false) {
+                    delete dataToSave['downloader.delay.milliseconds']
+                }
+                this.downloadLogFile = path.join(this.summaryServiceData.directory.value, 'downloader.txt')
+                const batchFileLocation = path.resolve('run.bat')
+                dataToSave['batchFileLocation'] = batchFileLocation
+                dataToSave['logFileLocation'] = this.downloadLogFile
+                this.downloadData = dataToSave
+                fs.writeFile('application-properties.json', '', function() {
+                    fs.writeFileSync('application-properties.json', JSON.stringify(dataToSave, null, 4))
+                    resolve()
+                })
+                this.cmd = 'java'
+                for (var key in dataToSave) {
+                    if (dataToSave.hasOwnProperty(key)) {
+                        var val = dataToSave[key]
+                        if (this.addToCommand(key)) {
+                            if (this.doesNotNeedQuotes(key)) {
+                                var param = ' -D' + key + '=' + val
+                            } else {
+                                var param = ' -D' + key + '="' + val + '"'
+                            }
+                            this.cmd = this.cmd.concat(param)
+                        }
+                    }
+                }
+                this.cmd = this.cmd.concat(` -jar cloudcard-photo-downloader.jar > "${this.downloadLogFile}" 2>&1`)
+                const commandToSave = this.cmd
+                fs.writeFile( 'run.bat', '', function() {
+                    fs.writeFileSync('run.bat', commandToSave)
+                })
             })
         },
-        saveAndRun() {
-            this.save();
-            this.runDownloadScript(this.downloadData)
+        async saveAndRun() {
+            await this.save().then(() => {
+                this.runDownloadScript()
+            })
         },
-        async runDownloadScript() {
-            this.loading = true
-            let output = await this.execute(this.cmd)
-            this.loading = false
-            this.downloadSuccess = (output.stderr === '')
-            let result = output.stdout ? output.stdout : output.stderr
-            this.stringOutput = ''
-            for (let line of result.split('\n')) {
-                this.stringOutput = this.stringOutput.concat(`${line}\n`)
-            }
-            fs.writeFileSync(this.downloadLogFile, this.stringOutput)
-            if (this.downloadSuccess) {
-                this.$router.push({ path:'/', query: { downloadSuccessful: this.downloadSuccess , downloadLogFile: this.downloadLogFile } })
-            }
+        runDownloadScript() {
+            this.runDownload = true
+            this.$router.push({ path:'/', query: { runDownload: this.runDownload } })
         },
         async execute(cmd) {
             return new Promise(function (resolve, reject) {

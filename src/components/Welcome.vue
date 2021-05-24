@@ -139,7 +139,9 @@ export default {
             }
         },
         runDownloadScript() {
-            this.showStopDownloaderButton = true
+            if (this.savedDownloadSettings['downloader.repeat']) {
+                this.showStopDownloaderButton = true
+            }
             this.openLogger()
             this.execute('run')
         },

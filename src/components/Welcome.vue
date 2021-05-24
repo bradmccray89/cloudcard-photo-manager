@@ -150,7 +150,6 @@ export default {
             }
         },
         getFileData() {
-            console.log('getFileData')
             if (fs.existsSync(this.savedDownloadSettingsFileName)) {
                 var fileBuffer = fs.readFileSync(this.savedDownloadSettingsFileName)
                 if (fileBuffer.length > 0) {

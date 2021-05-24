@@ -51,13 +51,11 @@ export default {
 
     methods: {
         killTree() {
-            console.log('killTree', this.pid)
             if (this.pid > 0) {
                 kill(this.pid)
             }
         },
         setPID(processid) {
-            console.log('processid', processid)
             this.pid = processid
         },
         beforeunloadHandler(e){

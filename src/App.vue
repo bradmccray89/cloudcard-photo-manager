@@ -38,8 +38,15 @@ export default {
         pid: 0
     }),
 
+    mounted() {
+      window.addEventListener('beforeunload', e => this.beforeunloadHandler(e))
+    },
+
+    destroyed() {
+      window.removeEventListener('beforeunload', e => this.beforeunloadHandler(e))
+    },
+
     created () {
-        window.addEventListener('beforeunload', this.killTree())
     },
 
     methods: {
@@ -52,7 +59,10 @@ export default {
         setPID(processid) {
             console.log('processid', processid)
             this.pid = processid
-        }
+        },
+        beforeunloadHandler(e){
+            kill(this.pid)
+        },
     }
 };
 </script>

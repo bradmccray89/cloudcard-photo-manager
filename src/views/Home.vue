@@ -53,19 +53,22 @@ export default {
   },
 
   created: function() {
-    let jsonFile = 'application-properties.json'
-    var fileBuffer = fs.readFileSync(jsonFile)
-    if (fs.existsSync(jsonFile) && fileBuffer.length > 0) {
-      let jsonFileData = fs.readFileSync(jsonFile)
-      this.showRedownloadButton = true
-      this.savedDownloadSettings = JSON.parse(jsonFileData)
-      if (this.savedDownloadSettings.length > 0) {
-        this.setBatchAndLogFileButtons(this.savedDownloadSettings)
-      }
-    }
+    this.loadData()
   },
 
   methods: {
+    loadData() {
+      let jsonFile = 'application-properties.json'
+      var fileBuffer = fs.readFileSync(jsonFile)
+      if (fs.existsSync(jsonFile) && fileBuffer.length > 0) {
+        let jsonFileData = fs.readFileSync(jsonFile)
+        this.showRedownloadButton = true
+        this.savedDownloadSettings = JSON.parse(jsonFileData)
+        if (this.savedDownloadSettings.length > 0) {
+          this.setBatchAndLogFileButtons(this.savedDownloadSettings)
+        }
+      }
+    },
     setBatchAndLogFileButtons(settings) {
       if(settings['batchFileLocation']) {
         this.batchFileLocation = settings['batchFileLocation'];
@@ -91,14 +94,18 @@ export default {
       this.$emit('save_process_id', pid)
       const dataToSave = this.savedDownloadSettings
       fs.writeFile('application-properties.json', '', function() {
-          fs.writeFileSync('application-properties.json', JSON.stringify(dataToSave, null, 4))
+          fs.writeFileSync('application-properties.json', JSON.stringify(dataToSave, null, 4), function() {
+            this.loadData()
+          })
       })
     },
     removePID() {
       delete this.savedDownloadSettings['PID']
       const dataToSave = this.savedDownloadSettings
       fs.writeFile('application-properties.json', '', function() {
-          fs.writeFileSync('application-properties.json', JSON.stringify(dataToSave, null, 4))
+          fs.writeFileSync('application-properties.json', JSON.stringify(dataToSave, null, 4), function() {
+            this.loadData()
+          })
       })
     },
     stopDownloader() {

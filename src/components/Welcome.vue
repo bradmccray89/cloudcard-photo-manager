@@ -32,20 +32,14 @@
                             Run Downloader
                     </v-btn>
                 </v-row>
-                <v-row class="my-3 d-flex justify-center align-center" v-if="showStopDownloaderButton">
-                    <v-tooltip bottom>
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn
-                                class="flex-grow"
-                                color="error"
-                                v-bind="attrs"
-                                v-on="on"
-                                @click="stopDownloader()">
-                                    Stop Downloader
-                            </v-btn>
-                        </template>
-                        <span>Stop the current downloader</span>
-                    </v-tooltip>
+                <v-row class="my-3 d-flex justify-center align-center">
+                    <v-btn
+                        class="flex-grow"
+                        color="error"
+                        v-if="showStopDownloaderButton"
+                        @click="stopDownloader()">
+                            Stop Downloader
+                    </v-btn>
                 </v-row>
                 <v-row class="my-3 d-flex justify-center align-center">
                     <v-tooltip left>
@@ -100,7 +94,7 @@ export default {
         }
     },
 
-    data: () => {
+    data() {
         return {
             savedDownloadSettingsFileName: 'application-properties.json',
             savedDownloadScriptBatch: 'run.bat',
@@ -123,6 +117,7 @@ export default {
             childProcess: null,
         }
     },
+
     created: function () {
         this.getFileData()
         if (fs.existsSync(this.savedDownloadScriptBatch)) {
@@ -144,6 +139,7 @@ export default {
             }
         },
         runDownloadScript() {
+            this.showStopDownloaderButton = true
             this.openLogger()
             this.execute('run')
         },
@@ -154,6 +150,7 @@ export default {
             }
         },
         getFileData() {
+            console.log('getFileData')
             if (fs.existsSync(this.savedDownloadSettingsFileName)) {
                 var fileBuffer = fs.readFileSync(this.savedDownloadSettingsFileName)
                 if (fileBuffer.length > 0) {
@@ -163,11 +160,10 @@ export default {
                     this.logFileLocation = this.savedDownloadSettings['logFileLocation']
                     this.showLogFileButton = this.logFileLocation !== '' ? true : false
                     this.summaryFileLocation = this.savedDownloadSettings['SimpleSummaryService.directory']
-                    // console.log('savedDownloadSettings[\'PID\']', this.savedDownloadSettings['PID'])
-                    // console.log('showStopDownloader', this.showStopDownloaderButton)
-                    // if (this.savedDownloadSettings['PID']) {
-                    //     this.showStopDownloaderButton = true
-                    // }
+                    const savedPID = this.savedDownloadSettings['PID']
+                    if (savedPID && this.processIsRunning(savedPID)) {
+                        this.showStopDownloaderButton = true
+                    }
                     for (var key in this.savedDownloadSettings) {
                         var value = this.savedDownloadSettings[key]
                         var item = {
@@ -195,9 +191,17 @@ export default {
             this.showLogger = false
         },
         stopDownloader() {
+            this.showStopDownloaderButton = false
             this.$emit('stop_downloader')
-            this.getFileData()
-            this.$forceUpdate()
+        },
+        processIsRunning(pid) {
+            try {
+                process.kill(pid, 0)
+                return true
+            } catch(e) {
+                this.stopDownloader()
+                return false
+            }
         }
     }
 }

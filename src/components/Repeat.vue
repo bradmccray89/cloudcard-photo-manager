@@ -38,27 +38,7 @@
                 </v-tooltip>
             </div>
             <div class="d-flex">
-                <v-text-field class="flex-grow-1 mr-2"
-                    v-model="days"
-                    :rules="dayRules"
-                    hide-details="auto"
-                    :disabled="!repeat"
-                    dense
-                    solo
-                    @change="emitChange">
-                    <span slot="append">days</span>
-                </v-text-field>
-                <v-text-field class="delay-input flex-grow-1 mr-2"
-                    v-model="hours"
-                    :rules="hourRules"
-                    hide-details="auto"
-                    :disabled="!repeat"
-                    dense
-                    solo
-                    @change="emitChange">
-                    <span slot="append">hours</span>
-                </v-text-field>
-                <v-text-field class="delay-input flex-grow-1"
+                <v-text-field class="delay-input"
                     v-model="minutes"
                     :rules="minuteRules"
                     hide-details="auto"
@@ -88,7 +68,7 @@
                         },
                         delay: {
                             type: 'downloader.delay.milliseconds',
-                            value: 60000
+                            value: 600000
                         }
                     }
                 }
@@ -96,31 +76,19 @@
         },
 
         data: () => ({
-            days: 0,
-            hours: 0,
-            minutes: 10,
+            minutes: 0,
             repeat: true,
             delay: 0,
-            dayRules: [
-                value => /[0-9]+/.test(value) || 'Must be a number (no decimals)',
-                value => value < 90 || 'Must be less than 90'
-            ],
-            hourRules: [
-                value => /[0-9]+/.test(value) || 'Must be a number (no decimals)',
-                value => value <= 24 || 'Max value 24',
-            ],
             minuteRules: [
                 value => /[0-9]+/.test(value) || 'Must be a number (no decimals)',
                 value => value <= 60 || 'Max value 60',
-            ],
-            intRules: [
-                value => /[0-9]+/.test(value) || 'Must be a number'
-            ],
+            ]
         }),
 
         created: function () {
             this.repeat = this.repeatData.repeat.value
             this.delay =  this.repeatData.delay.value
+            this.minutes = this.delay / 60000
         },
 
         methods: {
@@ -139,10 +107,7 @@
             },
             calculateDelay() {
                 if (this.repeat) {
-                    let msDays = (this.days * 24 * 60 * 60 * 1000)
-                    let msHours = (this.hours * 60 * 60 * 1000)
-                    let msMinutes = (this.minutes * 60 * 1000)
-                    this.delay = msDays + msHours + msMinutes
+                    this.delay = this.minutes * 60000
                 }
                 return this.delay
             }
@@ -153,5 +118,9 @@
 <style scoped>
     .v-input--selection-controls {
         padding-top: 0;
+    }
+    .delay-input {
+        max-width: 200px;
+        min-width: 125px;
     }
 </style>
